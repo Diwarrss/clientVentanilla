@@ -90,13 +90,13 @@
                   variant="warning"
                   @click="modalEdit(row.item, row.index, $event.target, false)"><i class="fas fa-edit mr-md-1"/><span class="d-none d-md-inline-block">Editar</span></b-button>
                 <b-button
-                  v-if="row.item.state == 1"
                   v-permission="'change_cancellation_reason_status'"
+                  v-if="row.item.state == 1"
                   variant="danger"
                   @click="status(row.item.id, 'disable')"><i class="fas fa-times-circle mr-md-1"/><span class="d-none d-md-inline-block">Inactivar</span></b-button>
                 <b-button
-                  v-if="row.item.state == 0"
                   v-permission="'change_cancellation_reason_status'"
+                  v-if="row.item.state == 0"
                   variant="success"
                   @click="status(row.item.id, 'enable')"><i class="fas fa-check-circle mr-md-1"/><span class="d-none d-md-inline-block">Activar</span></b-button>
               </template>
@@ -158,10 +158,14 @@
               placeholder="Ingrese Nombre"
               data-vv-as="nombre"/>
             <template v-if="$v.form.name.$error">
-              <div class="invalid-feedback" v-if="!$v.form.name.required">
+              <div
+                v-if="!$v.form.name.required"
+                class="invalid-feedback">
                 Digite el Nombre
               </div>
-              <div class="invalid-feedback" v-if="!$v.form.name.maxLength">
+              <div
+                v-if="!$v.form.name.maxLength"
+                class="invalid-feedback">
                 El Nombre Exede los 200 Caracteres
               </div>
             </template>
@@ -185,7 +189,9 @@
               aria-describedby="input-state"
               data-vv-as="estado"/>
             <template v-if="$v.form.state.$error">
-              <div class="invalid-feedback" v-if="!$v.form.state.required">
+              <div
+                v-if="!$v.form.state.required"
+                class="invalid-feedback">
                 Seleccione el Estado
               </div>
             </template>
@@ -230,7 +236,13 @@
   </div>
 </template>
 <script>
-import { required, minLength, maxLength, between, integer } from 'vuelidate/lib/validators'
+import {
+  required,
+  minLength,
+  maxLength,
+  between,
+  integer
+} from 'vuelidate/lib/validators'
 export default {
   // eslint-disable-next-line vue/require-prop-types
   props: ['cantidad'],
@@ -451,7 +463,7 @@ export default {
       // actualiza la paginacion cuando se usa el filtro
       this.rows = filteredItems.length
       this.currentPage = 1
-    },
+    }
   }
 }
 </script>

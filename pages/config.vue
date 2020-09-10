@@ -46,7 +46,9 @@
           <span slot="label"><i class="fas fa-ban"/> Motivos Anulación</span>
           <CancellationReason :cantidad="dato"/>
         </el-tab-pane>
-        <el-tab-pane v-if="viewRoles" name="tabRol">
+        <el-tab-pane
+          v-if="viewRoles"
+          name="tabRol">
           <span slot="label"><i class="fas fa-user-cog"/> Roles de usuario</span>
           <RolAndPermission/>
         </el-tab-pane>
@@ -132,7 +134,9 @@ export default {
       this.$router.push('/')
     }
     let storeViewRoles = this.$store.state.user.permissions
-    this.viewRoles = (!(storeViewRoles.find(item => item === 'manage_roles') === undefined))
+    this.viewRoles = !(
+      storeViewRoles.find(item => item === 'manage_roles') === undefined
+    )
   },
   methods: {
     handleClick(tab, event) {
@@ -164,7 +168,7 @@ export default {
     activePermission(value) {
       let storePermissions = this.$store.state.user.permissions
       return !(storePermissions.find(item => item === value) === undefined)
-    },
+    }
   }
 }
 </script>
