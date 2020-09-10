@@ -1,0 +1,22 @@
+.empty-table-filter {
+  margin-left: -28px;
+}
+.empty-table-filter:focus {
+  box-shadow: none;
+}
+.form-control-plaintext {
+	display: block;
+	width: 100%;
+	padding-top: .375rem;
+	padding-bottom: .375rem;
+	margin-bottom: 0;
+	line-height: 1.5;
+	color: #23282c;
+	background-color: transparent !important;
+	border: solid transparent !important;
+	border-width: 1px 0;
+	padding-left: 0px;
+}
+.form-control-plaintext:focus {
+  box-shadow: none;
+}

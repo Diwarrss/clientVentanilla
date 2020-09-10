@@ -1,0 +1,11 @@
+// Here you can add other styles
+.vs__search::placeholder{
+  color: gray;
+}
+.vs__dropdown-toggle{
+  border-radius: unset;
+  height: 35px;
+}
+.is-invalid .vs__dropdown-toggle {
+  border-color: #f86c6b;
+}
