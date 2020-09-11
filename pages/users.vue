@@ -799,6 +799,7 @@ export default {
           //alert(JSON.stringify(params))
         } else {
           //actualizar
+          me.updating = true
           let params = {
             url: `all-user/${me.form.id}`,
             data: formData,

@@ -757,7 +757,7 @@ export default {
               me.$store.dispatch('config/getPeople', false)
               me.hideModal()
             }
-          }, 1000)
+          }, 2000)
           //alert(JSON.stringify(params))
         } else {
           me.updating = true
