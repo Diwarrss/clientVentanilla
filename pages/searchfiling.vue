@@ -131,8 +131,9 @@
             </v-select>
           </b-form-group>
         </b-row>
-        <b-row class="justify-content-end mr-2">
+        <b-row class="ml-2">
           <b-button
+            class="btn-lg"
             variant="success"
             @click="searchFiling()"><i class="fas fa-search"/> Buscar</b-button>
         </b-row>
@@ -1647,7 +1648,7 @@ export default {
       }
     },
     cleanSearch(view) {
-      this.typeFiling = null
+      this.typeFiling = 0
       this.titleSearch = ''
       this.type_document_search = ''
       this.sender_id = ''

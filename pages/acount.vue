@@ -449,6 +449,7 @@ export default {
                 timer: 2000
               })
               me.updating = false
+              this.$v.$reset()
             }, 1000)
           })
           .catch(err => {
@@ -470,7 +471,7 @@ export default {
             setTimeout(() => {
               this.$swal({
                 title: res.data.message,
-                icon: 'success',
+                icon: res.data.type,
                 confirmButtonColor: '#4dbd74',
                 confirmButtonText:
                   '<i class="far fa-check-circle"></i> Aceptar',
@@ -480,6 +481,7 @@ export default {
               me.form.oldPassword = ''
               me.form.password = ''
               me.form.confirm_password = ''
+              this.$v.$reset()
             }, 1000)
           })
           .catch(err => {
@@ -514,6 +516,7 @@ export default {
                   timer: 2000
                 })
                 me.updatingImage = false
+                this.$v.$reset()
               }, 1000)
             })
             .catch(err => {
