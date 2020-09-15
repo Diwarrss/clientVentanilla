@@ -6,9 +6,15 @@
           v-permission="'create_type_identification'"
           variant="primary"
           @click="newTypeIdentification(false)"><i class="fas fa-plus-circle"/> Nuevo</b-button>
-        <b-button
+        <!-- <b-button
           v-permission="'export_type_identification'"
-          variant="success"><i class="fas fa-file-csv"/> Exportar</b-button>
+          variant="success"><i class="fas fa-file-csv"/> Exportar</b-button> -->
+        <a
+          v-permission="'export_type_identification'"
+          :href="`${apiUrl}/type-identifications/export`"
+          class="btn btn-success"
+          target="_blank">
+        <i class="fas fa-file-csv"/> Exportar </a>
       </div>
       <div
         class="mt-2 pt-3 body_type_identification">
@@ -335,6 +341,9 @@ export default {
     },
     errors() {
       return this.$store.state.api.errors
+    },
+    apiUrl() {
+      return process.env.FILES_BASE_URL
     }
   },
   watch: {

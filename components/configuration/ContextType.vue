@@ -7,9 +7,15 @@
           v-permission="'create_context_type'"
           variant="primary"
           @click="newContexType(false)"><i class="fas fa-plus-circle"/> Nuevo</b-button>
-        <b-button
+        <!-- <b-button
           v-permission="'export_context_type'"
-          variant="success"><i class="fas fa-file-csv"/> Exportar</b-button>
+          variant="success"><i class="fas fa-file-csv"/> Exportar</b-button> -->
+        <a
+          v-permission="'export_context_type'"
+          :href="`${apiUrl}/context-types/export`"
+          class="btn btn-success"
+          target="_blank">
+        <i class="fas fa-file-csv"/> Exportar </a>
       </div>
       <div
         class="mt-2 pt-3 body_cT">
@@ -304,6 +310,9 @@ export default {
     },
     errors() {
       return this.$store.state.api.errors
+    },
+    apiUrl() {
+      return process.env.FILES_BASE_URL
     }
   },
   watch: {

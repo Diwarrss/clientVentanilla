@@ -7,9 +7,15 @@
           v-permission="'create_cancellation_reason'"
           variant="primary"
           @click="newCancellationReason(false)"><i class="fas fa-plus-circle"/> Nuevo</b-button>
-        <b-button
+        <!-- <b-button
           v-permission="'export_cancellation_reason'"
-          variant="success"><i class="fas fa-file-csv"/> Exportar</b-button>
+          variant="success"><i class="fas fa-file-csv"/> Exportar</b-button> -->
+        <a
+          v-permission="'export_document_type'"
+          :href="`${apiUrl}/cancellation-reason/export`"
+          class="btn btn-success"
+          target="_blank">
+        <i class="fas fa-file-csv"/> Exportar </a>
       </div>
       <div
         v-if="cancellationReason.length"
@@ -317,6 +323,9 @@ export default {
     },
     errors() {
       return this.$store.state.api.errors
+    },
+    apiUrl() {
+      return process.env.FILES_BASE_URL
     }
   },
   watch: {

@@ -6,9 +6,15 @@
           v-permission="'create_gender_type'"
           variant="primary"
           @click="newGender(false)"><i class="fas fa-plus-circle"/> Nuevo</b-button>
-        <b-button
+        <!-- <b-button
           v-permission="'export_gender_type'"
-          variant="success"><i class="fas fa-file-csv"/> Exportar</b-button>
+          variant="success"><i class="fas fa-file-csv"/> Exportar</b-button> -->
+        <a
+          v-permission="'export_gender_type'"
+          :href="`${apiUrl}/genders/export`"
+          class="btn btn-success"
+          target="_blank">
+        <i class="fas fa-file-csv"/> Exportar </a>
       </div>
       <div
         class="mt-2 pt-3 body_gender">
@@ -337,6 +343,9 @@ export default {
     },
     errors() {
       return this.$store.state.api.errors
+    },
+    apiUrl() {
+      return process.env.FILES_BASE_URL
     }
   },
   watch: {

@@ -6,9 +6,15 @@
           v-permission="'create_prirority'"
           variant="primary"
           @click="newPriority(false)"><i class="fas fa-plus-circle"/> Nuevo</b-button>
-        <b-button
+        <!-- <b-button
           v-permission="'export_priority'"
-          variant="success"><i class="fas fa-file-csv"/> Exportar</b-button>
+          variant="success"><i class="fas fa-file-csv"/> Exportar</b-button> -->
+        <a
+          v-permission="'export_priority'"
+          :href="`${apiUrl}/priorities/export`"
+          class="btn btn-success"
+          target="_blank">
+        <i class="fas fa-file-csv"/> Exportar </a>
       </div>
       <div
         class="mt-2 pt-3 body_priority">
@@ -364,7 +370,10 @@ export default {
     },
     errors() {
       return this.$store.state.api.errors
-    }
+    },
+    apiUrl() {
+      return process.env.FILES_BASE_URL
+    },
   },
   watch: {
     /* cuando la variable sea afectada o tenga algun cambio ejecuta el proceso */

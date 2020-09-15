@@ -6,9 +6,15 @@
           variant="primary"
           v-permission="'create_dependence'"
           @click="newDependence(false)"><i class="fas fa-plus-circle"/> Nuevo</b-button>
-        <b-button
+        <!-- <b-button
           v-permission="'export_dependence'"
-          variant="success"><i class="fas fa-file-csv"/> Exportar</b-button>
+          variant="success"><i class="fas fa-file-csv"/> Exportar</b-button> -->
+        <a
+          v-permission="'export_dependence'"
+          :href="`${apiUrl}/dependences/export`"
+          class="btn btn-success"
+          target="_blank">
+        <i class="fas fa-file-csv"/> Exportar </a>
       </div>
       <div
         v-if="dependence.length"
@@ -542,6 +548,9 @@ export default {
     },
     errors() {
       return this.$store.state.api.errors
+    },
+    apiUrl() {
+      return process.env.FILES_BASE_URL
     }
   },
   watch: {
