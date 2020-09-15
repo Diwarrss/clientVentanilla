@@ -28,8 +28,7 @@
                 id="typeFiling"
                 v-model="typeFiling"
                 :options="typeFilings"
-                size="md"
-                @change="getDataTypeFiling"/>
+                size="md"/>
             </b-form-group>
           </b-col>
           <!-- filing -->
@@ -98,15 +97,33 @@
           </b-form-group>
           <!-- sender -->
           <b-form-group
+            v-if="typeFiling === '0'"
             id="groupstate"
             class="col-md-3"
             label="Remitente:"
             label-for="sender_id">
             <v-select
               id="sender_id"
-              :reduce="senders => senders.id"
+              :reduce="people => people.id"
               v-model="sender_id"
-              :options="senders"
+              :options="people"
+              placeholder="Seleccionar..."
+              label="names"
+              class="vue_select_input">
+              <div slot="no-options">No hay Resultados!</div>
+            </v-select>
+          </b-form-group>
+          <b-form-group
+          v-if="typeFiling === '1'"
+            id="groupstate"
+            class="col-md-3"
+            label="Remitente:"
+            label-for="sender_id">
+            <v-select
+              id="sender_id"
+              :reduce="dependence => dependence.id"
+              v-model="sender_id"
+              :options="dependence"
               placeholder="Seleccionar..."
               label="names"
               class="vue_select_input">
@@ -115,15 +132,33 @@
           </b-form-group>
           <!-- addressee -->
           <b-form-group
+            v-if="typeFiling === '0'"
             id="groupstate"
             class="col-md-3"
             label="Destinatario:"
             label-for="addressee_id">
             <v-select
               id="addressee_id"
-              :reduce="addressees => addressees.id"
+              :reduce="dependence => dependence.id"
               v-model="addressee_id"
-              :options="addressees"
+              :options="dependence"
+              placeholder="Seleccionar..."
+              label="names"
+              class="vue_select_input">
+              <div slot="no-options">No hay Resultados!</div>
+            </v-select>
+          </b-form-group>
+          <b-form-group
+            v-if="typeFiling === '1'"
+            id="groupstate"
+            class="col-md-3"
+            label="Destinatario:"
+            label-for="addressee_id">
+            <v-select
+              id="addressee_id"
+              :reduce="people => people.id"
+              v-model="addressee_id"
+              :options="people"
               placeholder="Seleccionar..."
               label="names"
               class="vue_select_input">
@@ -1182,18 +1217,22 @@ export default {
       this.$router.push('/')
     } else {
       this.$store.dispatch('filing/clearResultFiling')
-      this.$store.dispatch('config/getTypeDocument')
       this.$store.dispatch('config/getDependence', 1)
       this.$store.dispatch('config/getPeople', true)
-      if (this.typeFiling === '0') {
-        //entrada
-        this.senders = this.people
-        this.addressees = this.dependence
-      } else if (this.typeFiling === '1') {
-        //salida
-        this.addressees = this.people
-        this.senders = this.dependence
-      }
+      this.$store.dispatch('config/getTypeDocument')
+      //console.log(this.people)
+      /* setTimeout(() => {
+        if (this.typeFiling === '0') {
+          //entrada
+          console.log(this.$store.state.config.people)
+          this.senders = this.people
+          this.addressees = this.dependence
+        } else if (this.typeFiling === '1') {
+          //salida
+          this.addressees = this.people
+          this.senders = this.dependence
+        }
+      }, 2000); */
     }
   },
   methods: {
@@ -1636,7 +1675,7 @@ export default {
         )
       }
     },
-    getDataTypeFiling() {
+    /* getDataTypeFiling() {
       if (this.typeFiling === '0') {
         //entrada
         this.senders = this.people
@@ -1646,7 +1685,7 @@ export default {
         this.addressees = this.people
         this.senders = this.dependence
       }
-    },
+    }, */
     cleanSearch(view) {
       this.typeFiling = 0
       this.titleSearch = ''

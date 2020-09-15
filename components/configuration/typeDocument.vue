@@ -316,7 +316,7 @@ export default {
   },
   computed: {
     apiUrl() {
-      return process.env.API_BASE_URL
+      return process.env.FILES_BASE_URL
     },
     typeDocument() {
       return this.$store.state.config.typeDocument
