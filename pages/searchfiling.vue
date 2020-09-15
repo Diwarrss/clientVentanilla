@@ -10,7 +10,7 @@
       <div>
         <b-button
           variant="primary"
-          @click="cleanSearch(false)"><i class="fas fa-search"/> Limpiar</b-button>
+          @click="cleanSearch(false)"><i class="fas fa-eraser"/> Limpiar</b-button>
         <b-button
           variant="success"><i class="fas fa-file-csv"/> Exportar</b-button>
         <b-row>
@@ -43,10 +43,10 @@
               label-for="setledSearch"
               class="mb-0">
               <b-form-input
-              id="setledSearch"
-              v-model="setledSearch"
-              type="number"
-              name="setledSearch"/>
+                id="setledSearch"
+                v-model="setledSearch"
+                type="number"
+                name="setledSearch"/>
             </b-form-group>
           </b-col>
           <!-- rango de fechas -->
@@ -131,10 +131,10 @@
             </v-select>
           </b-form-group>
         </b-row>
-        <b-row class="ml-2">
+        <b-row class="mb-3 col-md-2">
           <b-button
-            class="btn-lg"
-            variant="success"
+            class="btn-block"
+            variant="dark"
             @click="searchFiling()"><i class="fas fa-search"/> Buscar</b-button>
         </b-row>
       </div>
@@ -1180,7 +1180,7 @@ export default {
       storePermissions.find(item => item === 'search_based') === undefined
     if (showPage) {
       this.$router.push('/')
-    }else {
+    } else {
       this.$store.dispatch('filing/clearResultFiling')
       this.$store.dispatch('config/getTypeDocument')
       this.$store.dispatch('config/getDependence', 1)
@@ -1224,76 +1224,76 @@ export default {
         //eliminamos el archivpo del storage y la base de datos
         if (this.typeFiling === '0') {
           this.$axios
-          .post(`/entry-filing/delete-files/${file.id}`)
-          .then(res => {
-            //agrega el file en el array con el nombre y ur que quedo en bd
-            this.$store.dispatch('filing/getEntryFiling')
-            this.$swal({
-              toast: true,
-              position: 'top-end',
-              icon: 'success',
-              title: res.data.message,
-              showConfirmButton: false,
-              timer: 3000
+            .post(`/entry-filing/delete-files/${file.id}`)
+            .then(res => {
+              //agrega el file en el array con el nombre y ur que quedo en bd
+              this.$store.dispatch('filing/getEntryFiling')
+              this.$swal({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: res.data.message,
+                showConfirmButton: false,
+                timer: 3000
+              })
             })
-          })
-          .catch(err => {
-            console.error(err)
-          })
+            .catch(err => {
+              console.error(err)
+            })
         } else if (this.typeFiling === '1') {
           this.$axios
-          .post(`/outgoing-filing/delete-files/${file.id}`)
-          .then(res => {
-            //agrega el file en el array con el nombre y ur que quedo en bd
-            this.$store.dispatch('filing/getOutGoingFiling')
-            this.$swal({
-              toast: true,
-              position: 'top-end',
-              icon: 'success',
-              title: res.data.message,
-              showConfirmButton: false,
-              timer: 3000
+            .post(`/outgoing-filing/delete-files/${file.id}`)
+            .then(res => {
+              //agrega el file en el array con el nombre y ur que quedo en bd
+              this.$store.dispatch('filing/getOutGoingFiling')
+              this.$swal({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: res.data.message,
+                showConfirmButton: false,
+                timer: 3000
+              })
             })
-          })
-          .catch(err => {
-            console.error(err)
-          })
+            .catch(err => {
+              console.error(err)
+            })
         }
       }
     },
     handlePreview(file) {
       if (this.typeFiling === '0') {
         this.$axios
-        .get(`get-file/entryFiling/${file.name}/${this.form.settled}`, {
-          responseType: 'arraybuffer'
-        })
-        .then(res => {
-          let blob = new Blob([res.data], { type: 'application/*' })
-          let link = document.createElement('a')
-          link.href = window.URL.createObjectURL(blob)
-          link.download = file.name
-          link.click()
-        })
-        .catch(err => {
-          this.sendingFile = false
-          console.error(err)
-        })
+          .get(`get-file/entryFiling/${file.name}/${this.form.settled}`, {
+            responseType: 'arraybuffer'
+          })
+          .then(res => {
+            let blob = new Blob([res.data], { type: 'application/*' })
+            let link = document.createElement('a')
+            link.href = window.URL.createObjectURL(blob)
+            link.download = file.name
+            link.click()
+          })
+          .catch(err => {
+            this.sendingFile = false
+            console.error(err)
+          })
       } else if (this.typeFiling === '1') {
         this.$axios
-        .get(`get-file/outgoingFiling/${file.name}/${this.form.settled}`, {
-          responseType: 'arraybuffer'
-        })
-        .then(res => {
-          let blob = new Blob([res.data], { type: 'application/*' })
-          let link = document.createElement('a')
-          link.href = window.URL.createObjectURL(blob)
-          link.download = file.name
-          link.click()
-        })
-        .catch(err => {
-          this.sendingFile = false
-          console.error(err)
-        })
+          .get(`get-file/outgoingFiling/${file.name}/${this.form.settled}`, {
+            responseType: 'arraybuffer'
+          })
+          .then(res => {
+            let blob = new Blob([res.data], { type: 'application/*' })
+            let link = document.createElement('a')
+            link.href = window.URL.createObjectURL(blob)
+            link.download = file.name
+            link.click()
+          })
+          .catch(err => {
+            this.sendingFile = false
+            console.error(err)
+          })
       }
     },
     updateList(file) {
@@ -1541,84 +1541,84 @@ export default {
       formData.append('file', this.fileUpload) //get last element for array
       if (this.typeFiling === '0') {
         this.$axios
-        .post('/entry-filing/upload-temp-files', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          },
-          onUploadProgress: function(progressEvent) {
-            this.uploadPercentage = Math.floor(
-              (100 * progressEvent.loaded) / progressEvent.total
-            )
-          }.bind(this)
-        })
-        .then(res => {
-          //agrega el file en el array con el nombre y ur que quedo en bd
-          this.fileList.push({
-            name: res.data.data.name,
-            url: process.env.filesBaseUrl + res.data.data.url,
-            id: res.data.data.id
+          .post('/entry-filing/upload-temp-files', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            },
+            onUploadProgress: function(progressEvent) {
+              this.uploadPercentage = Math.floor(
+                (100 * progressEvent.loaded) / progressEvent.total
+              )
+            }.bind(this)
           })
-          console.log(res.data)
-          this.sendingFile = false
-          if (this.dateRange.length) {
-            this.$store.dispatch('filing/getEntryFiling', this.dateRange)
-          } else {
-            this.$store.dispatch('filing/getEntryFiling')
-          }
-          this.$swal({
-            toast: true,
-            position: 'top-end',
-            icon: 'success',
-            title: res.data.message,
-            showConfirmButton: false,
-            timer: 3000
+          .then(res => {
+            //agrega el file en el array con el nombre y ur que quedo en bd
+            this.fileList.push({
+              name: res.data.data.name,
+              url: process.env.filesBaseUrl + res.data.data.url,
+              id: res.data.data.id
+            })
+            console.log(res.data)
+            this.sendingFile = false
+            if (this.dateRange.length) {
+              this.$store.dispatch('filing/getEntryFiling', this.dateRange)
+            } else {
+              this.$store.dispatch('filing/getEntryFiling')
+            }
+            this.$swal({
+              toast: true,
+              position: 'top-end',
+              icon: 'success',
+              title: res.data.message,
+              showConfirmButton: false,
+              timer: 3000
+            })
+            console.log(res)
           })
-          console.log(res)
-        })
-        .catch(err => {
-          this.sendingFile = false
-          console.error(err)
-        })
+          .catch(err => {
+            this.sendingFile = false
+            console.error(err)
+          })
       } else if (this.typeFiling === '1') {
         this.$axios
-        .post('/outgoing-filing/upload-temp-files', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          },
-          onUploadProgress: function(progressEvent) {
-            this.uploadPercentage = Math.floor(
-              (100 * progressEvent.loaded) / progressEvent.total
-            )
-          }.bind(this)
-        })
-        .then(res => {
-          //agrega el file en el array con el nombre y ur que quedo en bd
-          this.fileList.push({
-            name: res.data.data.name,
-            url: process.env.filesBaseUrl + res.data.data.url,
-            id: res.data.data.id
+          .post('/outgoing-filing/upload-temp-files', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            },
+            onUploadProgress: function(progressEvent) {
+              this.uploadPercentage = Math.floor(
+                (100 * progressEvent.loaded) / progressEvent.total
+              )
+            }.bind(this)
           })
-          console.log(res.data)
-          this.sendingFile = false
-          if (this.dateRange.length) {
-            this.$store.dispatch('filing/getOutGoingFiling', this.dateRange)
-          } else {
-            this.$store.dispatch('filing/getOutGoingFiling')
-          }
-          this.$swal({
-            toast: true,
-            position: 'top-end',
-            icon: 'success',
-            title: res.data.message,
-            showConfirmButton: false,
-            timer: 3000
+          .then(res => {
+            //agrega el file en el array con el nombre y ur que quedo en bd
+            this.fileList.push({
+              name: res.data.data.name,
+              url: process.env.filesBaseUrl + res.data.data.url,
+              id: res.data.data.id
+            })
+            console.log(res.data)
+            this.sendingFile = false
+            if (this.dateRange.length) {
+              this.$store.dispatch('filing/getOutGoingFiling', this.dateRange)
+            } else {
+              this.$store.dispatch('filing/getOutGoingFiling')
+            }
+            this.$swal({
+              toast: true,
+              position: 'top-end',
+              icon: 'success',
+              title: res.data.message,
+              showConfirmButton: false,
+              timer: 3000
+            })
+            console.log(res)
           })
-          console.log(res)
-        })
-        .catch(err => {
-          this.sendingFile = false
-          console.error(err)
-        })
+          .catch(err => {
+            this.sendingFile = false
+            console.error(err)
+          })
       }
     },
     getDataForDate() {

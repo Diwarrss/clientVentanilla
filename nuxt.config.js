@@ -3,6 +3,7 @@ require('dotenv').config()
 
 module.exports = {
   mode: 'spa',
+  target: 'static', //for site static
   server: {
     port: 8080, // default: 3000
     host: 'localhost' // default: localhost
