@@ -6,9 +6,12 @@
           v-permission="'create_document_type'"
           variant="primary"
           @click="newTypeDocument(false)"><i class="fas fa-plus-circle"/> Nuevo</b-button>
-        <b-button
+        <a
           v-permission="'export_document_type'"
-          variant="success"><i class="fas fa-file-csv"/> Exportar</b-button>
+          :href="`${apiUrl}/type-documents/export`"
+          class="btn btn-success"
+          target="_blank">
+        <i class="fas fa-file-csv"/> Exportar </a>
       </div>
       <div
         class="mt-2 pt-3 body_type_document">
@@ -312,6 +315,9 @@ export default {
     return form
   },
   computed: {
+    apiUrl() {
+      return process.env.API_BASE_URL
+    },
     typeDocument() {
       return this.$store.state.config.typeDocument
     },
@@ -466,6 +472,9 @@ export default {
       this.rows = filteredItems.length
       this.currentPage = 1
     }
+    /* downloadExcel() {
+      window.location.href = ``
+    } */
   }
 }
 </script>
