@@ -1,6 +1,7 @@
 <template>
   <div class="gender">
     <b-card>
+      <!-- zona de botones -->
       <div>
         <b-button
           v-permission="'create_cancellation_reason'"
@@ -236,15 +237,8 @@
   </div>
 </template>
 <script>
-import {
-  required,
-  minLength,
-  maxLength,
-  between,
-  integer
-} from 'vuelidate/lib/validators'
+import { required,minLength,maxLength,between,integer } from 'vuelidate/lib/validators' /* importamos las propiedades de la validación */
 export default {
-  // eslint-disable-next-line vue/require-prop-types
   props: ['cantidad'],
   data() {
     return {
@@ -262,6 +256,7 @@ export default {
         { value: false, text: 'Inactivo' }
       ],
       show: true,
+      /* información de encabezado de la tabla */
       fields: [
         {
           key: 'id',
@@ -301,6 +296,7 @@ export default {
       showmodal: false
     }
   },
+  /* validación dinamica de los formularios activos */
   validations() {
     let form = {
       form: {
@@ -324,7 +320,7 @@ export default {
     }
   },
   watch: {
-    /* cuando la variable sea afectada o tenga algun cambio ejecuta el proceso */
+    /* cuando la variable sea afectada o tenga algun cambio ejecuta el proceso, para paginar la tabla */
     cantidad() {
       this.rows = this.cantidad
     }
@@ -369,15 +365,12 @@ export default {
       setTimeout(() => {
         this.viewOnlly = false
         this.showmodal = false
-        this.$v.$reset()
+        this.$v.$reset()//resetea las validaciones del formulario
         this.form = {
           id: null,
           name: null,
           state: null
         }
-        /* this.$nextTick(() => {
-          this.$validator.reset()
-        }) */
       }, 500)
     },
     status(id, type) {
@@ -411,10 +404,10 @@ export default {
       let me = this
       me.form.name = me.form.name ? me.form.name.toUpperCase() : ''
       this.$v.$touch()
-      if (this.$v.$invalid) {
+      if (this.$v.$invalid) { //verifica los resultados de la validación
         return
       } else {
-        //Crear
+        //Crear nuevo registro
         me.sending = true
         if (me.event) {
           let params = {
@@ -436,7 +429,7 @@ export default {
           }, 2000)
         } else {
           me.updating = true
-          //actualizar
+          //actualizar registro existente
           let params = {
             url: `cancellation-reasons/${me.form.id}`,
             data: me.form,

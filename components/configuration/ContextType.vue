@@ -1,6 +1,7 @@
 <template>
   <div class="context_type">
     <b-card>
+      <!-- zona de botones -->
       <div>
         <b-button
           v-permission="'create_context_type'"
@@ -226,9 +227,8 @@
   </div>
 </template>
 <script>
-import { required, minLength, maxLength, between, integer } from 'vuelidate/lib/validators'
+import { required, minLength, maxLength, between, integer } from 'vuelidate/lib/validators' //importamos las propiedades de validacion del formulario
 export default {
-  // eslint-disable-next-line vue/require-prop-types
   props: ['cantidad'],
   data() {
     return {
@@ -284,7 +284,7 @@ export default {
       viewOnlly: false
     }
   },
-  validations() {
+  validations() { //validacion activa del formulario
     let form = {
       form: {
         name: {
@@ -307,7 +307,7 @@ export default {
     }
   },
   watch: {
-    /* cuando la variable sea afectada o tenga algun cambio ejecuta el proceso */
+    /* cuando la variable sea afectada o tenga algun cambio ejecuta el proceso para la paginación de la tabla*/
     cantidad() {
       this.rows = this.cantidad
     }

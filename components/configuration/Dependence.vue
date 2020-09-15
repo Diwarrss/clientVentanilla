@@ -552,7 +552,7 @@ export default {
   },
   methods: {
     changeType() {
-      this.$v.$reset()
+      this.$v.$reset()//limpia los resultados de la validación
     },
     newDependence(view) {
       let contador = 0
@@ -563,6 +563,8 @@ export default {
         this.viewOnlly = false
       }
       this.dependence.forEach(element => {
+        /* verifica si existe alguna persona en la tabla dependencias,
+        si no obliga a crear una persona antes que a una dependencia */
         if (this.dependence[co].type == 'person' && this.dependence[co].state) {
           contador++
         }

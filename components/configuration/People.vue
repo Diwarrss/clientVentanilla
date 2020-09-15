@@ -611,6 +611,8 @@ export default {
     newPeople(view) {
       let contador = 0
       let co = 0
+      /* verifica si existe alguna persona en la tabla dependencias,
+      si no obliga a crear una persona antes que a una dependencia */
       this.people.forEach(element => {
         if (this.people[co].type == 'person' && this.people[co].state) {
           contador++
