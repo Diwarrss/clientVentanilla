@@ -423,7 +423,10 @@ export default {
     this.form.dependence_id = this.user.dependence_id
     this.form.dependencePerson_id = this.user.dependencePerson_id
     this.imageView = [
-      { name: 'image.png', url: process.env.filesBaseUrl + this.user.image }
+      {
+        name: 'image.png',
+        url: process.env.filesBaseUrl + '/' + this.user.image
+      }
     ]
   },
   methods: {
