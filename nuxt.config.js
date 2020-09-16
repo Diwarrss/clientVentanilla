@@ -34,7 +34,7 @@ module.exports = {
     baseUrl: process.env.BASE_URL || 'http://localhost:8080',
     apiBaseUrl: process.env.API_BASE_URL || 'http://localhost:8000/api/v1',
     cookieBaseUrl: process.env.COOKIE_BASE_URL || 'http://localhost:8000',
-    filesBaseUrl: process.env.FILES_BASE_URL || 'http://localhost:8000/'
+    filesBaseUrl: process.env.FILES_BASE_URL || 'http://localhost:8000'
   },
 
   /*

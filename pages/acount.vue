@@ -5,11 +5,15 @@
       <i class="far fa-id-card"/>
       <span> Cuenta</span>
     </div>
-    <div id="content_acount" class="row">
+    <div
+      id="content_acount"
+      class="row">
       <div class="col-md-4">
         <el-card class="box-card">
-          <div slot="header" class="clearfix">
-            <h5 class="mb-0"><i class="fas fa-user-circle"></i>  Mi Perfil</h5>
+          <div
+            slot="header"
+            class="clearfix">
+            <h5 class="mb-0"><i class="fas fa-user-circle"/>  Mi Perfil</h5>
           </div>
           <div class="text item">
             <b-form>
@@ -36,10 +40,10 @@
                   </div>
                 </template>
                 <template v-if="errors.username">
-                <div class="invalid-feedback">
-                  {{ errors.username[0] }}
-                </div>
-              </template>
+                  <div class="invalid-feedback">
+                    {{ errors.username[0] }}
+                  </div>
+                </template>
               </b-form-group>
               <b-form-group
                 id="groupinitial"
@@ -80,9 +84,8 @@
                 label-for="rol">
                 <b-form-input
                   id="rol"
-                  disabled
-                  :value="rol_name">
-                </b-form-input>
+                  :value="rol_name"
+                  disabled/>
               </b-form-group>
               <b-form-group
                 id="groupstate"
@@ -92,8 +95,8 @@
                   id="dependence_id"
                   :reduce="dependence => dependence.id"
                   v-model="form.dependence_id"
-                  disabled
                   :options="dependence"
+                  disabled
                   placeholder="Seleccionar..."
                   label="names"
                   class="vue_select_input"
@@ -109,8 +112,8 @@
                   id="dependencePerson_id"
                   :reduce="dependencePerson => dependencePerson.id"
                   v-model="form.dependencePerson_id"
-                  disabled
                   :options="dependencePerson"
+                  disabled
                   placeholder="Seleccionar..."
                   label="names"
                   class="vue_select_input"
@@ -122,8 +125,8 @@
                 class="text-center">
                 <b-button
                   :disabled="updating"
-                  @click="sendData('dataUser')"
-                  variant="success">
+                  variant="success"
+                  @click="sendData('dataUser')">
                   <span v-if="updating">
                     <b-spinner
                       small
@@ -140,8 +143,10 @@
       </div>
       <div class="col-md-4">
         <el-card class="box-card">
-          <div slot="header" class="clearfix">
-            <h5 class="mb-0"><i class="fas fa-image"></i> Mi Foto</h5>
+          <div
+            slot="header"
+            class="clearfix">
+            <h5 class="mb-0"><i class="fas fa-image"/> Mi Foto</h5>
           </div>
           <div class="text item">
             <b-form-group
@@ -174,8 +179,8 @@
             class="text-center">
             <b-button
               :disabled="updatingImage"
-              @click="sendData('changeImage')"
-              variant="success">
+              variant="success"
+              @click="sendData('changeImage')">
               <span v-if="updatingImage">
                 <b-spinner
                   small
@@ -190,8 +195,10 @@
       </div>
       <div class="col-md-4">
         <el-card class="box-card">
-          <div slot="header" class="clearfix">
-            <h5 class="mb-0"><i class="fas fa-key"></i> Mi Contraseña</h5>
+          <div
+            slot="header"
+            class="clearfix">
+            <h5 class="mb-0"><i class="fas fa-key"/> Mi Contraseña</h5>
           </div>
           <div class="text item">
             <b-form>
@@ -278,8 +285,8 @@
                 class="text-center">
                 <b-button
                   :disabled="updatingPassword"
-                  @click="sendData('changePassword')"
-                  variant="success">
+                  variant="success"
+                  @click="sendData('changePassword')">
                   <span v-if="updatingPassword">
                     <b-spinner
                       small
@@ -390,6 +397,20 @@ export default {
     }
     return form
   },
+  computed: {
+    user() {
+      return this.$store.state.auth.user
+    },
+    rol_name() {
+      return this.$store.state.user.roles[0]
+    },
+    dependence() {
+      return this.$store.state.config.dependence
+    },
+    dependencePerson() {
+      return this.$store.state.config.dependencePerson
+    }
+  },
   created() {
     this.$store.dispatch('api/clearErrors')
     this.$store.dispatch('user/getAllRoles', false) //send param with out permissions
@@ -405,20 +426,6 @@ export default {
       { name: 'image.png', url: process.env.filesBaseUrl + this.user.image }
     ]
   },
-  computed: {
-    user() {
-      return this.$store.state.auth.user
-    },
-    rol_name() {
-      return this.$store.state.user.roles[0]
-    },
-    dependence() {
-      return this.$store.state.config.dependence
-    },
-    dependencePerson() {
-      return this.$store.state.config.dependencePerson
-    }
-  },
   methods: {
     sendData(type) {
       let me = this
@@ -428,69 +435,71 @@ export default {
       //validamos q no tenga errores el formulario
       me.$v.$touch()
       if (me.$v.$invalid) {
-        return//retornamos errores
+        return //retornamos errores
       } else {
         //actualizar
-        if (type === 'dataUser') { //al actualizar los datos basicos
+        if (type === 'dataUser') {
+          //al actualizar los datos basicos
           me.updating = true
           let params = {
             username: me.form.username,
             email: me.form.email
           }
-          me.$axios.post('/change-data', params)
-          .then(res => {
-            setTimeout(() => {
-              me.$swal({
-                title: res.data.message,
-                icon: 'success',
-                confirmButtonColor: '#4dbd74',
-                confirmButtonText:
-                  '<i class="far fa-check-circle"></i> Aceptar',
-                timer: 2000
-              })
+          me.$axios
+            .post('/change-data', params)
+            .then(res => {
+              setTimeout(() => {
+                me.$swal({
+                  title: res.data.message,
+                  icon: 'success',
+                  confirmButtonColor: '#4dbd74',
+                  confirmButtonText:
+                    '<i class="far fa-check-circle"></i> Aceptar',
+                  timer: 2000
+                })
+                me.updating = false
+                this.$v.$reset()
+              }, 1000)
+            })
+            .catch(err => {
+              if (err.response.status == 422) {
+                me.errors = err.response.data.errors
+              }
               me.updating = false
-              this.$v.$reset()
-            }, 1000)
-          })
-          .catch(err => {
-            if (err.response.status == 422) {
-              me.errors = err.response.data.errors
-            }
-            me.updating = false
-          })
-        }
-        else if (type === 'changePassword') { //al cambiar la contraseña
+            })
+        } else if (type === 'changePassword') {
+          //al cambiar la contraseña
           me.updatingPassword = true
           let params = {
             old_password: me.form.oldPassword,
             new_password: me.form.password,
             confirm_password: me.form.confirm_password
           }
-          me.$axios.post('/change-password', params)
-          .then(res => {
-            setTimeout(() => {
-              this.$swal({
-                title: res.data.message,
-                icon: res.data.type,
-                confirmButtonColor: '#4dbd74',
-                confirmButtonText:
-                  '<i class="far fa-check-circle"></i> Aceptar',
-                timer: 2000
-              })
-              me.updatingPassword = false
-              me.form.oldPassword = ''
-              me.form.password = ''
-              me.form.confirm_password = ''
-              this.$v.$reset()
-            }, 1000)
-          })
-          .catch(err => {
-            console.error(err);
-          })
-        }
-        else if (type === 'changeImage') { //cambiar imagen del usuario logueado (acount)
+          me.$axios
+            .post('/change-password', params)
+            .then(res => {
+              setTimeout(() => {
+                this.$swal({
+                  title: res.data.message,
+                  icon: res.data.type,
+                  confirmButtonColor: '#4dbd74',
+                  confirmButtonText:
+                    '<i class="far fa-check-circle"></i> Aceptar',
+                  timer: 2000
+                })
+                me.updatingPassword = false
+                me.form.oldPassword = ''
+                me.form.password = ''
+                me.form.confirm_password = ''
+                this.$v.$reset()
+              }, 1000)
+            })
+            .catch(err => {
+              console.error(err)
+            })
+        } else if (type === 'changeImage') {
+          //cambiar imagen del usuario logueado (acount)
           if (!me.form.image.length) {
-
           } else {
             me.updatingImage = true
             //estanadrizamos para enviar imagenes o archivos sin problema
@@ -500,28 +509,28 @@ export default {
               me.form.image.length ? me.form.image[0] : 'users/profile.png'
             )
             this.$axios
-            .post('change-image', formData, {
-              headers: {
-                'Content-Type': 'multipart/form-data'
-              }
-            })
-            .then(res => {
-              setTimeout(() => {
-                this.$swal({
-                  title: res.data.message,
-                  icon: 'success',
-                  confirmButtonColor: '#4dbd74',
-                  confirmButtonText:
-                    '<i class="far fa-check-circle"></i> Aceptar',
-                  timer: 2000
-                })
-                me.updatingImage = false
-                this.$v.$reset()
-              }, 1000)
-            })
-            .catch(err => {
-              console.error(err)
-            })
+              .post('change-image', formData, {
+                headers: {
+                  'Content-Type': 'multipart/form-data'
+                }
+              })
+              .then(res => {
+                setTimeout(() => {
+                  this.$swal({
+                    title: res.data.message,
+                    icon: 'success',
+                    confirmButtonColor: '#4dbd74',
+                    confirmButtonText:
+                      '<i class="far fa-check-circle"></i> Aceptar',
+                    timer: 2000
+                  })
+                  me.updatingImage = false
+                  this.$v.$reset()
+                }, 1000)
+              })
+              .catch(err => {
+                console.error(err)
+              })
           }
         }
       }
@@ -551,7 +560,7 @@ export default {
       //console.log(file, fileList)
     },
     beforeImageUpload(file) {
-      console.log('Antes de subir')
+      //console.log('Antes de subir')
       const isJPG = file.type === 'image/jpeg'
       const isPNG = file.type === 'image/png'
       const isLt1M = file.size / 2000 / 2000 < 4
@@ -583,15 +592,14 @@ export default {
         `El límite es 1, haz seleccionado ${files.length} archivos esta vez,
         añade hasta ${files.length}`
       )
-    },
-  },
+    }
+  }
 }
 </script>
 <style lang="scss">
-#content_acount{
-  .el-card__header{
+#content_acount {
+  .el-card__header {
     background-color: #63c2de !important;
   }
 }
-
 </style>
