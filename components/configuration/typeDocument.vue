@@ -399,7 +399,7 @@ export default {
             let url = `type-documents-state/${id}`
             me.$store.dispatch('api/state', url)
             this.$store.dispatch('config/getTypeDocument')
-            me.hideModal()
+            //me.hideModal()
           }
         }
       })

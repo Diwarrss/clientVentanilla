@@ -10,9 +10,14 @@
         <b-button v-permission="'create_based_entrance'" variant="primary" @click="newEntryFiling(false)">
           <i class="fas fa-plus-circle" /> Nuevo
         </b-button>
-        <b-button variant="success">
+        <b-button variant="success" @click="downloadReport">
           <i class="fas fa-file-csv" /> Exportar
         </b-button>
+        <!-- <a
+          :href="`${exportUrl}/entryfiling/export/${dateRange.length ? dateRange : $moment().format('yyyy-MM-DD')}`"
+          class="btn btn-success"
+          target="_blank">
+        <i class="fas fa-file-csv"/> Exportar </a> -->
         <b-button target="_blank" variant="warning" @click.prevent="showPDFTemplate">
           <i class="fas fa-clipboard-list" /> Generar planilla
         </b-button>
@@ -843,6 +848,9 @@ export default {
     apiUrl() {
       return process.env.API_BASE_URL
     },
+    exportUrl() {
+      return process.env.FILES_BASE_URL
+    },
     dependence() {
       return this.$store.state.config.dependence
     },
@@ -1304,6 +1312,56 @@ export default {
     },
     getDataForDate() {
       this.$store.dispatch('filing/getEntryFiling', this.dateRange)
+    },
+    downloadReport(){
+      let me = this
+      let fromDate, toDate
+      if (me.dateRange.length) {
+        fromDate = me.dateRange[0]
+        toDate = me.dateRange[0]
+      } else {
+        fromDate = me.$moment().format('yyyy-MM-DD')
+        toDate = me.$moment().format('yyyy-MM-DD')
+      }
+      me.$axios({
+          method: 'get',
+          url: `entryfiling/export?fromDate=${fromDate}&toDate=${toDate}`, /* enviamos la url de la api y la ruta con sus parametros para descargar el csv */
+          responseType: 'blob'
+      })
+      .then(response => {
+        const url = window.URL.createObjectURL(new Blob([response.data]))
+        const link = document.createElement("a")
+        link.href = url
+        link.setAttribute("download",me.returnDateAct()+'_'+fromDate+'A'+toDate+"_EntryFilling.csv")
+        document.body.appendChild(link)
+        link.click()
+        me.$swal({
+          title: "Descarga éxitosa!",
+          icon: 'error',
+          confirmButtonColor: '#4dbd74',
+          confirmButtonText:
+            '<i class="far fa-check-circle"></i> Aceptar',
+          timer: 2000
+        })
+      })
+      .catch(error => {
+        /* Swal.fire({
+            position: "top",
+            type: "error",
+            title: "Error al descargar, Reintentar!",
+            showConfirmButton: false,
+            timer: 1500
+        }); */
+        me.$swal({
+          title: "Error al descargar, Reintentar!",
+          icon: 'error',
+          confirmButtonColor: '#4dbd74',
+          confirmButtonText:
+            '<i class="far fa-check-circle"></i> Aceptar',
+          timer: 2000
+        })
+        //console.log(error);
+      })
     },
     showPDFTemplate() {
       if (!this.dateRange.length) {
