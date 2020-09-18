@@ -13,7 +13,12 @@
         <!-- <b-button variant="success" @click="downloadReport">
           <i class="fas fa-file-csv" /> Exportar
         </b-button> -->
-        <download-excel :data="entryFiling" class="btn btn-success" type="csv" name="EntryFiling.xlsx">
+        <download-excel
+          :data="entryFiling"
+          :fields="json_fields"
+          type="csv"
+          class="btn btn-success"
+          name="EntryFiling.csv">
           <i class="fas fa-file-csv" /> Exportar
         </download-excel>
         <!-- <a
@@ -737,14 +742,51 @@ export default {
       json_fields: {
         'ID': 'id',
         'Radicado': 'settled',
-        'Fecha': 'phone.mobile',
-        'Telephone 2' : {
+        'Fecha': 'created_at',
+        'Remitente': 'people.names',
+        'Destinatario(s)': {
+          field: 'dependences',
+          callback: (value) => {
+            let names = ''
+            for (let index = 0; index < value.length; index++) {
+              if (names === '') {
+                names = value[index].names
+              }else {
+                names = names + ' - ' + value[index].names
+              }
+            }
+            return names;
+          }
+        },
+        /* 'Telephone 2' : {
             field: 'phone.landline',
             callback: (value) => {
                 return `Landline Phone - ${value}`;
             }
-        },
+        }, */
       },
+      json_data: [
+        {
+          'id': 'Tony Peña',
+          'settled': 'New York',
+          'country': 'United States',
+          'created_at': '1978-03-15',
+          'people': {
+              'names': '1-541-754-3010',
+              'landline': '(541) 754-3010'
+          }
+        },
+        {
+          'id': 'Thessaloniki',
+          'settled': 'Athens',
+          'country': 'Greece',
+          'created_at': '1987-11-23',
+          'people': {
+              'names': '+1 855 275 5071',
+              'landline': '(2741) 2621-244'
+          }
+        }
+      ],
     }
   },
   validations() {

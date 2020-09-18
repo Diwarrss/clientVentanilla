@@ -1687,14 +1687,14 @@ export default {
       }
     }, */
     cleanSearch(view) {
-      this.typeFiling = 0
+      this.$store.dispatch('filing/clearResultFiling')
+      this.dateRange = []
+      this.typeFiling = '0'
       this.titleSearch = ''
       this.type_document_search = ''
       this.sender_id = ''
       this.addressee_id = ''
       this.setledSearch = ''
-      this.addressees = []
-      this.senders = []
     },
     searchFiling() {
       let me = this
