@@ -10,9 +10,12 @@
         <b-button v-permission="'create_based_entrance'" variant="primary" @click="newEntryFiling(false)">
           <i class="fas fa-plus-circle" /> Nuevo
         </b-button>
-        <b-button variant="success" @click="downloadReport">
+        <!-- <b-button variant="success" @click="downloadReport">
           <i class="fas fa-file-csv" /> Exportar
-        </b-button>
+        </b-button> -->
+        <download-excel :data="entryFiling" class="btn btn-success" type="csv" name="EntryFiling.xlsx">
+          <i class="fas fa-file-csv" /> Exportar
+        </download-excel>
         <!-- <a
           :href="`${exportUrl}/entryfiling/export/${dateRange.length ? dateRange : $moment().format('yyyy-MM-DD')}`"
           class="btn btn-success"
@@ -730,7 +733,18 @@ export default {
       pageOptions: [10, 20, 30],
       fileList: [],
       dateRange: [],
-      fileUpload: ''
+      fileUpload: '',
+      json_fields: {
+        'ID': 'id',
+        'Radicado': 'settled',
+        'Fecha': 'phone.mobile',
+        'Telephone 2' : {
+            field: 'phone.landline',
+            callback: (value) => {
+                return `Landline Phone - ${value}`;
+            }
+        },
+      },
     }
   },
   validations() {
@@ -1324,15 +1338,15 @@ export default {
         toDate = me.$moment().format('yyyy-MM-DD')
       }
       me.$axios({
-          method: 'get',
-          url: `entryfiling/export?fromDate=${fromDate}&toDate=${toDate}`, /* enviamos la url de la api y la ruta con sus parametros para descargar el csv */
-          responseType: 'blob'
+        method: 'get',
+        url: `entryfiling/export?fromDate=${fromDate}&toDate=${toDate}`, /* enviamos la url de la api y la ruta con sus parametros para descargar el csv */
+        responseType: 'blob'
       })
-      .then(response => {
-        const url = window.URL.createObjectURL(new Blob([response.data]))
+      .then(res => {
+        const url = window.URL.createObjectURL(new Blob([res.data]))
         const link = document.createElement("a")
         link.href = url
-        link.setAttribute("download",me.returnDateAct()+'_'+fromDate+'A'+toDate+"_EntryFilling.csv")
+        link.setAttribute("download",me.returnDateAct()+'_'+fromDate+'A'+toDate+"_EntryFilling.xlsx")
         document.body.appendChild(link)
         link.click()
         me.$swal({
