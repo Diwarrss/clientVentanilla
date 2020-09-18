@@ -58,15 +58,15 @@
 </template>
 <script>
 /* import Dependences from '~/components/Configuration/Dependences' */
-import Dependence from '~/components/Configuration/Dependence'
-import TypeDocument from '~/components/Configuration/TypeDocument'
-import Priority from '~/components/Configuration/Priority'
-import People from '~/components/Configuration/People'
-import ContextType from '~/components/Configuration/ContextType'
-import TypeIdentification from '~/components/Configuration/TypeIdentification'
-import Gender from '~/components/Configuration/Gender'
-import RolAndPermission from '~/components/Configuration/RolAndPermission'
-import CancellationReason from '~/components/Configuration/CancellationReason'
+import Dependence from '~/components/Config/Dependence'
+import TypeDocument from '~/components/Config/TypeDocument'
+import Priority from '~/components/Config/Priority'
+import People from '~/components/Config/People'
+import ContextType from '~/components/Config/ContextType'
+import TypeIdentification from '~/components/Config/TypeIdentification'
+import Gender from '~/components/Config/Gender'
+import RolAndPermission from '~/components/Config/RolAndPermission'
+import CancellationReason from '~/components/Config/CancellationReason'
 export default {
   components: {
     Dependence,
