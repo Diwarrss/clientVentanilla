@@ -42,7 +42,8 @@
     "vue-sweetalert2": "^3.0.8",
     "vue-unicons": "^2.3.0",
     "vue2-perfect-scrollbar": "^1.5.0",
-    "vuelidate": "^0.7.5"
+    "vuelidate": "^0.7.5",
+    "xlsx": "^0.16.7"
   },
   "devDependencies": {
     "@nuxtjs/dotenv": "^1.4.1",

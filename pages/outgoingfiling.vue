@@ -13,8 +13,9 @@
           v-permission="'create_based_out'"
           variant="primary"
           @click="newOutGoingFiling(false)"><i class="fas fa-plus-circle"/> Nuevo</b-button>
-        <b-button
-          variant="success"><i class="fas fa-file-csv"/> Exportar</b-button>
+        <b-button variant="success" @click="exportToExcel">
+          <i class="fas fa-file-csv" /> Exportar
+        </b-button>
         <b-button
           target="_blank"
           variant="warning"
@@ -684,6 +685,7 @@ import {
   between,
   email
 } from 'vuelidate/lib/validators'
+import XLSX from 'xlsx'
 export default {
   components: {
     ModalStampPrint
@@ -993,6 +995,52 @@ export default {
     }
   },
   methods: {
+    exportToExcel() { // On Click Excel download button
+      let me = this
+      let fromDate, toDate
+      if (me.dateRange.length) {
+        fromDate = me.dateRange[0]
+        toDate = me.dateRange[1]
+      } else {
+        fromDate = me.$moment().format('yyyy-MM-DD')
+        toDate = me.$moment().format('yyyy-MM-DD')
+      }
+      me.$axios({
+        method: 'get',
+        url: `outgoingfiling/export?fromDate=${fromDate}&toDate=${toDate}`, /* enviamos la url de la api y la ruta con sus parametros para descargar el csv */
+        /* responseType: 'blob' */
+      })
+      .then(res => {
+        // export json to Worksheet of Excel
+        // only array possible
+        var exportData = XLSX.utils.json_to_sheet(res.data)
+        var wb = XLSX.utils.book_new() // make Workbook of Excel
+        // add Worksheet to Workbook
+        // Workbook contains one or more worksheets
+        XLSX.utils.book_append_sheet(wb, exportData, 'OutGoingFiling') // sheetAName is name of Worksheet
+        // export Excel file
+        XLSX.writeFile(wb, 'OutGoingFiling.xlsx') // name of the file is 'book.xlsx'
+        me.$swal({
+          title: "Descarga éxitosa!",
+          icon: 'success',
+          confirmButtonColor: '#4dbd74',
+          confirmButtonText:
+            '<i class="far fa-check-circle"></i> Aceptar',
+          timer: 2000
+        })
+      })
+      .catch(error => {
+        me.$swal({
+          title: "Error al descargar, Reintentar!",
+          icon: 'error',
+          confirmButtonColor: '#4dbd74',
+          confirmButtonText:
+            '<i class="far fa-check-circle"></i> Aceptar',
+          timer: 2000
+        })
+        //console.log(error);
+      })
+    },
     showModalStampPrint() {
       this.$refs['modal-outgoingFiling'].hide()
       //Mostrar Modal Imprimir Sello

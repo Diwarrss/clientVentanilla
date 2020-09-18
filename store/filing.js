@@ -66,9 +66,6 @@ export const actions = {
         }
       })
       commit('setResultFiling', data.data)
-    } else {
-      const data = await this.$axios.get('outgoing-filing')
-      commit('setResultFiling', data.data)
     }
   },
   clearResultFiling: function({ commit }) {

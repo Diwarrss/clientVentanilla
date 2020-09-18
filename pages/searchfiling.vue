@@ -11,8 +11,9 @@
         <b-button
           variant="primary"
           @click="cleanSearch(false)"><i class="fas fa-eraser"/> Limpiar</b-button>
-        <b-button
-          variant="success"><i class="fas fa-file-csv"/> Exportar</b-button>
+        <b-button variant="success" @click="exportToExcel">
+          <i class="fas fa-file-csv" /> Exportar
+        </b-button>
         <b-row>
           <!-- type filing -->
           <b-col
@@ -854,6 +855,7 @@ import {
 } from 'vuelidate/lib/validators'
 import drag from '@branu-jp/v-drag'
 import { EventBus } from '~/plugins/event-bus'
+import XLSX from 'xlsx'
 export default {
   components: {
     ModalStampPrint
@@ -1220,22 +1222,61 @@ export default {
       this.$store.dispatch('config/getDependence', 1)
       this.$store.dispatch('config/getPeople', true)
       this.$store.dispatch('config/getTypeDocument')
-      //console.log(this.people)
-      /* setTimeout(() => {
-        if (this.typeFiling === '0') {
-          //entrada
-          console.log(this.$store.state.config.people)
-          this.senders = this.people
-          this.addressees = this.dependence
-        } else if (this.typeFiling === '1') {
-          //salida
-          this.addressees = this.people
-          this.senders = this.dependence
-        }
-      }, 2000); */
     }
   },
   methods: {
+    exportToExcel() { // On Click Excel download button
+      let me = this
+      if (me.sender_id === null) {
+        me.sender_id = ''
+      }
+      if (me.addressee_id === null) {
+        me.addressee_id = ''
+      }
+      let fromDate, toDate
+      if (me.dateRange.length) {
+        fromDate = me.dateRange[0]
+        toDate = me.dateRange[1]
+      } else {
+        fromDate = ''
+        toDate = ''
+      }
+      me.$axios({
+        method: 'get',
+        url: `searchfiling/export?fromDate=${fromDate}&toDate=${toDate}&type=${me.typeFiling}&title=${me.titleSearch}&typeDocument=${me.type_document_search}&sender=${me.sender_id}&addressee=${me.addressee_id}&setledSearch=${me.setledSearch}`, /* enviamos la url de la api y la ruta con sus parametros para descargar el csv */
+        /* responseType: 'blob' */
+      })
+      .then(res => {
+        // export json to Worksheet of Excel
+        // only array possible
+        var exportData = XLSX.utils.json_to_sheet(res.data)
+        var wb = XLSX.utils.book_new() // make Workbook of Excel
+        // add Worksheet to Workbook
+        // Workbook contains one or more worksheets
+        XLSX.utils.book_append_sheet(wb, exportData, me.typeFiling === '0' ? 'Search(EntryFiling)' : 'Search(OutGoingFiling)') // sheetAName is name of Worksheet
+        // export Excel file
+        XLSX.writeFile(wb, me.typeFiling === '0' ? 'Search(EntryFiling).xlsx' : 'Search(OutGoingFiling).xlsx') // name of the file is 'book.xlsx'
+        me.$swal({
+          title: "Descarga éxitosa!",
+          icon: 'success',
+          confirmButtonColor: '#4dbd74',
+          confirmButtonText:
+            '<i class="far fa-check-circle"></i> Aceptar',
+          timer: 2000
+        })
+      })
+      .catch(error => {
+        me.$swal({
+          title: "Error al descargar, Reintentar!",
+          icon: 'error',
+          confirmButtonColor: '#4dbd74',
+          confirmButtonText:
+            '<i class="far fa-check-circle"></i> Aceptar',
+          timer: 2000
+        })
+        //console.log(error);
+      })
+    },
     showModalStampPrint() {
       this.$refs['modal-entryFiling'].hide()
       //Mostrar Modal Imprimir Sello
