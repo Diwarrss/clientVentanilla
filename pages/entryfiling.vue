@@ -984,8 +984,8 @@ export default {
         fromDate = me.dateRange[0]
         toDate = me.dateRange[1]
       } else {
-        fromDate = me.$moment().format('yyyy-MM-DD')
-        toDate = me.$moment().format('yyyy-MM-DD')
+        fromDate = ''
+        toDate = ''
       }
       me.$axios({
         method: 'get',
@@ -993,23 +993,25 @@ export default {
         /* responseType: 'blob' */
       })
       .then(res => {
-        // export json to Worksheet of Excel
-        // only array possible
-        var exportData = XLSX.utils.json_to_sheet(res.data)
-        var wb = XLSX.utils.book_new() // make Workbook of Excel
-        // add Worksheet to Workbook
-        // Workbook contains one or more worksheets
-        XLSX.utils.book_append_sheet(wb, exportData, 'RadicacionEntrada') // sheetAName is name of Worksheet
-        // export Excel file
-        XLSX.writeFile(wb, 'RadicacionEntrada.xlsx') // name of the file is 'book.xlsx'
-        me.$swal({
-          title: "Descarga éxitosa!",
-          icon: 'success',
-          confirmButtonColor: '#4dbd74',
-          confirmButtonText:
-            '<i class="far fa-check-circle"></i> Aceptar',
-          timer: 2000
-        })
+        if (res.data.length) {
+          // export json to Worksheet of Excel
+          // only array possible
+          var exportData = XLSX.utils.json_to_sheet(res.data)
+          var wb = XLSX.utils.book_new() // make Workbook of Excel
+          // add Worksheet to Workbook
+          // Workbook contains one or more worksheets
+          XLSX.utils.book_append_sheet(wb, exportData, 'RadicacionEntrada') // sheetAName is name of Worksheet
+          // export Excel file
+          XLSX.writeFile(wb, 'RadicacionEntrada.xlsx') // name of the file is 'book.xlsx'
+          me.$swal({
+            title: "Descarga éxitosa!",
+            icon: 'success',
+            confirmButtonColor: '#4dbd74',
+            confirmButtonText:
+              '<i class="far fa-check-circle"></i> Aceptar',
+            timer: 2000
+          })
+        }
       })
       .catch(error => {
         me.$swal({
