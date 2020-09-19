@@ -1253,9 +1253,9 @@ export default {
         var wb = XLSX.utils.book_new() // make Workbook of Excel
         // add Worksheet to Workbook
         // Workbook contains one or more worksheets
-        XLSX.utils.book_append_sheet(wb, exportData, me.typeFiling === '0' ? 'Search(EntryFiling)' : 'Search(OutGoingFiling)') // sheetAName is name of Worksheet
+        XLSX.utils.book_append_sheet(wb, exportData, me.typeFiling === '0' ? 'Buscar(RadicacionEntrada)' : 'Buscar(RadicacionSalida)') // sheetAName is name of Worksheet
         // export Excel file
-        XLSX.writeFile(wb, me.typeFiling === '0' ? 'Search(EntryFiling).xlsx' : 'Search(OutGoingFiling).xlsx') // name of the file is 'book.xlsx'
+        XLSX.writeFile(wb, me.typeFiling === '0' ? 'Buscar(RadicacionEntrada).xlsx' : 'Buscar(RadicacionSalida).xlsx') // name of the file is 'book.xlsx'
         me.$swal({
           title: "Descarga éxitosa!",
           icon: 'success',
