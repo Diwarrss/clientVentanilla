@@ -647,6 +647,8 @@ export default {
       } else {
         this.viewOnlly = false
       }
+      this.sending = false
+      this.updating = false
       this.$store.dispatch('api/clearErrors')
       this.$store.dispatch('user/getAllRoles', false) //send param with out permissions
       this.$store.dispatch('config/getDependence', 2)
@@ -692,6 +694,7 @@ export default {
       this.form.dependencePerson_id = item.dependencePerson_id
       this.form.rol = item.roles[0].name
       this.form.oldRol = item.roles[0].name
+      console.log(process.env.filesBaseUrl + item.firm)
       this.firmView = [
         { name: 'firm.png', url: process.env.filesBaseUrl + item.firm }
       ]

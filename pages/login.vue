@@ -59,9 +59,9 @@
                     <b-col
                       cols="12"
                       class="text-center">
-                      <b-button
+                      <!-- <b-button
                         variant="link"
-                        class="px-0 btn_request">¿Has olvidado la contraseña?</b-button>
+                        class="px-0 btn_request">¿Has olvidado la contraseña?</b-button> -->
                     </b-col>
                   </b-row>
                 </b-card-body>

@@ -402,8 +402,10 @@ export default {
           if (id) {
             let url = `cancellation-reasons-state/${id}`
             me.$store.dispatch('api/state', url)
-            this.$store.dispatch('config/getCancellationReason')
-            me.hideModal()
+            setTimeout(() => {
+              this.$store.dispatch('config/getCancellationReason')
+              //me.hideModal()
+            }, 2000);
           }
         }
       })

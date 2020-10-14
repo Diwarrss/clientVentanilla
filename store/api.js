@@ -267,7 +267,7 @@ export const actions = {
             icon: 'success',
             confirmButtonColor: '#4dbd74',
             confirmButtonText: '<i class="far fa-check-circle"></i> Aceptar',
-            timer: 3000
+            timer: 4000
           })
           commit('setResult', res.data.data)
         } else {
@@ -276,7 +276,7 @@ export const actions = {
             icon: 'error',
             confirmButtonColor: '#4dbd74',
             confirmButtonText: '<i class="far fa-check-circle"></i> Aceptar',
-            timer: 2000
+            timer: 3000
           })
         }
         console.log(res)

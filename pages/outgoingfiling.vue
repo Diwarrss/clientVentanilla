@@ -1497,18 +1497,20 @@ export default {
             //Inactivar
             if (me.cancelFiling.outgoingFiling_id) {
               let params = {
-                url: `outgoing-filing-cancel/${
-                  me.cancelFiling.outgoingFiling_id
-                }`,
+                url: `outgoing-filing-cancel/${me.cancelFiling.outgoingFiling_id}`,
                 data: me.cancelFiling
               }
               //let url = `outgoing-filing-state/${id}`
               me.$store.dispatch('api/cancelFiling', params)
               setTimeout(() => {
                 me.sending = false
-                this.$store.dispatch('filing/getOutGoingFiling')
+                if (me.dateRange.length > 0) {
+                  me.$store.dispatch('filing/getOutGoingFiling', me.dateRange)
+                } else {
+                  me.$store.dispatch('filing/getOutGoingFiling')
+                }
                 me.hideModalCancel()
-              }, 2000)
+              }, 1500)
             }
           } else {
             me.sending = false

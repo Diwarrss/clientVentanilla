@@ -1206,6 +1206,7 @@ export default {
     },
     clearModal() {
       this.array_key_words = []
+      this.infoPeople = null
       this.$v.$reset()
       this.form = {
         id: null,
