@@ -387,8 +387,10 @@ export default {
           if (id) {
             let url = `context-types-state/${id}`
             me.$store.dispatch('api/state', url)
-            this.$store.dispatch('config/getContextType')
-            me.hideModal()
+            setTimeout(() => {
+              me.$store.dispatch('config/getContextType')
+            }, 500);
+            //me.hideModal()
           }
         }
       })

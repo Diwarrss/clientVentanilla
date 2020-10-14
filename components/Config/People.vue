@@ -727,8 +727,10 @@ export default {
           if (id) {
             let url = `people-state/${id}`
             me.$store.dispatch('api/state', url)
-            this.$store.dispatch('config/getPeople', false)
-            me.hideModal()
+            setTimeout(() => {
+              me.$store.dispatch('config/getPeople', false)
+            }, 500);
+            //me.hideModal()
             //alert(JSON.stringify(params))
           }
         }

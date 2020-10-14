@@ -454,8 +454,10 @@ export default {
           if (id) {
             let url = `priorities-state/${id}`
             me.$store.dispatch('api/state', url)
-            this.$store.dispatch('config/getPriority')
-            me.hideModal()
+            setTimeout(() => {
+              me.$store.dispatch('config/getPriority')
+            }, 500);
+            //me.hideModal()
           }
         }
       })
