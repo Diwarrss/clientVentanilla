@@ -403,9 +403,9 @@ export default {
             let url = `cancellation-reasons-state/${id}`
             me.$store.dispatch('api/state', url)
             setTimeout(() => {
-              this.$store.dispatch('config/getCancellationReason')
+              me.$store.dispatch('config/getCancellationReason')
               //me.hideModal()
-            }, 2000);
+            }, 500);
           }
         }
       })

@@ -423,8 +423,10 @@ export default {
           if (id) {
             let url = `genders-state/${id}`
             me.$store.dispatch('api/state', url)
-            this.$store.dispatch('config/getGender')
-            me.hideModal()
+            setTimeout(() => {
+              me.$store.dispatch('config/getGender')
+            }, 500);
+            //me.hideModal()
           }
         }
       })

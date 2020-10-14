@@ -671,8 +671,10 @@ export default {
           if (id) {
             let url = `dependences-state/${id}`
             me.$store.dispatch('api/state', url)
-            this.$store.dispatch('config/getDependence', 0)
-            me.hideModal()
+            setTimeout(() => {
+              me.$store.dispatch('config/getDependence', 0)
+            }, 500);
+            //me.hideModal()
             //alert(JSON.stringify(params))
           }
           /* this.$swal(

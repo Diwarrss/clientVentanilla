@@ -399,7 +399,7 @@ export default {
             let url = `type-documents-state/${id}`
             me.$store.dispatch('api/state', url)
             setTimeout(() => {
-              this.$store.dispatch('config/getTypeDocument')
+              me.$store.dispatch('config/getTypeDocument')
             }, 500);
             //me.hideModal()
           }

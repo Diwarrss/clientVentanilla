@@ -421,8 +421,10 @@ export default {
           if (id) {
             let url = `type-identifications-state/${id}`
             me.$store.dispatch('api/state', url)
-            this.$store.dispatch('config/getTypeIdentification')
-            me.hideModal()
+            setTimeout(() => {
+              me.$store.dispatch('config/getTypeIdentification')
+            }, 500);
+            //me.hideModal()
           }
         }
       })
