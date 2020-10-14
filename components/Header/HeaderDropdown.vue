@@ -5,7 +5,7 @@
     <template slot="button-content">
       <span>{{ user.username }}</span>
       <img
-        src="~static/img/avatars/6.jpg"
+        :src="urlServe+user.image"
         class="img-avatar"
         alt="admin@bootstrapmaster.com" >
     </template>
@@ -49,16 +49,17 @@ export default {
   data: () => {
     return { itemsCount: 42 }
   },
+  computed: {
+    urlServe() {
+      return process.env.filesBaseUrl
+    }
+  },
   methods: {
     async logout() {
       try {
         await this.$auth.logout('logout')
         localStorage.removeItem('roles')
         localStorage.removeItem('permissions')
-        //reset Permissions and Roles
-        /* this.$laravel.setPermissions(['null'])
-        this.$laravel.setRoles(['null']) */
-        //this.$router.push('/login')
       } catch (e) {
         this.formError = e.message
       }

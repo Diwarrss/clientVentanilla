@@ -425,7 +425,7 @@ export default {
     this.imageView = [
       {
         name: 'image.png',
-        url: process.env.filesBaseUrl + '/' + this.user.image
+        url: process.env.filesBaseUrl + this.user.image
       }
     ]
   },
@@ -509,7 +509,7 @@ export default {
             let formData = new FormData()
             formData.append(
               'image',
-              me.form.image.length ? me.form.image[0] : 'users/profile.png'
+              me.form.image.length ? me.form.image[0] : 'img/users/profile.png'
             )
             this.$axios
               .post('change-image', formData, {
