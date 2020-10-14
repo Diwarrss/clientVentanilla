@@ -461,6 +461,7 @@ export default {
                   timer: 2000
                 })
                 me.updating = false
+                this.$auth.fetchUser()
                 this.$v.$reset()
               }, 1000)
             })
@@ -528,6 +529,7 @@ export default {
                     timer: 2000
                   })
                   me.updatingImage = false
+                  this.$auth.fetchUser()
                   this.$v.$reset()
                 }, 1000)
               })
