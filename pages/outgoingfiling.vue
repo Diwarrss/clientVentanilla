@@ -1408,6 +1408,7 @@ export default {
     },
     clearModal() {
       this.array_key_words = []
+      this.infoDependence = null
       this.form = {
         id: null,
         cons_year: null,

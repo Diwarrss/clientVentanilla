@@ -1301,7 +1301,11 @@ export default {
               me.$store.dispatch('api/cancelFiling', params)
               setTimeout(() => {
                 me.sending = false
-                this.$store.dispatch('filing/getEntryFiling')
+                if (me.dateRange.length > 0) {
+                  me.$store.dispatch('filing/getEntryFiling', me.dateRange)
+                } else {
+                  me.$store.dispatch('filing/getEntryFiling')
+                }
                 me.hideModalCancel()
               }, 2000)
             }
