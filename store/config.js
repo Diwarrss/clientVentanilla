@@ -23,30 +23,37 @@ export const actions = {
   },
   getDependence: async function({ commit }, param) {
     const data = await this.$axios.get('dependences', { params: { active: param} })
+    commit('setDataClear', [])
     commit('setDependence', data.data)
   },
   getTypeDocument: async function({ commit }) {
     const data = await this.$axios.get('type-documents')
+    commit('setDataClear', [])
     commit('setTypeDocument', data.data)
   },
   getPriority: async function({ commit }) {
     const data = await this.$axios.get('priorities')
+    commit('setDataClear', [])
     commit('setPriority', data.data)
   },
   getPeople: async function({ commit }, param) {
     const data = await this.$axios.get('people', { params: { active: param } })
+    commit('setDataClear', [])
     commit('setPeople', data.data)
   },
   getContextType: async function({ commit }) {
     const data = await this.$axios.get('context-types')
+    commit('setDataClear', [])
     commit('setContextType', data.data)
   },
   getTypeIdentification: async function({ commit }) {
     const data = await this.$axios.get('type-identifications')
+    commit('setDataClear', [])
     commit('setTypeIdentification', data.data)
   },
   getGender: async function({ commit }) {
     const data = await this.$axios.get('genders')
+    commit('setDataClear', [])
     commit('setGender', data.data)
   },
   getRolHasPermission: async function({ commit }) {
@@ -59,11 +66,12 @@ export const actions = {
   },
   getCancellationReason: async function({ commit }) {
     const data = await this.$axios.get('cancellation-reasons')
+    commit('setDataClear', [])
     commit('setCancellationReason', data.data)
-  },
+  },/*
   clearAllData: function({ commit }) {
     commit('setDataClear', [])
-  },
+  }, */
 }
 
 export const mutations = {

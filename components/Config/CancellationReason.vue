@@ -441,7 +441,7 @@ export default {
           if (id) {
             let url = `cancellation-reasons-state/${id}`
             me.$store.dispatch('api/state', url)
-            me.$store.dispatch('config/clearAllData')
+            //me.$store.dispatch('config/clearAllData')
             setTimeout(() => {
               me.$store.dispatch('config/getCancellationReason')
               //me.hideModal()
