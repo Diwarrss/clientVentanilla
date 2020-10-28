@@ -62,7 +62,7 @@ export const actions = {
     commit('setCancellationReason', data.data)
   },
   clearAllData: function({ commit }) {
-    commit('setDataClear', {})
+    commit('setDataClear', [])
   },
 }
 
