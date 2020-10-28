@@ -10,15 +10,11 @@
         <!-- <b-button
           v-permission="'export_cancellation_reason'"
           variant="success"><i class="fas fa-file-csv"/> Exportar</b-button> -->
-        <a
-          v-permission="'export_document_type'"
-          :href="`${apiUrl}/cancellation-reason/export`"
-          class="btn btn-success"
-          target="_blank">
-        <i class="fas fa-file-csv"/> Exportar </a>
+        <b-button variant="success" @click="exportToExcel">
+          <i class="fas fa-file-csv" /> Exportar
+        </b-button>
       </div>
       <div
-        v-if="cancellationReason.length"
         class="mt-2 pt-3 body_cancellation_reason">
         <template>
           <div class="container-fluid overflow-auto">
@@ -73,6 +69,7 @@
             </b-row>
             <!-- Pintar Tabla -->
             <b-table
+              v-if="cancellationReason.length"
               id="table-cancellation-reason"
               :fields="fields"
               :items="cancellationReason"
@@ -243,6 +240,7 @@
   </div>
 </template>
 <script>
+import XLSX from 'xlsx'
 import { required,minLength,maxLength,between,integer } from 'vuelidate/lib/validators' /* importamos las propiedades de la validación */
 export default {
   props: ['cantidad'],
@@ -335,6 +333,47 @@ export default {
     }
   },
   methods: {
+    exportToExcel() { // On Click Excel download button
+      console.log('exporttoexcel')
+      let me = this
+      me.$axios({
+        method: 'get',
+        url: 'cancellation-reasons-export', /* enviamos la url de la api y la ruta con sus parametros para descargar el csv */
+        /* responseType: 'blob' */
+      })
+      .then(res => {
+        if (res.data.length) {
+          // export json to Worksheet of Excel
+          // only array possible
+          var exportData = XLSX.utils.json_to_sheet(res.data)
+          var wb = XLSX.utils.book_new() // make Workbook of Excel
+          // add Worksheet to Workbook
+          // Workbook contains one or more worksheets
+          XLSX.utils.book_append_sheet(wb, exportData, 'MotivosCancelacion') // sheetAName is name of Worksheet
+          // export Excel file
+          XLSX.writeFile(wb, 'MotivosCancelacion.xlsx') // name of the file is 'book.xlsx'
+          me.$swal({
+            title: "Descarga éxitosa!",
+            icon: 'success',
+            confirmButtonColor: '#4dbd74',
+            confirmButtonText:
+              '<i class="far fa-check-circle"></i> Aceptar',
+            timer: 2000
+          })
+        }
+      })
+      .catch(error => {
+        me.$swal({
+          title: "Error al descargar, Reintentar!",
+          icon: 'error',
+          confirmButtonColor: '#4dbd74',
+          confirmButtonText:
+            '<i class="far fa-check-circle"></i> Aceptar',
+          timer: 2000
+        })
+        //console.log(error);
+      })
+    },
     newCancellationReason(view) {
       if (view) {
         this.viewOnlly = true
@@ -402,6 +441,7 @@ export default {
           if (id) {
             let url = `cancellation-reasons-state/${id}`
             me.$store.dispatch('api/state', url)
+            me.$store.dispatch('config/clearAllData')
             setTimeout(() => {
               me.$store.dispatch('config/getCancellationReason')
               //me.hideModal()

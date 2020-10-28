@@ -60,7 +60,10 @@ export const actions = {
   getCancellationReason: async function({ commit }) {
     const data = await this.$axios.get('cancellation-reasons')
     commit('setCancellationReason', data.data)
-  }
+  },
+  clearAllData: function({ commit }) {
+    commit('setDataClear', {})
+  },
 }
 
 export const mutations = {
@@ -105,5 +108,15 @@ export const mutations = {
   setCancellationReason(state, data) {
     state.cancellationReason = data
     state.allRow = data.length
+  },
+  setDataClear(state, data) {
+    state.dependence = data
+    state.typeDocument = data
+    state.priority = data
+    state.people = data
+    state.contextType = data
+    state.typeIdentification = data
+    state.gender = data
+    state.cancellationReason = data
   }
 }

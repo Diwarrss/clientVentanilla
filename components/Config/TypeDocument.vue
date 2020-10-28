@@ -6,12 +6,9 @@
           v-permission="'create_document_type'"
           variant="primary"
           @click="newTypeDocument(false)"><i class="fas fa-plus-circle"/> Nuevo</b-button>
-        <a
-          v-permission="'export_document_type'"
-          :href="`${apiUrl}/type-documents/export`"
-          class="btn btn-success"
-          target="_blank">
-        <i class="fas fa-file-csv"/> Exportar </a>
+        <b-button variant="success" @click="exportToExcel">
+          <i class="fas fa-file-csv" /> Exportar
+        </b-button>
       </div>
       <div
         class="mt-2 pt-3 body_type_document">
@@ -236,6 +233,7 @@
   </div>
 </template>
 <script>
+import XLSX from 'xlsx'
 import {
   required,
   minLength,
@@ -332,6 +330,46 @@ export default {
     }
   },
   methods: {
+    exportToExcel() { // On Click Excel download button
+      let me = this
+      me.$axios({
+        method: 'get',
+        url: 'type-document-export', /* enviamos la url de la api y la ruta con sus parametros para descargar el csv */
+        /* responseType: 'blob' */
+      })
+      .then(res => {
+        if (res.data.length) {
+          // export json to Worksheet of Excel
+          // only array possible
+          var exportData = XLSX.utils.json_to_sheet(res.data)
+          var wb = XLSX.utils.book_new() // make Workbook of Excel
+          // add Worksheet to Workbook
+          // Workbook contains one or more worksheets
+          XLSX.utils.book_append_sheet(wb, exportData, 'TipoDocumento') // sheetAName is name of Worksheet
+          // export Excel file
+          XLSX.writeFile(wb, 'TipoDocumento.xlsx') // name of the file is 'book.xlsx'
+          me.$swal({
+            title: "Descarga éxitosa!",
+            icon: 'success',
+            confirmButtonColor: '#4dbd74',
+            confirmButtonText:
+              '<i class="far fa-check-circle"></i> Aceptar',
+            timer: 2000
+          })
+        }
+      })
+      .catch(error => {
+        me.$swal({
+          title: "Error al descargar, Reintentar!",
+          icon: 'error',
+          confirmButtonColor: '#4dbd74',
+          confirmButtonText:
+            '<i class="far fa-check-circle"></i> Aceptar',
+          timer: 2000
+        })
+        //console.log(error);
+      })
+    },
     newTypeDocument(view) {
       if (view) {
         this.viewOnlly = true

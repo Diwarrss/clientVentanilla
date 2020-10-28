@@ -44,6 +44,8 @@
               class="mb-0">
               <b-form-input
                 id="setledSearch"
+                oninput="validity.valid||(value='');"
+                min="0"
                 v-model="setledSearch"
                 type="number"
                 name="setledSearch"/>

@@ -332,6 +332,8 @@
             <b-form-group id="groupname" class="col-md-3" label="Folios:" label-for="folios">
               <b-form-input
                 id="folios"
+                min="0"
+                oninput="validity.valid||(value='');"
                 :disabled="viewOnlly ? true : false"
                 v-model="form.folios"
                 :class="{'is-invalid': $v.form.folios.$error}"
