@@ -1499,17 +1499,14 @@ export default {
             if (me.cancelFiling.outgoingFiling_id) {
               let params = {
                 url: `outgoing-filing-cancel/${me.cancelFiling.outgoingFiling_id}`,
-                data: me.cancelFiling
+                data: me.cancelFiling,
+                action: 'filing/getOutGoingFiling',
+                dateRange: me.dateRange
               }
               //let url = `outgoing-filing-state/${id}`
               me.$store.dispatch('api/cancelFiling', params)
               setTimeout(() => {
                 me.sending = false
-                if (me.dateRange.length > 0) {
-                  me.$store.dispatch('filing/getOutGoingFiling', me.dateRange)
-                } else {
-                  me.$store.dispatch('filing/getOutGoingFiling')
-                }
                 me.hideModalCancel()
               }, 1500)
             }
@@ -1565,16 +1562,19 @@ export default {
           me.updating = true
           let params = {
             url: `outgoing-filing/${me.form.id}`,
-            data: me.form
+            data: me.form,
+            action: 'filing/getOutGoingFiling',
+            dispatchParams: me.dateRange.length ? true : false,
+            actionDispatch: me.dateRange
           }
           me.$store.dispatch('api/update', params)
           setTimeout(() => {
             me.updating = false
-            if (me.dateRange.length) {
+            /* if (me.dateRange.length) {
               me.$store.dispatch('filing/getOutGoingFiling', me.dateRange)
             } else {
               me.$store.dispatch('filing/getOutGoingFiling')
-            }
+            } */
             //me.hideModal()
           }, 2000)
         }

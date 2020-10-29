@@ -443,31 +443,34 @@ export default {
     },
     status(id, type) {
       let me = this
-      this.$swal({
-        title: '¿Estás seguro?',
-        text: '¡No podrás revertir esto!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#4dbd74',
-        cancelButtonColor: '#d33',
-        confirmButtonText:
-          type == 'disable'
-            ? '<i class="far fa-check-circle"></i> Si, Inactivar!'
-            : '<i class="far fa-check-circle"></i> Si, Activar!',
-        cancelButtonText: '<i class="far fa-times-circle"></i> Cancelar'
-      }).then(result => {
-        if (result.value) {
-          //Inactivar
-          if (id) {
-            let url = `genders-state/${id}`
-            me.$store.dispatch('api/state', url)
-            setTimeout(() => {
-              me.$store.dispatch('config/getGender')
-            }, 500);
-            //me.hideModal()
+      try {
+        this.$swal({
+          title: '¿Estás seguro?',
+          text: '¡No podrás revertir esto!',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#4dbd74',
+          cancelButtonColor: '#d33',
+          confirmButtonText:
+            type == 'disable'
+              ? '<i class="far fa-check-circle"></i> Si, Inactivar!'
+              : '<i class="far fa-check-circle"></i> Si, Activar!',
+          cancelButtonText: '<i class="far fa-times-circle"></i> Cancelar'
+        }).then(result => {
+          if (result.value) {
+            //Inactivar
+            if (id) {
+              let params = {
+                url: `genders-state/${id}`,
+                action: 'config/getGender'
+              }
+              me.$store.dispatch('api/status', params)
+            }
           }
-        }
-      })
+        })
+      } catch (error) {
+        console.log(error)
+      }
     },
     sendData(evt) {
       evt.preventDefault()
@@ -503,7 +506,8 @@ export default {
           //actualizar
           let params = {
             url: `genders/${me.form.id}`,
-            data: me.form
+            data: me.form,
+            action: 'config/getGender'
           }
           me.$store.dispatch('api/update', params)
           setTimeout(() => {
@@ -515,7 +519,7 @@ export default {
             } else {
               //console.log('errors vacio')
               me.updating = false
-              me.$store.dispatch('config/getGender')
+              //me.$store.dispatch('config/getGender')
               me.hideModal()
             }
           }, 2000)

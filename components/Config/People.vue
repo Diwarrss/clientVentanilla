@@ -747,32 +747,36 @@ export default {
     },
     status(id, type) {
       let me = this
-      this.$swal({
-        title: '¿Estás seguro?',
-        text: '¡No podrás revertir esto!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#4dbd74',
-        cancelButtonColor: '#d33',
-        confirmButtonText:
-          type == 'disable'
-            ? '<i class="far fa-check-circle"></i> Si, Inactivar!'
-            : '<i class="far fa-check-circle"></i> Si, Activar!',
-        cancelButtonText: '<i class="far fa-times-circle"></i> Cancelar'
-      }).then(result => {
-        if (result.value) {
-          //Inactivar
-          if (id) {
-            let url = `people-state/${id}`
-            me.$store.dispatch('api/state', url)
-            setTimeout(() => {
-              me.$store.dispatch('config/getPeople', false)
-            }, 500);
-            //me.hideModal()
-            //alert(JSON.stringify(params))
+      try {
+        this.$swal({
+          title: '¿Estás seguro?',
+          text: '¡No podrás revertir esto!',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#4dbd74',
+          cancelButtonColor: '#d33',
+          confirmButtonText:
+            type == 'disable'
+              ? '<i class="far fa-check-circle"></i> Si, Inactivar!'
+              : '<i class="far fa-check-circle"></i> Si, Activar!',
+          cancelButtonText: '<i class="far fa-times-circle"></i> Cancelar'
+        }).then(result => {
+          if (result.value) {
+            //Inactivar
+            if (id) {
+              let params = {
+                url: `people-state/${id}`,
+                action: 'config/getPeople',
+                dispatchParams: true,
+                actionDispatch: false
+              }
+              me.$store.dispatch('api/status', params)
+            }
           }
-        }
-      })
+        })
+      } catch (error) {
+        console.log(error)
+      }
     },
     sendData(evt) {
       evt.preventDefault()
@@ -815,7 +819,10 @@ export default {
           //actualizar
           let params = {
             url: `people/${me.form.id}`,
-            data: me.form
+            data: me.form,
+            action: 'config/getPeople',
+            dispatchParams: true,
+            actionDispatch: false
           }
           me.$store.dispatch('api/update', params)
           setTimeout(() => {
@@ -827,7 +834,7 @@ export default {
             } else {
               //console.log('errors vacio')
               me.updating = false
-              me.$store.dispatch('config/getPeople', false)
+              //me.$store.dispatch('config/getPeople', false)
               me.hideModal()
             }
           }, 1000)

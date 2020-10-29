@@ -112,7 +112,7 @@ export const actions = {
         })
     }
   },
-  update: function({ commit }, params) {
+  update: function({ dispatch, commit }, params) {
     commit('setErrors', {})
     console.log(params.data)
     let url = params.url
@@ -137,6 +137,11 @@ export const actions = {
                 timer: 2000
               })
             }, 1000)
+            if (params.dispatchParams) {
+              dispatch(params.action, params.actionDispatch, {root:true})
+            }else{
+              dispatch(params.action, null, {root:true})
+            }
             commit('setResult', res.data.data)
           } else {
             this.$swal({
@@ -170,6 +175,11 @@ export const actions = {
                 timer: 2000
               })
             }, 1000)
+            if (params.dispatchParams) {
+              dispatch(params.action, params.actionDispatch, {root:true})
+            }else{
+              dispatch(params.action, null, {root:true})
+            }
             commit('setResult', res.data.data)
           } else {
             this.$swal({
@@ -202,7 +212,11 @@ export const actions = {
             confirmButtonText: '<i class="far fa-check-circle"></i> Aceptar',
             timer: 2000
           })
-          dispatch(`config/${params.action}`, null, {root:true})
+          if (params.dispatchParams) {
+            dispatch(params.action, params.actionDispatch, {root:true})
+          }else{
+            dispatch(params.action, null, {root:true})
+          }
           commit('setResult', res.data.data)
         } else {
           this.$swal({
@@ -254,7 +268,7 @@ export const actions = {
   clearErrors: function({ commit }) {
     commit('setErrors', {})
   },
-  cancelFiling: function({ commit }, params) {
+  cancelFiling: function({ dispatch, commit }, params) {
     commit('setErrors', {})
     let me = this
     let url = params.url
@@ -270,6 +284,15 @@ export const actions = {
             confirmButtonText: '<i class="far fa-check-circle"></i> Aceptar',
             timer: 4000
           })
+          if (params.paramsrStatus) {
+            dispatch(params.action, params.paramsr, {root:true})
+          }else{
+            if (params.dateRange.length > 0) {
+              dispatch(params.action, params.dateRange, {root:true})
+            } else {
+              dispatch(params.action, null, {root:true})
+            }
+          }
           commit('setResult', res.data.data)
         } else {
           this.$swal({

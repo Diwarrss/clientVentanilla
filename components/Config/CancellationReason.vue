@@ -444,18 +444,9 @@ export default {
             if (id) {
               let params = {
                 url: `cancellation-reasons-state/${id}`,
-                action: 'getCancellationReason'
+                action: 'config/getCancellationReason'
               }
               me.$store.dispatch('api/status', params)
-              console.log(me.$store.state.api.result)
-              /* if(me.$store.state.api.result){
-                me.$store.dispatch('config/getCancellationReason')
-                me.rows = me.$store.state.config.allRow
-              } */
-              //me.$store.dispatch('config/clearAllData')
-              /* setTimeout(() => {
-                me.$store.dispatch('config/getCancellationReason')
-              }, 1500); */
             }
           }
         })
@@ -497,7 +488,8 @@ export default {
           let params = {
             url: `cancellation-reasons/${me.form.id}`,
             data: me.form,
-            files: false
+            files: false,
+            action: 'config/getCancellationReason'
           }
           me.$store.dispatch('api/update', params)
           setTimeout(() => {
@@ -509,7 +501,7 @@ export default {
             } else {
               //console.log('errors vacio')
               me.updating = false
-              me.$store.dispatch('config/getCancellationReason')
+              //me.$store.dispatch('config/getCancellationReason')
               me.hideModal()
             }
           }, 2000)

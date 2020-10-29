@@ -691,37 +691,41 @@ export default {
     },
     status(id, type) {
       let me = this
-      this.$swal({
-        title: '¿Estás seguro?',
-        text: '¡No podrás revertir esto!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#4dbd74',
-        cancelButtonColor: '#d33',
-        confirmButtonText:
-          type == 'disable'
-            ? '<i class="far fa-check-circle"></i> Si, Inactivar!'
-            : '<i class="far fa-check-circle"></i> Si, Activar!',
-        cancelButtonText: '<i class="far fa-times-circle"></i> Cancelar'
-      }).then(result => {
-        if (result.value) {
-          //Inactivar
-          if (id) {
-            let url = `dependences-state/${id}`
-            me.$store.dispatch('api/state', url)
-            setTimeout(() => {
-              me.$store.dispatch('config/getDependence', 0)
-            }, 500);
-            //me.hideModal()
-            //alert(JSON.stringify(params))
+      try {
+        this.$swal({
+          title: '¿Estás seguro?',
+          text: '¡No podrás revertir esto!',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#4dbd74',
+          cancelButtonColor: '#d33',
+          confirmButtonText:
+            type == 'disable'
+              ? '<i class="far fa-check-circle"></i> Si, Inactivar!'
+              : '<i class="far fa-check-circle"></i> Si, Activar!',
+          cancelButtonText: '<i class="far fa-times-circle"></i> Cancelar'
+        }).then(result => {
+          if (result.value) {
+            //Inactivar
+            if (id) {
+              let params = {
+                url: `dependences-state/${id}`,
+                action: 'config/getDependence',
+                dispatchParams: true,
+                actionDispatch: 0
+              }
+              me.$store.dispatch('api/status', params)
+              /* setTimeout(() => {
+                me.$store.dispatch('config/getDependence', 0)
+              }, 500); */
+              //me.hideModal()
+              //alert(JSON.stringify(params))
+            }
           }
-          /* this.$swal(
-            'Inactivado!',
-            'La dependencia o persona se desactivo.',
-            'success'
-          ) */
-        }
-      })
+        })
+      } catch (error) {
+        console.log(error)
+      }
     },
     async sendData(evt) {
       evt.preventDefault()
@@ -765,7 +769,10 @@ export default {
           //actualizar
           let params = {
             url: `dependences/${me.form.id}`,
-            data: me.form
+            data: me.form,
+            action: 'config/getDependence',
+            dispatchParams: true,
+            actionDispatch: 0
           }
           me.$store.dispatch('api/update', params)
           setTimeout(() => {
@@ -777,7 +784,7 @@ export default {
             } else {
               //console.log('errors vacio')
               me.updating = false
-              me.$store.dispatch('config/getDependence', 0)
+              //me.$store.dispatch('config/getDependence', 0)
               me.hideModal()
             }
           }, 2000)

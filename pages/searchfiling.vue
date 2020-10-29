@@ -1528,13 +1528,16 @@ export default {
               if (me.cancelFiling.entryFiling_id) {
                 let params = {
                   url: `entry-filing-cancel/${me.cancelFiling.entryFiling_id}`,
-                  data: me.cancelFiling
+                  data: me.cancelFiling,
+                  action: 'filing/getResultFiling',
+                  paramsrStatus: true,
+                  paramsr: paramsr
                 }
                 //let url = `entry-filing-state/${id}`
                 me.$store.dispatch('api/cancelFiling', params)
                 setTimeout(() => {
                   me.sending = false
-                  me.$store.dispatch('filing/getResultFiling', paramsr)
+                  //me.$store.dispatch('filing/getResultFiling', paramsr)
                   me.hideModalCancel()
                 }, 2000)
               }
@@ -1586,12 +1589,15 @@ export default {
         if (me.typeFiling === '0') {
           let params = {
             url: `entry-filing/${me.form.id}`,
-            data: me.form
+            data: me.form,
+            action: 'filing/getResultFiling',
+            dispatchParams: true,
+            actionDispatch: paramsr
           }
           me.$store.dispatch('api/update', params)
           setTimeout(() => {
             me.updating = false
-            me.$store.dispatch('filing/getResultFiling', paramsr)
+            //me.$store.dispatch('filing/getResultFiling', paramsr)
             //me.hideModal()
           }, 2000)
         } else if (me.typeFiling === '1') {
