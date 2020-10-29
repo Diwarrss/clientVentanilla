@@ -445,7 +445,7 @@ export default {
             setTimeout(() => {
               me.$store.dispatch('config/getCancellationReason')
               //me.hideModal()
-            }, 500);
+            }, 1000);
           }
         }
       })
