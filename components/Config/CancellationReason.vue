@@ -240,6 +240,7 @@
   </div>
 </template>
 <script>
+
 import XLSX from 'xlsx'
 import { required,minLength,maxLength,between,integer } from 'vuelidate/lib/validators' /* importamos las propiedades de la validación */
 export default {
@@ -422,33 +423,45 @@ export default {
       }, 500)
     },
     status(id, type) {
-      let me = this
-      this.$swal({
-        title: '¿Estás seguro?',
-        text: '¡No podrás revertir esto!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#4dbd74',
-        cancelButtonColor: '#d33',
-        confirmButtonText:
-          type == 'disable'
-            ? '<i class="far fa-check-circle"></i> Si, Inactivar!'
-            : '<i class="far fa-check-circle"></i> Si, Activar!',
-        cancelButtonText: '<i class="far fa-times-circle"></i> Cancelar'
-      }).then(result => {
-        if (result.value) {
-          //Inactivar
-          if (id) {
-            let url = `cancellation-reasons-state/${id}`
-            me.$store.dispatch('api/state', url)
-            me.$store.dispatch('config/clearAllData')
-            setTimeout(() => {
-              me.$store.dispatch('config/getCancellationReason')
-              //me.hideModal()
-            }, 1000);
+      try {
+        let me = this
+        //me.$store.dispatch('api/clearResult')
+        this.$swal({
+          title: '¿Estás seguro?',
+          text: '¡No podrás revertir esto!',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#4dbd74',
+          cancelButtonColor: '#d33',
+          confirmButtonText:
+            type == 'disable'
+              ? '<i class="far fa-check-circle"></i> Si, Inactivar!'
+              : '<i class="far fa-check-circle"></i> Si, Activar!',
+          cancelButtonText: '<i class="far fa-times-circle"></i> Cancelar'
+        }).then(result => {
+          if (result.value) {
+            //Inactivar
+            if (id) {
+              let params = {
+                url: `cancellation-reasons-state/${id}`,
+                action: 'getCancellationReason'
+              }
+              me.$store.dispatch('api/status', params)
+              console.log(me.$store.state.api.result)
+              /* if(me.$store.state.api.result){
+                me.$store.dispatch('config/getCancellationReason')
+                me.rows = me.$store.state.config.allRow
+              } */
+              //me.$store.dispatch('config/clearAllData')
+              /* setTimeout(() => {
+                me.$store.dispatch('config/getCancellationReason')
+              }, 1500); */
+            }
           }
-        }
-      })
+        })
+      } catch (error) {
+        console.log(error)
+      }
     },
     sendData(evt) {
       evt.preventDefault()

@@ -496,7 +496,6 @@ export default {
             } else {
               //console.log('errors vacio')
               this.updating = false
-              me.$store.dispatch('config/getTypeDocument')
               me.hideModal()
             }
           }, 2000)

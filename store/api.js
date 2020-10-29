@@ -190,9 +190,9 @@ export const actions = {
         })
     }
   },
-  state: function({ commit }, url) {
+  status: function({ dispatch, commit }, params) {
     this.$axios
-      .put(url)
+      .put(params.url)
       .then(res => {
         if (res.data.type === 'success') {
           this.$swal({
@@ -202,6 +202,7 @@ export const actions = {
             confirmButtonText: '<i class="far fa-check-circle"></i> Aceptar',
             timer: 2000
           })
+          dispatch(`config/${params.action}`, null, {root:true})
           commit('setResult', res.data.data)
         } else {
           this.$swal({
@@ -284,6 +285,9 @@ export const actions = {
       .catch(err => {
         console.error(err)
       })
+  },
+  clearResult: function ({ commit }){
+    commit('setClearResult', {})
   }
 }
 
@@ -293,5 +297,9 @@ export const mutations = {
   },
   setErrors(state, data) {
     state.errors = data
+  },
+  setClearResult(state, data) {
+    state.result = []
   }
 }
+
