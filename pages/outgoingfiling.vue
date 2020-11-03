@@ -168,7 +168,7 @@
           @submit="sendData">
           <div class="form-row">
             <b-form-group
-              v-if="!event"
+              v-if="!event && form.settled.length > 0"
               id="groupinitial"
               class="col-md-6"
               label="Radicado:"
@@ -180,7 +180,7 @@
                 disabled/>
             </b-form-group>
             <b-form-group
-              v-if="!event"
+              v-if="!event && form.date.length > 0"
               id="groupinitial"
               class="col-md-6"
               label="Fecha de creación:"
@@ -345,6 +345,8 @@
               label-for="folios">
               <b-form-input
                 id="folios"
+                oninput="validity.valid||(value='');"
+                min="0"
                 :disabled="viewOnlly ? true : false"
                 v-model="form.folios"
                 :class="{'is-invalid': $v.form.folios.$error}"
