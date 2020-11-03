@@ -168,7 +168,7 @@
           @submit="sendData">
           <div class="form-row">
             <b-form-group
-              v-if="!event && form.settled.length > 0"
+              v-if="!event && form.settled != ''"
               id="groupinitial"
               class="col-md-6"
               label="Radicado:"
@@ -180,7 +180,7 @@
                 disabled/>
             </b-form-group>
             <b-form-group
-              v-if="!event && form.date.length > 0"
+              v-if="!event && form.date != ''"
               id="groupinitial"
               class="col-md-6"
               label="Fecha de creación:"
