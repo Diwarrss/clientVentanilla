@@ -9,7 +9,9 @@
         <!-- <b-button
           v-permission="'export_type_identification'"
           variant="success"><i class="fas fa-file-csv"/> Exportar</b-button> -->
-        <b-button variant="success" @click="exportToExcel">
+        <b-button
+          variant="success"
+          @click="exportToExcel">
           <i class="fas fa-file-csv" /> Exportar
         </b-button>
       </div>
@@ -92,13 +94,13 @@
                   variant="warning"
                   @click="modalEdit(row.item, row.index, $event.target, false)"><i class="fas fa-edit mr-md-1"/><span class="d-none d-md-inline-block">Editar</span></b-button>
                 <b-button
-                  v-if="row.item.state == 1"
                   v-permission="'change_status_type_identification'"
+                  v-if="row.item.state == 1"
                   variant="danger"
                   @click="status(row.item.id, 'disable')"><i class="fas fa-times-circle mr-md-1"/><span class="d-none d-md-inline-block">Inactivar</span></b-button>
                 <b-button
-                  v-if="row.item.state == 0"
                   v-permission="'change_status_type_identification'"
+                  v-if="row.item.state == 0"
                   variant="success"
                   @click="status(row.item.id, 'enable')"><i class="fas fa-check-circle mr-md-1"/><span class="d-none d-md-inline-block">Activar</span></b-button>
               </template>
@@ -157,10 +159,14 @@
               :class="{ 'is-invalid': $v.form.name.$error || errors.name }"
               placeholder="Ingrese Nombre"/>
             <template v-if="$v.form.name.$error">
-              <div class="invalid-feedback" v-if="!$v.form.name.required">
+              <div
+                v-if="!$v.form.name.required"
+                class="invalid-feedback">
                 Digite el Nombre
               </div>
-              <div class="invalid-feedback" v-if="!$v.form.name.maxLength">
+              <div
+                v-if="!$v.form.name.maxLength"
+                class="invalid-feedback">
                 El nombre Exede los 200 Caracteres
               </div>
             </template>
@@ -181,10 +187,14 @@
               :class="{ 'is-invalid': $v.form.initials.$error || errors.initials }"
               placeholder="Ingrese iniciales"/>
             <template v-if="$v.form.initials.$error">
-              <div class="invalid-feedback" v-if="!$v.form.initials.required">
+              <div
+                v-if="!$v.form.initials.required"
+                class="invalid-feedback">
                 Digite las Iniciales
               </div>
-              <div class="invalid-feedback" v-if="!$v.form.initials.maxLength">
+              <div
+                v-if="!$v.form.initials.maxLength"
+                class="invalid-feedback">
                 Las Iniciales Exede los 5 Caracteres
               </div>
             </template>
@@ -205,7 +215,9 @@
               :class="{ 'is-invalid': $v.form.state.$error }"
               :options="states"/>
             <template v-if="$v.form.state.$error">
-              <div class="invalid-feedback" v-if="!$v.form.state.required">
+              <div
+                v-if="!$v.form.state.required"
+                class="invalid-feedback">
                 Seleccione el Estado
               </div>
             </template>
@@ -251,7 +263,13 @@
 </template>
 <script>
 import XLSX from 'xlsx'
-import { required, minLength, maxLength, between, integer } from 'vuelidate/lib/validators'
+import {
+  required,
+  minLength,
+  maxLength,
+  between,
+  integer
+} from 'vuelidate/lib/validators'
 export default {
   // eslint-disable-next-line vue/require-prop-types
   props: ['cantidad'],
@@ -351,45 +369,45 @@ export default {
     }
   },
   methods: {
-    exportToExcel() { // On Click Excel download button
+    exportToExcel() {
+      // On Click Excel download button
       let me = this
       me.$axios({
         method: 'get',
-        url: 'type-identification-export', /* enviamos la url de la api y la ruta con sus parametros para descargar el csv */
+        url:
+          'type-identification-export' /* enviamos la url de la api y la ruta con sus parametros para descargar el csv */
         /* responseType: 'blob' */
       })
-      .then(res => {
-        if (res.data.length) {
-          // export json to Worksheet of Excel
-          // only array possible
-          var exportData = XLSX.utils.json_to_sheet(res.data)
-          var wb = XLSX.utils.book_new() // make Workbook of Excel
-          // add Worksheet to Workbook
-          // Workbook contains one or more worksheets
-          XLSX.utils.book_append_sheet(wb, exportData, 'TipoIdentificacion') // sheetAName is name of Worksheet
-          // export Excel file
-          XLSX.writeFile(wb, 'TipoIdentificacion.xlsx') // name of the file is 'book.xlsx'
+        .then(res => {
+          if (res.data.length) {
+            // export json to Worksheet of Excel
+            // only array possible
+            var exportData = XLSX.utils.json_to_sheet(res.data)
+            var wb = XLSX.utils.book_new() // make Workbook of Excel
+            // add Worksheet to Workbook
+            // Workbook contains one or more worksheets
+            XLSX.utils.book_append_sheet(wb, exportData, 'TipoIdentificacion') // sheetAName is name of Worksheet
+            // export Excel file
+            XLSX.writeFile(wb, 'TipoIdentificacion.xlsx') // name of the file is 'book.xlsx'
+            me.$swal({
+              title: 'Descarga éxitosa!',
+              icon: 'success',
+              confirmButtonColor: '#4dbd74',
+              confirmButtonText: '<i class="far fa-check-circle"></i> Aceptar',
+              timer: 2000
+            })
+          }
+        })
+        .catch(error => {
           me.$swal({
-            title: "Descarga éxitosa!",
-            icon: 'success',
+            title: 'Error al descargar, Reintentar!',
+            icon: 'error',
             confirmButtonColor: '#4dbd74',
-            confirmButtonText:
-              '<i class="far fa-check-circle"></i> Aceptar',
+            confirmButtonText: '<i class="far fa-check-circle"></i> Aceptar',
             timer: 2000
           })
-        }
-      })
-      .catch(error => {
-        me.$swal({
-          title: "Error al descargar, Reintentar!",
-          icon: 'error',
-          confirmButtonColor: '#4dbd74',
-          confirmButtonText:
-            '<i class="far fa-check-circle"></i> Aceptar',
-          timer: 2000
+          //console.log(error);
         })
-        //console.log(error);
-      })
     },
     newTypeIdentification(view) {
       if (view) {
@@ -528,7 +546,7 @@ export default {
       // actualiza la paginacion cuando se usa el filtro
       this.rows = filteredItems.length
       this.currentPage = 1
-    },
+    }
   }
 }
 </script>

@@ -138,9 +138,9 @@ export const actions = {
               })
             }, 1000)
             if (params.dispatchParams) {
-              dispatch(params.action, params.actionDispatch, {root:true})
-            }else{
-              dispatch(params.action, null, {root:true})
+              dispatch(params.action, params.actionDispatch, { root: true })
+            } else {
+              dispatch(params.action, null, { root: true })
             }
             commit('setResult', res.data.data)
           } else {
@@ -176,9 +176,9 @@ export const actions = {
               })
             }, 1000)
             if (params.dispatchParams) {
-              dispatch(params.action, params.actionDispatch, {root:true})
-            }else{
-              dispatch(params.action, null, {root:true})
+              dispatch(params.action, params.actionDispatch, { root: true })
+            } else {
+              dispatch(params.action, null, { root: true })
             }
             commit('setResult', res.data.data)
           } else {
@@ -213,9 +213,9 @@ export const actions = {
             timer: 2000
           })
           if (params.dispatchParams) {
-            dispatch(params.action, params.actionDispatch, {root:true})
-          }else{
-            dispatch(params.action, null, {root:true})
+            dispatch(params.action, params.actionDispatch, { root: true })
+          } else {
+            dispatch(params.action, null, { root: true })
           }
           commit('setResult', res.data.data)
         } else {
@@ -285,12 +285,12 @@ export const actions = {
             timer: 4000
           })
           if (params.paramsrStatus) {
-            dispatch(params.action, params.paramsr, {root:true})
-          }else{
+            dispatch(params.action, params.paramsr, { root: true })
+          } else {
             if (params.dateRange.length > 0) {
-              dispatch(params.action, params.dateRange, {root:true})
+              dispatch(params.action, params.dateRange, { root: true })
             } else {
-              dispatch(params.action, null, {root:true})
+              dispatch(params.action, null, { root: true })
             }
           }
           commit('setResult', res.data.data)
@@ -309,7 +309,7 @@ export const actions = {
         console.error(err)
       })
   },
-  clearResult: function ({ commit }){
+  clearResult: function({ commit }) {
     commit('setClearResult', {})
   }
 }
@@ -325,4 +325,3 @@ export const mutations = {
     state.result = []
   }
 }
-
