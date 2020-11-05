@@ -53,7 +53,7 @@ export const actions = {
               timer: 2000
             })
           }
-          console.log(res)
+          //console.log(res)
         })
         .catch(err => {
           //preguntamos si el error es 422
@@ -101,7 +101,7 @@ export const actions = {
               timer: 2000
             })
           }
-          console.log(res)
+          //console.log(res)
         })
         .catch(err => {
           //preguntamos si el error es 422
@@ -114,7 +114,7 @@ export const actions = {
   },
   update: function({ dispatch, commit }, params) {
     commit('setErrors', {})
-    console.log(params.data)
+    //console.log(params.data)
     let url = params.url
     let getData = params.data
     let files = params.files
@@ -152,7 +152,7 @@ export const actions = {
               timer: 2000
             })
           }
-          console.log(res)
+          //console.log(res)
         })
         .catch(err => {
           if (err.response.status == 422) {
@@ -190,7 +190,7 @@ export const actions = {
               timer: 2000
             })
           }
-          console.log(res)
+          //console.log(res)
         })
         .catch(err => {
           if (err.response.status == 422) {
@@ -227,14 +227,14 @@ export const actions = {
             timer: 2000
           })
         }
-        console.log(res)
+        //console.log(res)
       })
       .catch(err => {
         console.error(err)
       })
   },
   delete: function({ commit }, params) {
-    console.log(params)
+    //console.log(params)
     let url = params.url
     let getData = params.data
     this.$axios
@@ -259,7 +259,7 @@ export const actions = {
             timer: 3000
           })
         }
-        console.log(res)
+        //console.log(res)
       })
       .catch(err => {
         console.error(err)
@@ -303,7 +303,7 @@ export const actions = {
             timer: 3000
           })
         }
-        console.log(res)
+        //console.log(res)
       })
       .catch(err => {
         console.error(err)

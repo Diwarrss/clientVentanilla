@@ -1212,7 +1212,7 @@ export default {
     },
     getFocus() {
       document.getElementById('key_words').focus()
-      console.log('tecla presionada')
+      //console.log('tecla presionada')
     },
     modalCancel(item, index, button) {
       this.$store.dispatch('config/getCancellationReason')
@@ -1444,7 +1444,7 @@ export default {
       this.uploadPercentage = 0
       this.sendingFile = true
       this.form.annexes = this.fileList.length
-      console.log(this.form.annexes)
+      //console.log(this.form.annexes)
       let formData = new FormData()
       formData.append('id', this.form.id)
       formData.append('settled', this.form.settled)
@@ -1469,7 +1469,7 @@ export default {
             url: process.env.filesBaseUrl + res.data.data.url,
             id: res.data.data.id
           })
-          console.log(res.data)
+          //console.log(res.data)
           this.sendingFile = false
           if (this.dateRange.length) {
             this.$store.dispatch('filing/getEntryFiling', this.dateRange)
@@ -1484,7 +1484,7 @@ export default {
             showConfirmButton: false,
             timer: 3000
           })
-          console.log(res)
+          //console.log(res)
         })
         .catch(err => {
           this.sendingFile = false
@@ -1509,7 +1509,7 @@ export default {
             url: process.env.filesBaseUrl + res.data.data.url,
             id: res.data.data.id
           })
-          console.log(res.data)
+          //console.log(res.data)
           this.sendingFile = false
           if (this.dateRange.length) {
             this.$store.dispatch('filing/getOutGoingFiling', this.dateRange)
@@ -1524,7 +1524,7 @@ export default {
             showConfirmButton: false,
             timer: 3000
           })
-          console.log(res)
+          //console.log(res)
         })
         .catch(err => {
           this.sendingFile = false

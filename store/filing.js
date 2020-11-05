@@ -42,7 +42,7 @@ export const actions = {
     }
   },
   getResultFiling: async function({ commit }, params) {
-    console.log(params)
+    //console.log(params)
     if (params) {
       /* let fromDate = params.fromDate
       let toDate = params.toDate

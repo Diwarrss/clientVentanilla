@@ -165,7 +165,7 @@ export default {
       const top = element ? element.style.top.slice(0, -2) * 2 + 'px' : 0
 
       this.styleDrag = `left: ${left}; top: ${top};`
-      console.log(this.styleDrag)
+      //console.log(this.styleDrag)
       setTimeout(() => {
         this.$refs.html2Pdf.generatePdf()
       }, 500)

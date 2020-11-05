@@ -116,7 +116,7 @@ export default {
   },
   methods: {
     stampPrint() {
-      console.log('Impresion')
+      //console.log('Impresion')
     },
     windowClose() {
       window.close()

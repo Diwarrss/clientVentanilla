@@ -672,7 +672,7 @@ export default {
       this.$refs['modal-user'].show()
     },
     modalEdit(item, index, button, view) {
-      console.log(item)
+      //console.log(item)
       if (view) {
         this.tittleModal = 'Ver ' + item.username
         this.viewOnlly = true
@@ -694,7 +694,7 @@ export default {
       this.form.dependencePerson_id = item.dependencePerson_id
       this.form.rol = item.roles[0].name
       this.form.oldRol = item.roles[0].name
-      console.log(process.env.filesBaseUrl + item.firm)
+      //console.log(process.env.filesBaseUrl + item.firm)
       this.firmView = [
         { name: 'firm.png', url: process.env.filesBaseUrl + item.firm }
       ]
@@ -885,7 +885,7 @@ export default {
       //console.log(file, fileList)
     },
     beforeImageUpload(file) {
-      console.log('Antes de subir')
+      //console.log('Antes de subir')
       const isJPG = file.type === 'image/jpeg'
       const isPNG = file.type === 'image/png'
       const isLt1M = file.size / 2000 / 2000 < 4

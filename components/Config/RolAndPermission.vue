@@ -136,7 +136,7 @@ export default {
             }
           }
           this.$store.dispatch('api/delete', params)
-          console.log('eliminado', params)
+          //console.log('eliminado', params)
           /* this.$notify({
             title: 'Eliminado',
             message: 'Permiso Eliminado con éxito',
@@ -154,7 +154,7 @@ export default {
             files: false
           }
           this.$store.dispatch('api/create', params)
-          console.log('agregado', params)
+          //console.log('agregado', params)
         }
       }
     }
