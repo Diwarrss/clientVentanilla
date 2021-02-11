@@ -495,11 +495,9 @@ export default {
             required
           },
           telephone: {
-            required,
             maxLength: maxLength(11)
           },
           address: {
-            required,
             maxLength: maxLength(99)
           },
           email: {
@@ -530,11 +528,9 @@ export default {
             maxLength: maxLength(200)
           },
           telephone: {
-            required,
             maxLength: maxLength(11)
           },
           address: {
-            required,
             maxLength: maxLength(99)
           },
           email: {
@@ -568,11 +564,9 @@ export default {
             maxLength: maxLength(200)
           },
           telephone: {
-            required,
             maxLength: maxLength(11)
           },
           address: {
-            required,
             maxLength: maxLength(99)
           },
           email: {

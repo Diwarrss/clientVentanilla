@@ -21,12 +21,12 @@
             <barcode
               :value="form.settled"
               :options="{ format: 'EAN8'}"
-              font-size="6"
+              font-size="8"
               width="1"
-              height="20"/>
+              height="30"/>
           </div>
           <!-- <span class="font-weight-bold">Radicado: </span>{{ form.settled }} <br> -->
-          <span class="font-weight-bold">Fecha: </span>{{ form.date }} <br>
+          <span class="font-weight-bold">Fecha prueba: </span>{{ form.date }} <br>
           <span class="font-weight-bold">Titulo: </span>{{ form.title }} <br>
           <span class="font-weight-bold">Remitente: </span>{{ infoPeople ? infoPeople.names : '' }} <br>
           <span class="font-weight-bold">Destinatario(s): </span>
@@ -80,14 +80,14 @@
         <b-col
           v-drag
           :style="styleDrag"
-          class="move_div_stamp m-1 p-1">
+          class="move_div_stamp_pdf m-1 p-1">
           <div class="text-center">
             <barcode
               :value="form.settled"
               :options="{ format: 'EAN8'}"
-              font-size="8"
-              width="1"
-              height="25"/>
+              font-size="12"
+              width="2"
+              height="45"/>
           </div>
           <!-- <span class="font-weight-bold">Radicado: </span>{{ form.settled }} <br> -->
           <span class="font-weight-bold">Fecha: </span>{{ form.date }} <br>
@@ -165,7 +165,7 @@ export default {
       const top = element ? element.style.top.slice(0, -2) * 2 + 'px' : 0
 
       this.styleDrag = `left: ${left}; top: ${top};`
-      //console.log(this.styleDrag)
+      console.log(this.styleDrag)
       setTimeout(() => {
         this.$refs.html2Pdf.generatePdf()
       }, 500)
@@ -192,9 +192,31 @@ export default {
   //position: absolute;
   //border: 1px solid #000;
   line-height: 6px;
-  font-size: 6px;
-  //height: 100px;
+  font-size: 10px;
+  //height: 120px;
   width: 200px;
+  cursor: pointer;
+  &.move_stamp {
+    border: 1px solid #000;
+    line-height: 6px;
+    font-size: 7px;
+    //height: 100px;
+    width: 200px;
+    &:hover {
+      background-color: #c0c4cc;
+    }
+  }
+  .vue-barcode-element {
+    width: 195px;
+  }
+}
+.move_div_stamp_pdf {
+  //position: absolute;
+  //border: 1px solid #000;
+  line-height: 10px;
+  font-size: 10px;
+  //height: 120px;
+  width: 350px;
   cursor: pointer;
   &.move_stamp {
     border: 1px solid #000;
@@ -206,8 +228,8 @@ export default {
       background-color: #c0c4cc;
     }
   }
-}
-.vue-barcode-element {
-  width: 120px;
+  .vue-barcode-element {
+    width: 300px;
+  }
 }
 </style>
