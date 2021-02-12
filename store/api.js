@@ -12,6 +12,7 @@ export const actions = {
     let url = params.url
     let getData = params.data
     let files = params.files
+    let message = params.message ? params.message : ''
     if (files) {
       me.$axios
         .post(url, getData, {
@@ -69,25 +70,33 @@ export const actions = {
           if (res.data.type === 'success') {
             if (res.data.notify) {
               //mensanje flotante superior derecho
-              me.$swal({
-                toast: true,
-                position: 'top-end',
-                icon: 'success',
-                title: res.data.message,
-                showConfirmButton: false,
-                timer: 3000
-              })
+              if (message) {
+                return
+              } else {
+                me.$swal({
+                  toast: true,
+                  position: 'top-end',
+                  icon: 'success',
+                  title: res.data.message,
+                  showConfirmButton: false,
+                  timer: 3000
+                })
+              }
             } else {
               setTimeout(() => {
                 //mensanje Central en la pagina como Modal
-                me.$swal({
-                  title: res.data.message,
-                  icon: 'success',
-                  confirmButtonColor: '#4dbd74',
-                  confirmButtonText:
-                    '<i class="far fa-check-circle"></i> Aceptar',
-                  timer: 2000
-                })
+                if (message) {
+                  return
+                } else {
+                  me.$swal({
+                    title: res.data.message,
+                    icon: 'success',
+                    confirmButtonColor: '#4dbd74',
+                    confirmButtonText:
+                      '<i class="far fa-check-circle"></i> Aceptar',
+                    timer: 2000
+                  })
+                }
               }, 1000)
             }
             commit('setResult', res.data.data)

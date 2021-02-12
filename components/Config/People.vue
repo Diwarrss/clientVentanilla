@@ -460,7 +460,7 @@ export default {
         telephone: null,
         address: null,
         email: null,
-        state: null,
+        state: true,
         type: null,
         people_id: null,
         type_identification_id: null,
@@ -681,7 +681,7 @@ export default {
       this.form.telephone = null
       this.form.address = null
       this.form.email = null
-      this.form.state = null
+      this.form.state = true
       this.form.people_id = null
       this.form.type_identification_id = null
       this.form.gender_id = null

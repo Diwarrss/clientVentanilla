@@ -440,9 +440,10 @@ export default {
         names: null,
         telephone: null,
         address: null,
-        state: null,
+        state: true,
         type: null,
         dependence_id: null,
+        people_id: null,
         type_identification_id: null,
         gender_id: null
       },
@@ -471,9 +472,7 @@ export default {
             required,
             maxLength: maxLength(200)
           },
-          gender_id: {
-            required
-          },
+          gender_id: {},
           telephone: {
             maxLength: maxLength(11)
           },
@@ -503,7 +502,6 @@ export default {
             maxLength: maxLength(200)
           },
           dependence_id: {
-            required
           },
           state: {
             required
@@ -630,7 +628,7 @@ export default {
       this.form.names = null
       this.form.telephone = null
       this.form.address = null
-      this.form.state = null
+      this.form.state = true
       //this.form.type = null
       this.form.dependence_id = null
       this.form.type_identification_id = null
@@ -759,6 +757,38 @@ export default {
               me.sending = false
               me.$store.dispatch('config/getDependence', 0)
               me.hideModal()
+              //guardar en tabla people tambien
+              if (me.form.type == 'dependence') {
+                me.form.type == 'company'
+              }
+              if (me.form.type == 'person') {
+                me.form.people_id = null
+              } else {
+                me.form.gender = null
+              }
+              me.sending = true
+              //Crear
+              let params = {
+                url: 'people',
+                data: me.form,
+                message: true,
+                files: false
+              }
+              me.$store.dispatch('api/create', params)
+              setTimeout(() => {
+                if (Object.keys(me.errors).length !== 0) {
+                  //validation back
+                  //console.log('Paso el front')
+                  me.sending = false
+                  return
+                } else {
+                  //console.log('errors vacio')
+                  me.sending = false
+                  //me.$store.dispatch('config/getPeople', false)
+                  //me.hideModal()
+                }
+              }, 2000)
+              //alert(JSON.stringify(params))
             }
           }, 2000)
           //alert(JSON.stringify(params))
