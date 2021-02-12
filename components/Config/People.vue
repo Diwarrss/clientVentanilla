@@ -492,7 +492,6 @@ export default {
             maxLength: maxLength(200)
           },
           gender_id: {
-            required
           },
           telephone: {
             maxLength: maxLength(11)
@@ -501,7 +500,6 @@ export default {
             maxLength: maxLength(99)
           },
           email: {
-            required,
             maxLength: maxLength(129),
             email
           },
@@ -534,12 +532,10 @@ export default {
             maxLength: maxLength(99)
           },
           email: {
-            required,
             maxLength: maxLength(129),
             email,
           },
           people_id: {
-            required
           },
           state: {
             required
@@ -570,7 +566,6 @@ export default {
             maxLength: maxLength(99)
           },
           email: {
-            required,
             maxLength: maxLength(129),
             email
           },
