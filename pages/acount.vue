@@ -441,6 +441,7 @@ export default {
         return //retornamos errores
       } else {
         //actualizar
+        let loader = me.$loading.show()
         if (type === 'dataUser') {
           //al actualizar los datos basicos
           me.updating = true
@@ -463,9 +464,11 @@ export default {
                 me.updating = false
                 this.$auth.fetchUser()
                 this.$v.$reset()
+                loader.hide()
               }, 1000)
             })
             .catch(err => {
+              loader.hide()
               if (err.response.status == 422) {
                 me.errors = err.response.data.errors
               }
@@ -496,9 +499,11 @@ export default {
                 me.form.password = ''
                 me.form.confirm_password = ''
                 this.$v.$reset()
+                loader.hide()
               }, 1000)
             })
             .catch(err => {
+              loader.hide()
               console.error(err)
             })
         } else if (type === 'changeImage') {
@@ -531,9 +536,11 @@ export default {
                   me.updatingImage = false
                   this.$auth.fetchUser()
                   this.$v.$reset()
+                  loader.hide()
                 }, 1000)
               })
               .catch(err => {
+                loader.hide()
                 console.error(err)
               })
           }

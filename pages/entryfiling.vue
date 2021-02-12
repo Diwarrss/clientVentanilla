@@ -353,7 +353,7 @@
             </b-form-group>
           </div>
           <div class="form-row">
-            <b-form-group id="groupstate" class="col-12" label="Remitente:" label-for="infoPeople">
+            <b-form-group id="groupstate" class="col-8" label="Remitente:" label-for="infoPeople">
               <v-select
                 id="infoPeople"
                 v-model="infoPeople"
@@ -373,6 +373,7 @@
                 >Seleccione el Remitente</div>
               </template>
             </b-form-group>
+            <b-button variant="danger" class="col-4">AGREGAR</b-button>
             <b-form-group id="groupstate" class="col-12" label="Asunto:" label-for="subject">
               <b-form-textarea
                 id="subject"

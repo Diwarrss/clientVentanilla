@@ -68,7 +68,8 @@ module.exports = {
     { src: '~/plugins/vue-barcode', ssr: false },
     { src: '~/plugins/vue-html2pdf', mode: 'client' },
     { src: '~/plugins/v-drag' },
-    { src: '~/plugins/vue-json-excel' }
+    { src: '~/plugins/vue-json-excel' },
+    { src: '~/plugins/vue-loading-overlay' }
   ],
 
   router: {

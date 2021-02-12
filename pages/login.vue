@@ -116,7 +116,7 @@ export default {
   methods: {
     async login() {
       let me = this
-      me.$nuxt.$loading.start()
+      let loader = me.$loading.show()
       me.error = {}
       // Prepare form data
       const formData = {
@@ -130,6 +130,7 @@ export default {
             me.$auth
               .loginWith('local', { data: formData })
               .then(async () => {
+                loader.hide()
                 //redirect success auto to index
                 const { data: permissions } = await me.$axios.get(
                   '/permissions'
@@ -142,6 +143,7 @@ export default {
                 //location.reload()
               })
               .catch(err => {
+                loader.hide()
                 if (err.response.status == 401) {
                   me.$swal({
                     position: 'top-end',
@@ -158,39 +160,13 @@ export default {
               })
           )
           .catch(err => {
+            loader.hide()
             me.error = err
           })
       } catch (err) {
+        loader.hide()
         me.error = err
       }
-      //initials login async
-      /* try {
-        await me.$auth.loginWith('local', { data: formData })
-        .then(async () => {
-          const { data: permissions } = await me.$axios.get('/permissions')
-          const { data: roles } = await me.$axios.get('/roles')
-
-          await me.$laravel.setPermissions(permissions)
-          await me.$laravel.setRoles(roles)
-        })
-        .catch(err => {
-          if (err.response.status == 401) {
-            me.$swal({
-              position: 'top-end',
-              icon: 'error',
-              title: err.response.data.errors,
-              showConfirmButton: false,
-              timer: 1500
-            })
-          }
-          if (err.response.status == 422) {
-            //preguntamos si el error es 422
-            me.error = err.response.data.errors
-          }
-        })
-      } catch (err) {
-        me.error = err
-      } */
     }
   }
 }
@@ -199,25 +175,7 @@ export default {
 .h1 {
   font-size: 2.1875rem;
 }
-/* .btn_login {
-  background: #3815b8;
-  border: 1px solid #3815b8;
-}
-.btn_login:hover {
-  background: #3815b8c2;
-  border: 1px solid #3815b8c2;
-}
-.btn_login::after {
-  background: #3815b8c2;
-  border: 1px solid #3815b8c2;
-} */
 .bg-card {
   background: #a83333;
 }
-/* .btn_request {
-  color: #3815b8;
-}
-.btn_request:hover {
-  color: #3815b8c2;
-} */
 </style>
