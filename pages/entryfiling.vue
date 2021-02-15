@@ -352,8 +352,8 @@
               </template>
             </b-form-group>
           </div>
-          <div class="form-row">
-            <b-form-group id="groupstate" class="col-8" label="Remitente:" label-for="infoPeople">
+          <div class="form-row row_content">
+            <b-form-group id="groupstate" class="col-9" label="Remitente:" label-for="infoPeople">
               <v-select
                 id="infoPeople"
                 v-model="infoPeople"
@@ -373,7 +373,7 @@
                 >Seleccione el Remitente</div>
               </template>
             </b-form-group>
-            <b-button variant="danger" class="col-4">AGREGAR</b-button>
+            <b-button variant="danger" class="col-3 add_button_custom" @click="showModalDependence()">AGREGAR</b-button>
             <b-form-group id="groupstate" class="col-12" label="Asunto:" label-for="subject">
               <b-form-textarea
                 id="subject"
@@ -595,11 +595,13 @@
       </b-modal>
       <!-- Componente para imprimir sello -->
       <ModalStampPrint :form="form" :info-people="infoPeople" :info-addressee="form.dependences" />
+      <ModalNewDependence :toEntryFiling="true" />
     </div>
   </el-card>
 </template>
 <script>
 import ModalStampPrint from '~/components/Filings/ModalStampPrint'
+import ModalNewDependence from '~/components/Config/Modal/ModalNewDependence'
 import {
   required,
   minLength,
@@ -612,7 +614,8 @@ import { EventBus } from '~/plugins/event-bus'
 import XLSX from 'xlsx'
 export default {
   components: {
-    ModalStampPrint
+    ModalStampPrint,
+    ModalNewDependence
   },
   //crear propiedad v-focus para autofocus inputs
   directives: {
@@ -1504,6 +1507,9 @@ export default {
             }`
         )
       }
+    },
+    showModalDependence() {
+      EventBus.$emit('showModalNewDependence')
     }
   }
 }
@@ -1521,6 +1527,12 @@ export default {
   }
   .alert_not_data {
     font-size: 18px;
+  }
+}
+.row_content {
+  .add_button_custom {
+    height: 35px;
+    margin-top: 29px;
   }
 }
 .upload_view {
