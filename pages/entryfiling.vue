@@ -373,7 +373,7 @@
                 >Seleccione el Remitente</div>
               </template>
             </b-form-group>
-            <b-button variant="danger" class="col-3 add_button_custom" @click="showModalDependence()">AGREGAR</b-button>
+            <b-button variant="secondary" class="col-3 add_button_custom" @click="showModalDependence()"><i class="fas fa-plus-circle" /> Crear Nuevo</b-button>
             <b-form-group id="groupstate" class="col-12" label="Asunto:" label-for="subject">
               <b-form-textarea
                 id="subject"

@@ -27,7 +27,6 @@
         label-for="type">
         <b-form-select
           id="type"
-          :disabled="(viewOnlly)||(!persons) ? true : false"
           v-model="form.type"
           :class="{'is-invalid': $v.form.type.$error}"
           :options="types"
@@ -280,7 +279,9 @@ export default {
         { value: 'dependence', text: 'Dependencia' }
       ],
       viewOnlly: false,
-      persons: true
+      persons: true,
+      event: true,
+      tittleModal: 'Nuevo Registro',
     }
   },
   created() {
@@ -289,12 +290,15 @@ export default {
         this.$refs['modal-dependence'].show()
       }, 500)
     })
+  },
+  /* mounted() {
     let contador = 0
       let co = 0
       this.viewOnlly = false
       this.dependence.forEach(element => {
-        /* verifica si existe alguna persona en la tabla dependencias,
-        si no obliga a crear una persona antes que a una dependencia */
+        //verifica si existe alguna persona en la tabla dependencias,
+        //si no obliga a crear una persona antes que a una dependencia
+        console.log(this.dependence)
         if (this.dependence[co].type == 'person' && this.dependence[co].state) {
           contador++
         }
@@ -324,7 +328,7 @@ export default {
       this.event = 1
       this.sending = false
       this.updating = false
-  },
+  }, */
   validations() {
     if (this.form.type === 'person') {
       let form = {
@@ -529,7 +533,7 @@ export default {
           names: null,
           telephone: null,
           address: null,
-          state: null,
+          state: true,
           type: null,
           dependence_id: null,
           type_identification_id: null,
