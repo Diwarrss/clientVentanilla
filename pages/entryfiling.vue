@@ -641,8 +641,8 @@ export default {
       currentPage: 1,
       means_document: [
         { value: null, text: 'Seleccionar...' },
-        { value: 'fisic', text: 'Físico' },
         { value: 'digital', text: 'Digital' },
+        { value: 'fisic', text: 'Físico' },
         { value: 'fisic/digital', text: 'Físico/Digital' }
       ],
       acces_level: [

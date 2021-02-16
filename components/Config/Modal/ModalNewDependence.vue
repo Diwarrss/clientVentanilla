@@ -32,7 +32,9 @@
           :options="types"
           @change="changeType"/>
         <template v-if="$v.form.type.$error">
-          <div class="invalid-feedback" v-if="!$v.form.type.required">
+          <div
+            v-if="!$v.form.type.required"
+            class="invalid-feedback">
             Seleccione el Tipo
           </div>
         </template>
@@ -66,7 +68,9 @@
           :class="{'is-invalid': $v.form.identification.$error || errors.identification}"
           placeholder="Ingrese Identificación"/>
         <template v-if="$v.form.identification.$error">
-          <div class="invalid-feedback" v-if="!$v.form.identification.maxLength">
+          <div
+            v-if="!$v.form.identification.maxLength"
+            class="invalid-feedback">
             la Identificación Exede los 19 Caracteres
           </div>
         </template>
@@ -87,10 +91,14 @@
           :class="{'is-invalid': $v.form.names.$error || errors.names}"
           placeholder="Ingrese Nombres"/>
         <template v-if="$v.form.names.$error">
-          <div class="invalid-feedback" v-if="!$v.form.names.required">
+          <div
+            v-if="!$v.form.names.required"
+            class="invalid-feedback">
             Digite los Nombres
           </div>
-          <div class="invalid-feedback" v-if="!$v.form.names.maxLength">
+          <div
+            v-if="!$v.form.names.maxLength"
+            class="invalid-feedback">
             Los Nombres Exede los 200 Caracteres
           </div>
         </template>
@@ -115,7 +123,9 @@
           </b-form-select-option>
         </b-form-select>
         <template v-if="$v.form.gender_id.$error">
-          <div class="invalid-feedback" v-if="!$v.form.gender_id.required">
+          <div
+            v-if="!$v.form.gender_id.required"
+            class="invalid-feedback">
             Seleccione Genero
           </div>
         </template>
@@ -129,14 +139,18 @@
           id="telephone"
           :disabled="viewOnlly ? true : false"
           v-model="form.telephone"
+          :class="{'is-invalid': $v.form.telephone.$error}"
           type="number"
-          placeholder="Ingrese telefono"
-          :class="{'is-invalid': $v.form.telephone.$error}"/>
+          placeholder="Ingrese telefono"/>
         <template v-if="$v.form.telephone.$error">
-          <div class="invalid-feedback" v-if="!$v.form.telephone.required">
+          <div
+            v-if="!$v.form.telephone.required"
+            class="invalid-feedback">
             Digite el Teléfono
           </div>
-          <div class="invalid-feedback" v-if="!$v.form.telephone.maxLength">
+          <div
+            v-if="!$v.form.telephone.maxLength"
+            class="invalid-feedback">
             El Teléfono Exede los 11 Caracteres
           </div>
         </template>
@@ -153,10 +167,14 @@
           :class="{'is-invalid': $v.form.address.$error}"
           placeholder="Ingrese dirección"/>
         <template v-if="$v.form.address.$error">
-          <div class="invalid-feedback" v-if="!$v.form.address.required">
+          <div
+            v-if="!$v.form.address.required"
+            class="invalid-feedback">
             Digite la Dirección
           </div>
-          <div class="invalid-feedback" v-if="!$v.form.address.maxLength">
+          <div
+            v-if="!$v.form.address.maxLength"
+            class="invalid-feedback">
             La Dirección Exede los 99 Caracteres
           </div>
         </template>
@@ -181,7 +199,9 @@
           </b-form-select-option>
         </b-form-select>
         <template v-if="$v.form.dependence_id.$error">
-          <div class="invalid-feedback" v-if="!$v.form.dependence_id.required">
+          <div
+            v-if="!$v.form.dependence_id.required"
+            class="invalid-feedback">
             Seleccione el Responsable
           </div>
         </template>
@@ -197,7 +217,9 @@
           :options="states"
           :class="{'is-invalid': $v.form.state.$error}"/>
         <template v-if="$v.form.state.$error">
-          <div class="invalid-feedback" v-if="!$v.form.state.required">
+          <div
+            v-if="!$v.form.state.required"
+            class="invalid-feedback">
             Seleccione el Estado
           </div>
         </template>
@@ -241,7 +263,13 @@
 </template>
 <script>
 import { EventBus } from '~/plugins/event-bus'
-import { required, minLength, maxLength, between, integer } from 'vuelidate/lib/validators'
+import {
+  required,
+  minLength,
+  maxLength,
+  between,
+  integer
+} from 'vuelidate/lib/validators'
 export default {
   props: {
     toEntryFiling: {
@@ -281,7 +309,21 @@ export default {
       viewOnlly: false,
       persons: true,
       event: true,
-      tittleModal: 'Nuevo Registro',
+      tittleModal: 'Nuevo Registro'
+    }
+  },
+  computed: {
+    dependence() {
+      return this.$store.state.config.dependence
+    },
+    typesIdentifications() {
+      return this.$store.state.config.typeIdentification
+    },
+    gender() {
+      return this.$store.state.config.gender
+    },
+    errors() {
+      return this.$store.state.api.errors
     }
   },
   created() {
@@ -336,9 +378,7 @@ export default {
           type: {
             required
           },
-          type_identification_id: {
-
-          },
+          type_identification_id: {},
           identification: {
             maxLength: maxLength(19)
           },
@@ -359,15 +399,13 @@ export default {
         }
       }
       return form
-    }else if (this.form.type === 'dependence') {
+    } else if (this.form.type === 'dependence') {
       let form = {
         form: {
           type: {
             required
           },
-          type_identification_id: {
-
-          },
+          type_identification_id: {},
           identification: {
             maxLength: maxLength(19)
           },
@@ -375,15 +413,14 @@ export default {
             required,
             maxLength: maxLength(200)
           },
-          dependence_id: {
-          },
+          dependence_id: {},
           state: {
             required
           }
         }
       }
       return form
-    }else {
+    } else {
       let form = {
         form: {
           type: {
@@ -403,20 +440,6 @@ export default {
       }
       return form
     }
-  },
-  computed: {
-    dependence() {
-      return this.$store.state.config.dependence
-    },
-    typesIdentifications() {
-      return this.$store.state.config.typeIdentification
-    },
-    gender() {
-      return this.$store.state.config.gender
-    },
-    errors() {
-      return this.$store.state.api.errors
-    },
   },
   methods: {
     async sendData(evt) {
@@ -520,7 +543,7 @@ export default {
       }
     },
     changeType() {
-      this.$v.$reset()//limpia los resultados de la validación
+      this.$v.$reset() //limpia los resultados de la validación
     },
     hideModal() {
       this.$refs['modal-dependence'].hide()
