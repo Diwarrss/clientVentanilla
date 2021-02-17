@@ -332,6 +332,9 @@ export default {
         this.$refs['modal-dependence'].show()
       }, 500)
     })
+    this.$store.dispatch('api/clearErrors') //clean errors of back
+    this.$store.dispatch('config/getGender')
+    this.$store.dispatch('config/getTypeIdentification')
   },
   /* mounted() {
     let contador = 0
