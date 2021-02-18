@@ -508,13 +508,13 @@ export default {
                   me.sending = false
                   //me.$store.dispatch('config/getPeople', false)
                   //me.hideModal()
+                  if (this.toEntryFiling) {
+                    this.$store.dispatch('config/getDependence', 1)
+                    this.$store.dispatch('config/getPeople', true)
+                  }
                 }
               }, 2000)
               //alert(JSON.stringify(params))
-              if (this.toEntryFiling) {
-                this.$store.dispatch('config/getDependence', 1)
-                this.$store.dispatch('config/getPeople', true)
-              }
             }
           }, 2000)
           //alert(JSON.stringify(params))
