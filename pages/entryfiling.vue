@@ -373,24 +373,25 @@
                 >Seleccione el Remitente</div>
               </template>
             </b-form-group>
-            <b-button variant="secondary" class="col-3 add_button_custom" @click="showModalDependence()"><i class="fas fa-plus-circle" /> Crear Nuevo</b-button>
+            <b-button v-permission="'new_person_from_settled'" variant="secondary" class="col-3 add_button_custom" @click="showModalDependence()"><i class="fas fa-plus-circle" /> Crear Nuevo</b-button>
+            <b-button v-permission:unless="'new_person_from_settled'" variant="secondary" class="col-3 add_button_custom" disabled><i class="fas fa-plus-circle" /> Crear Nuevo</b-button>
             <b-form-group id="groupstate" class="col-12" label="Anexos y Observaciones:" label-for="subject">
               <b-form-textarea
                 id="subject"
                 :disabled="viewOnlly ? true : false"
                 v-model="form.subject"
                 :class="{'is-invalid': $v.form.subject.$error}"
-                placeholder="Ingrese asunto"
+                placeholder="Ingrese Observaciones"
                 name="subject"
                 rows="3"
                 max-rows="6"
               />
               <template v-if="$v.form.subject.$error">
-                <div v-if="!$v.form.subject.required" class="invalid-feedback">Digite el Asunto</div>
+                <div v-if="!$v.form.subject.required" class="invalid-feedback">Digite las Observaciones</div>
                 <div
                   v-if="!$v.form.subject.maxLength"
                   class="invalid-feedback"
-                >El Asunto Exede los 2000 Caracteres</div>
+                >Exede los 2000 Caracteres</div>
               </template>
             </b-form-group>
             <b-form-group
@@ -510,6 +511,7 @@
               </span>
             </b-button>
             <b-button
+              v-permission="'print_stamp'"
               v-if="saved"
               :disabled="sendingFile"
               variant="dark"
@@ -1034,6 +1036,7 @@ export default {
     showModalStampPrint() {
       this.$refs['modal-entryFiling'].hide()
       //Mostrar Modal Imprimir Sello
+      //this.hideModal()
       EventBus.$emit('showModalPrint')
     },
     beforeRemove(file, fileList) {
@@ -1164,6 +1167,7 @@ export default {
       this.$refs['modal-entryFiling'].show()
     },
     modalEdit(item, index, button, view) {
+      this.fileList = []
       if (view) {
         this.tittleModal = 'Ver ' + item.settled
         this.viewOnlly = true

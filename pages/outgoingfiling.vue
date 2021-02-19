@@ -394,14 +394,14 @@
             <b-form-group
               id="groupstate"
               class="col-12"
-              label="Asunto:"
+              label="Anexos y Observaciones:"
               label-for="subject">
               <b-form-textarea
                 id="subject"
                 :disabled="viewOnlly ? true : false"
                 v-model="form.subject"
                 :class="{'is-invalid': $v.form.subject.$error}"
-                placeholder="Ingrese asunto"
+                placeholder="Ingrese Observaciones"
                 name="subject"
                 rows="3"
                 max-rows="6"/>
@@ -409,12 +409,12 @@
                 <div
                   v-if="!$v.form.subject.required"
                   class="invalid-feedback">
-                  Digite el Asunto
+                  Digite las Observaciones
                 </div>
                 <div
                   v-if="!$v.form.subject.maxLength"
                   class="invalid-feedback">
-                  El Asunto Exede los 2000 Caracteres
+                  Exede los 2000 Caracteres
                 </div>
               </template>
             </b-form-group>
