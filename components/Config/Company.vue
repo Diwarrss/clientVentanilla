@@ -33,7 +33,7 @@
           <b-button
             :disabled="updatingImage"
             variant="success"
-            @click="sendData('changeImage')">
+            @click="sendData(true)">
             <span v-if="updatingImage">
               <b-spinner
                 small
@@ -77,7 +77,7 @@
           <b-button
             :disabled="updatingLogo"
             variant="success"
-            @click="sendData('changeImage')">
+            @click="sendData(false)">
             <span v-if="updatingLogo">
               <b-spinner
                 small
@@ -120,6 +120,12 @@ export default {
           url: process.env.filesBaseUrl + this.company.image
         }
       ]
+      this.logoView = [
+        {
+          name: 'logo.png',
+          url: process.env.filesBaseUrl + this.company.logo
+        }
+      ]
     })
     .catch(err => {
       console.error(err);
@@ -132,39 +138,76 @@ export default {
       //validamos q no tenga errores el formulario
       //actualizar
       //cambiar imagen del usuario logueado (acount)
-      if (!me.form.image.length) {
-      } else {
-        me.updatingImage = true
-        //estanadrizamos para enviar imagenes o archivos sin problema
-        let formData = new FormData()
-        formData.append(
-          'image',
-          me.form.image.length ? me.form.image[0] : 'img/company/logo.png'
-        )
-        this.$axios
-          .post('change-logo', formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-          })
-          .then(res => {
-            setTimeout(() => {
-              this.$swal({
-                title: res.data.message,
-                icon: 'success',
-                confirmButtonColor: '#4dbd74',
-                confirmButtonText:
-                  '<i class="far fa-check-circle"></i> Aceptar',
-                timer: 2000
-              })
-              me.updatingImage = false
+      if (type) {
+        if (!me.form.image.length) {
+        } else {
+          me.updatingImage = true
+          //estanadrizamos para enviar imagenes o archivos sin problema
+          let formData = new FormData()
+          formData.append(
+            'image',
+            me.form.image.length ? me.form.image[0] : 'img/company/image.png'
+          )
+          this.$axios
+            .post('change-image-company', formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            })
+            .then(res => {
+              setTimeout(() => {
+                this.$swal({
+                  title: res.data.message,
+                  icon: 'success',
+                  confirmButtonColor: '#4dbd74',
+                  confirmButtonText:
+                    '<i class="far fa-check-circle"></i> Aceptar',
+                  timer: 2000
+                })
+                me.updatingImage = false
+                //loader.hide()
+              }, 1000)
+            })
+            .catch(err => {
               //loader.hide()
-            }, 1000)
-          })
-          .catch(err => {
-            //loader.hide()
-            console.error(err)
-          })
+              console.error(err)
+            })
+        }
+      } else {
+        if (!me.form.logo.length) {
+        } else {
+          me.updatingLogo = true
+          //estanadrizamos para enviar imagenes o archivos sin problema
+          let formData = new FormData()
+          formData.append(
+            'image',
+            me.form.logo.length ? me.form.logo[0] : 'img/company/logo.png'
+          )
+          this.$axios
+            .post('change-logo-company', formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            })
+            .then(res => {
+              setTimeout(() => {
+                this.$swal({
+                  title: res.data.message,
+                  icon: 'success',
+                  confirmButtonColor: '#4dbd74',
+                  confirmButtonText:
+                    '<i class="far fa-check-circle"></i> Aceptar',
+                  timer: 2000
+                })
+                me.updatingLogo = false
+                //loader.hide()
+              }, 1000)
+            })
+            .catch(err => {
+              //loader.hide()
+              console.error(err)
+            })
+        }
       }
     },
     handlePictureCardPreview(file) {
