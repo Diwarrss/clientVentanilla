@@ -8,6 +8,7 @@
     <div
       id="content_acount"
       class="row">
+      <!-- datos -->
       <div class="col-md-4">
         <el-card class="box-card">
           <div
@@ -141,6 +142,7 @@
           </div>
         </el-card>
       </div>
+      <!-- imagen -->
       <div class="col-md-4">
         <el-card class="box-card">
           <div
@@ -193,6 +195,7 @@
           </div>
         </el-card>
       </div>
+      <!-- password -->
       <div class="col-md-4">
         <el-card class="box-card">
           <div

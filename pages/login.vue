@@ -1,5 +1,5 @@
 <template>
-  <div class="app flex-row align-items-center">
+  <div class="app flex-row align-items-center content_login">
     <div class="container">
       <form>
         <b-row class="justify-content-center">
@@ -10,9 +10,9 @@
                 class="p-4">
                 <b-card-body>
                   <img
-                    src="~/static/img/logo.png"
+                    :src="urlServe+company.image"
                     class="img-fluid">
-                  <h1 class="text-center">Iniciar Sesión</h1>
+                  <h1 class="text-center mt-4">Iniciar Sesión</h1>
                   <p class="text-muted">Inicia sesión con tu cuenta</p>
                   <b-input-group>
                     <b-input-group-prepend><b-input-group-text><i class="fas fa-user"/></b-input-group-text></b-input-group-prepend>
@@ -70,7 +70,7 @@
                 no-body
                 class="text-white bg-card py-5 d-md-down-none"
                 style="width:44%">
-                <b-card-body class="text-center">
+                <b-card-body class="text-center content_info">
                   <div>
                     <h1 class="mt-4">Correspondencia <strong>(VU)</strong></h1>
                     <p class="mt-4 font-lg">Sistema que gestiona de manera centralizada y normalizada, los servicios de recepción, radicación y control de la distribución de la comunicación.</p>
@@ -78,7 +78,8 @@
                       class="px-4"
                       variant="dark"> Contactanos</b-button> -->
                     <a
-                      href="https://www.gridsoft.co/"
+                      target="_blank"
+                      :href="company.address"
                       class="btn btn-outline-light btn-lg px-4 mt-4"
                       type="button"><i class="fas fa-address-book"/> Contactenos</a>
                     <p class="mt-2">
@@ -104,13 +105,26 @@ export default {
     return {
       error: {},
       email: '',
-      password: ''
+      password: '',
+      company: ''
     }
   },
   async created() {
     // Access using $auth validamos si ya estamos logueados
+    this.$axios.get('company')
+    .then(res => {
+      this.company = res.data
+    })
+    .catch(err => {
+      console.error(err);
+    })
     if (this.$auth.loggedIn) {
       this.$router.push('/')
+    }
+  },
+  computed: {
+    urlServe() {
+      return process.env.filesBaseUrl
     }
   },
   methods: {
@@ -172,10 +186,18 @@ export default {
 }
 </script>
 <style lang="scss">
-.h1 {
-  font-size: 2.1875rem;
+.content_login{
+  .content_info{
+    align-items: center;
+    align-content: center;
+    display: flex;
+  }
+  .h1 {
+    font-size: 2.1875rem;
+  }
+  .bg-card {
+    background: #a83333;
+  }
 }
-.bg-card {
-  background: #a83333;
-}
+
 </style>

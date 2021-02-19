@@ -11,6 +11,10 @@
         v-model="activeName"
         type="card"
         @tab-click="handleClick">
+        <el-tab-pane name="tabCompany">
+          <span slot="label"><i class="fas fa-building" /> Empresa</span>
+          <Company/>
+        </el-tab-pane>
         <el-tab-pane name="tabDependence">
           <span
             slot="label"><i class="fas fa-user-tie"/> Dependencias/Personas</span>
@@ -67,6 +71,7 @@ import TypeIdentification from '~/components/Config/TypeIdentification'
 import Gender from '~/components/Config/Gender'
 import RolAndPermission from '~/components/Config/RolAndPermission'
 import CancellationReason from '~/components/Config/CancellationReason'
+import Company from '~/components/Config/Company'
 export default {
   components: {
     Dependence,
@@ -77,7 +82,8 @@ export default {
     TypeIdentification,
     Gender,
     RolAndPermission,
-    CancellationReason
+    CancellationReason,
+    Company
   },
   data() {
     return {
