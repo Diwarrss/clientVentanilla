@@ -17,7 +17,8 @@
         <b-col
           v-drag
           class="move_div_stamp move_stamp m-1 p-1">
-          <div class="text-center">
+          <div class="content_logo">
+            <img :src="urlServe+company.logo" class="img_settled mt-1">
             <barcode
               :value="form.settled"
               :options="{ format: 'EAN8'}"
@@ -81,13 +82,14 @@
           v-drag
           :style="styleDrag"
           class="move_div_stamp_pdf m-1 p-1">
-          <div class="text-center">
+          <div class="content_logo">
+            <img :src="`img/companyLogo/${company.logo_name}`" class="img_settled mt-2">
             <barcode
               :value="form.settled"
               :options="{ format: 'EAN8'}"
-              font-size="12"
-              width="2"
-              height="45"/>
+              font-size="10"
+              width="1"
+              height="30"/>
           </div>
           <!-- <span class="font-weight-bold">Radicado: </span>{{ form.settled }} <br> -->
           <span class="font-weight-bold">Fecha: </span>{{ form.date }} <br>
@@ -133,6 +135,12 @@ export default {
   computed: {
     paperSize() {
       return this.selectPaper === 1 ? 'letter' : 'legal'
+    },
+    company() {
+      return this.$store.state.company.company
+    },
+    urlServe() {
+      return process.env.filesBaseUrl
     }
   },
   created() {
@@ -165,7 +173,7 @@ export default {
       const top = element ? element.style.top.slice(0, -2) * 2 + 'px' : 0
 
       this.styleDrag = `left: ${left}; top: ${top};`
-      console.log(this.styleDrag)
+      //console.log(this.styleDrag)
       setTimeout(() => {
         this.$refs.html2Pdf.generatePdf()
       }, 500)
@@ -207,14 +215,23 @@ export default {
     }
   }
   .vue-barcode-element {
-    width: 195px;
+    width: 165px;
+  }
+  .content_logo{
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    .img_settled{
+      height: 40px;
+      width: 40px;
+    }
   }
 }
 .move_div_stamp_pdf {
   //position: absolute;
   //border: 1px solid #000;
-  line-height: 10px;
-  font-size: 10px;
+  line-height: 12px;
+  font-size: 12px;
   //height: 120px;
   width: 350px;
   cursor: pointer;
@@ -229,7 +246,17 @@ export default {
     }
   }
   .vue-barcode-element {
-    width: 300px;
+    height: 100px;
+    width: 250px;
+  }
+  .content_logo{
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    .img_settled{
+      height: 80px;
+      width: 60px;
+    }
   }
 }
 </style>

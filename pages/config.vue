@@ -17,7 +17,7 @@
         </el-tab-pane>
         <el-tab-pane name="tabDependence">
           <span
-            slot="label"><i class="fas fa-user-tie"/> Dependencias/Personas</span>
+            slot="label"><i class="fas fa-user-tie"/> Remitente/Destinatario</span>
           <!-- Dependencias o Personas-->
           <Dependence :cantidad="dato"/>
         </el-tab-pane>

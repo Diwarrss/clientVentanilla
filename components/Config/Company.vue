@@ -200,6 +200,7 @@ export default {
                   timer: 2000
                 })
                 me.updatingLogo = false
+                this.$store.dispatch("company/getCompany");
                 //loader.hide()
               }, 1000)
             })

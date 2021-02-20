@@ -983,6 +983,7 @@ export default {
     }else {
       this.$store.dispatch('filing/getEntryFiling')
     }
+    this.$store.dispatch("company/getCompany")
   },
   methods: {
     exportToExcel() { // On Click Excel download button

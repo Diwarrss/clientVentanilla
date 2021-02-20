@@ -366,10 +366,10 @@
               </template>
             </b-form-group>
           </div>
-          <div class="form-row">
+          <div class="form-row row_content">
             <b-form-group
               id="groupstate"
-              class="col-12"
+              class="col-9"
               label="Remitente:"
               label-for="dependence_id">
               <v-select
@@ -391,6 +391,8 @@
                 </div>
               </template>
             </b-form-group>
+            <b-button v-permission="'new_person_from_settled'" variant="secondary" class="col-3 add_button_custom" @click="showModalDependence()"><i class="fas fa-plus-circle" /> Crear Nuevo</b-button>
+            <b-button v-permission:unless="'new_person_from_settled'" variant="secondary" class="col-3 add_button_custom" disabled><i class="fas fa-plus-circle" /> Crear Nuevo</b-button>
             <b-form-group
               id="groupstate"
               class="col-12"
@@ -574,6 +576,7 @@
               </span>
             </b-button>
             <b-button
+              v-permission="'print_stamp'"
               v-if="saved"
               :disabled="sendingFile"
               variant="dark"
@@ -674,11 +677,13 @@
         :form="form"
         :info-people="infoDependence"
         :info-addressee="form.people" />
+      <ModalNewDependence :toEntryFiling="true" />
     </div>
   </el-card>
 </template>
 <script>
 import ModalStampPrint from '~/components/Filings/ModalStampPrint'
+import ModalNewDependence from '~/components/Config/Modal/ModalNewDependence'
 import { EventBus } from '~/plugins/event-bus'
 import {
   required,
@@ -690,7 +695,8 @@ import {
 import XLSX from 'xlsx'
 export default {
   components: {
-    ModalStampPrint
+    ModalStampPrint,
+    ModalNewDependence
   },
   //crear propiedad v-focus para autofocus inputs
   directives: {
@@ -1601,6 +1607,9 @@ export default {
             }`
         )
       }
+    },
+    showModalDependence() {
+      EventBus.$emit('showModalNewDependence')
     }
   }
 }
@@ -1618,6 +1627,12 @@ export default {
   }
   .alert_not_data {
     font-size: 18px;
+  }
+}
+.row_content {
+  .add_button_custom {
+    height: 35px;
+    margin-top: 29px;
   }
 }
 .upload_view {

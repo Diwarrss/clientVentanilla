@@ -105,19 +105,19 @@ export default {
     return {
       error: {},
       email: '',
-      password: '',
-      company: ''
+      password: ''
     }
   },
   async created() {
     // Access using $auth validamos si ya estamos logueados
-    this.$axios.get('company')
+    /* this.$axios.get('company')
     .then(res => {
       this.company = res.data
     })
     .catch(err => {
       console.error(err);
-    })
+    }) */
+    this.$store.dispatch("company/getCompany");
     if (this.$auth.loggedIn) {
       this.$router.push('/')
     }
@@ -125,6 +125,9 @@ export default {
   computed: {
     urlServe() {
       return process.env.filesBaseUrl
+    },
+    company() {
+      return this.$store.state.company.company;
     }
   },
   methods: {
