@@ -45,7 +45,7 @@
           </b-button>
         </div>
       </b-col>
-      <b-col lg="6">
+      <!-- <b-col lg="6">
         <div class="text item">
           <b-form-group
             id="groupstate"
@@ -88,7 +88,7 @@
             </span>
           </b-button>
         </div>
-      </b-col>
+      </b-col> -->
     </b-row>
   </b-card>
 </template>

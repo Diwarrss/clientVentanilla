@@ -3,6 +3,7 @@ export const state = () => ({
   dependence: [],
   dependencePerson: [],
   typeDocument: [],
+  typePeople: [],
   priority: [],
   people: [],
   contextType: [],
@@ -29,13 +30,13 @@ export const actions = {
     const data = await this.$axios.get('type-documents')
     commit('setTypeDocument', data.data)
   },
+  getTypePeople: async function({ commit }) {
+    const data = await this.$axios.get('type-people')
+    commit('setTypePeople', data.data)
+  },
   getPriority: async function({ commit }) {
     const data = await this.$axios.get('priorities')
     commit('setPriority', data.data)
-  },
-  getPeople: async function({ commit }, param) {
-    const data = await this.$axios.get('people', { params: { active: param } })
-    commit('setPeople', data.data)
   },
   getContextType: async function({ commit }) {
     const data = await this.$axios.get('context-types')
@@ -78,6 +79,10 @@ export const mutations = {
   },
   setTypeDocument(state, data) {
     state.typeDocument = data
+    state.allRow = data.length
+  },
+  setTypePeople(state, data) {
+    state.typePeople = data
     state.allRow = data.length
   },
   setPriority(state, data) {

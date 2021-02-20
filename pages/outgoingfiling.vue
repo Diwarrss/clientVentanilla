@@ -1331,7 +1331,7 @@ export default {
       this.$store.dispatch('config/getDependence', 1)
       this.$store.dispatch('config/getTypeDocument')
       this.$store.dispatch('config/getPriority')
-      this.$store.dispatch('config/getPeople', true)
+      //this.$store.dispatch('config/getPeople', true)
       this.$store.dispatch('config/getContextType')
       this.array_key_words = []
       this.infoDependence = null
@@ -1374,7 +1374,7 @@ export default {
       this.$store.dispatch('config/getDependence', 1)
       this.$store.dispatch('config/getTypeDocument')
       this.$store.dispatch('config/getPriority')
-      this.$store.dispatch('config/getPeople', true)
+      //this.$store.dispatch('config/getPeople', true)
       this.$store.dispatch('config/getContextType')
       item.up_files.forEach(element => {
         if (element.type === 0) {

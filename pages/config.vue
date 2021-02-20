@@ -26,14 +26,19 @@
           <!-- Tipo de documento -->
           <TypeDocument :cantidad="dato"/>
         </el-tab-pane>
+        <el-tab-pane name="tabTypePeople">
+          <span slot="label"><i class="far fa-file"/> Tipo de Persona</span>
+          <!-- Tipo de documento -->
+          <TypePeople :cantidad="dato"/>
+        </el-tab-pane>
         <el-tab-pane name="tabPriority">
           <span slot="label"><i class="fas fa-exclamation"/> Prioridades</span>
           <Priority :cantidad="dato"/>
         </el-tab-pane>
-        <el-tab-pane name="tabPeople">
+        <!-- <el-tab-pane name="tabPeople">
           <span slot="label"><i class="fas fa-people-carry"/> Remitentes</span>
           <People :cantidad="dato"/>
-        </el-tab-pane>
+        </el-tab-pane> -->
         <el-tab-pane name="tabContextType">
           <span slot="label"><i class="fas fa-file-contract"/> Tipo Contexto</span>
           <ContextType :cantidad="dato"/>
@@ -64,6 +69,7 @@
 /* import Dependences from '~/components/Configuration/Dependences' */
 import Dependence from '~/components/Config/Dependence'
 import TypeDocument from '~/components/Config/TypeDocument'
+import TypePeople from '~/components/Config/TypePeople'
 import Priority from '~/components/Config/Priority'
 import People from '~/components/Config/People'
 import ContextType from '~/components/Config/ContextType'
@@ -76,6 +82,7 @@ export default {
   components: {
     Dependence,
     TypeDocument,
+    TypePeople,
     Priority,
     People,
     ContextType,
@@ -152,6 +159,8 @@ export default {
         this.$store.dispatch('config/getDependence', 0)
       } else if (this.activeName == 'tabTypeDocument') {
         this.$store.dispatch('config/getTypeDocument')
+      } else if (this.activeName == 'tabTypePeople') {
+        this.$store.dispatch('config/getTypePeople')
       } else if (this.activeName == 'tabPriority') {
         this.$store.dispatch('config/getPriority')
       } else if (this.activeName == 'tabPeople') {

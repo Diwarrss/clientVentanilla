@@ -26,11 +26,21 @@
         label="Tipo:"
         label-for="type">
         <b-form-select
+          :disabled="viewOnlly ? true : false"
           id="type"
           v-model="form.type"
           :class="{'is-invalid': $v.form.type.$error}"
-          :options="types"
-          @change="changeType"/>
+          @change="changeType"
+        >
+          <b-form-select-option :value="null">Seleccionar...</b-form-select-option>
+          <b-form-select-option
+            v-for="(item, index) in typePeople"
+            v-if="(item.state)"
+            :disabled="viewOnlly ? true : false"
+            :key="index"
+            :value="item.id"
+          >{{ item.name }}</b-form-select-option>
+        </b-form-select>
         <template v-if="$v.form.type.$error">
           <div
             v-if="!$v.form.type.required"
@@ -104,7 +114,7 @@
         </template>
       </b-form-group>
       <b-form-group
-        v-if="form.type == 'person'"
+        v-if="typeRegister"
         id="groupstate"
         label="Genero:"
         label-for="gender_id">
@@ -131,7 +141,7 @@
         </template>
       </b-form-group>
       <b-form-group
-        v-if="form.type == 'person'"
+        v-if="typeRegister"
         id="groupname"
         label="Telefono:"
         label-for="telephone">
@@ -156,7 +166,7 @@
         </template>
       </b-form-group>
       <b-form-group
-        v-if="form.type == 'person'"
+        v-if="typeRegister"
         id="groupname"
         label="Dirección:"
         label-for="address">
@@ -179,7 +189,7 @@
           </div>
         </template>
       </b-form-group>
-      <b-form-group
+      <!-- <b-form-group
         v-if="form.type == 'dependence'"
         id="groupstate"
         label="Responsable:"
@@ -205,7 +215,7 @@
             Seleccione el Responsable
           </div>
         </template>
-      </b-form-group>
+      </b-form-group> -->
       <b-form-group
         id="groupstate"
         label="Estado:"
@@ -275,6 +285,22 @@ export default {
     toEntryFiling: {
       type: Boolean,
       default: () => false
+    },
+    viewOnlly: {
+      type: Boolean,
+      default: () => false
+    },
+    event: {
+      type: Boolean,
+      default: () => true
+    },
+    tittleModal: {
+      type: String,
+      default: () => 'Nuevo Registro'
+    },
+    allData: {
+      type: Object,
+      default: () => {}
     }
   },
   data() {
@@ -282,6 +308,7 @@ export default {
       show: true,
       sending: false,
       updating: false,
+      typeRegister: null,
       form: {
         modal: 'modal-dependence',
         id: null,
@@ -291,7 +318,6 @@ export default {
         address: null,
         state: true,
         type: null,
-        dependence_id: null,
         people_id: null,
         type_identification_id: null,
         gender_id: null
@@ -301,15 +327,8 @@ export default {
         { value: true, text: 'Activo' },
         { value: false, text: 'Inactivo' }
       ],
-      types: [
-        { value: null, text: 'Seleccionar...' },
-        { value: 'person', text: 'Persona' },
-        { value: 'dependence', text: 'Dependencia' }
-      ],
-      viewOnlly: false,
       persons: true,
-      event: true,
-      tittleModal: 'Nuevo Registro'
+      formData: {}
     }
   },
   computed: {
@@ -324,7 +343,10 @@ export default {
     },
     errors() {
       return this.$store.state.api.errors
-    }
+    },
+    typePeople() {
+      return this.$store.state.config.typePeople
+    },
   },
   created() {
     EventBus.$on('showModalNewDependence', () => {
@@ -336,46 +358,38 @@ export default {
     this.$store.dispatch('config/getGender')
     this.$store.dispatch('config/getTypeIdentification')
   },
-  /* mounted() {
-    let contador = 0
-      let co = 0
-      this.viewOnlly = false
-      this.dependence.forEach(element => {
-        //verifica si existe alguna persona en la tabla dependencias,
-        //si no obliga a crear una persona antes que a una dependencia
-        console.log(this.dependence)
-        if (this.dependence[co].type == 'person' && this.dependence[co].state) {
-          contador++
-        }
-        co++
-      })
-      if (contador == 0) {
-        this.form.type = 'person'
-        this.persons = false
+  watch: {
+    allData(){
+      this.formData = this.allData
+      if (this.formData.id) {
+        console.log("validacion")
+        this.form.id = this.formData.id
+        this.form.identification = this.formData.identification
+        this.form.names = this.formData.names
+        this.form.telephone = this.formData.telephone
+        this.form.address = this.formData.address
+        this.form.state = this.formData.state
+        this.form.type = this.formData.type
+        //this.form.dependence_id = this.formData.dependence_id
+        this.form.type_identification_id = this.formData.type_identification_id
+        this.form.gender_id = this.formData.gender_id
       } else {
-        this.form.type = null
-        this.persons = true
+        this.form = {
+          id: null,
+          identification: null,
+          names: null,
+          telephone: null,
+          address: null,
+          state: true,
+          type: null,
+          type_identification_id: null,
+          gender_id: null
+        }
       }
-      this.$store.dispatch('api/clearErrors') //clean errors of back
-      this.$store.dispatch('config/getGender')
-      this.$store.dispatch('config/getTypeIdentification')
-      this.form.id = null
-      this.form.identification = null
-      this.form.names = null
-      this.form.telephone = null
-      this.form.address = null
-      this.form.state = true
-      //this.form.type = null
-      this.form.dependence_id = null
-      this.form.type_identification_id = null
-      this.form.gender_id = null
-      this.tittleModal = 'Nuevo Registro'
-      this.event = 1
-      this.sending = false
-      this.updating = false
-  }, */
+    }
+  },
   validations() {
-    if (this.form.type === 'person') {
+    if (this.typeRegister) {
       let form = {
         form: {
           type: {
@@ -402,7 +416,7 @@ export default {
         }
       }
       return form
-    } else if (this.form.type === 'dependence') {
+    } else if (!this.typeRegister) {
       let form = {
         form: {
           type: {
@@ -416,7 +430,6 @@ export default {
             required,
             maxLength: maxLength(200)
           },
-          dependence_id: {},
           state: {
             required
           }
@@ -454,7 +467,7 @@ export default {
         return
       } else {
         if (me.form.type == 'person') {
-          me.form.dependence_id = null
+          //me.form.dependence_id = null
         } else {
           me.form.telephone = null
           me.form.address = null
@@ -480,7 +493,7 @@ export default {
               me.$store.dispatch('config/getDependence', 0)
               me.hideModal()
               //guardar en tabla people tambien
-              if (me.form.type == 'dependence') {
+              /* if (me.form.type == 'dependence') {
                 me.form.type == 'company'
               }
               if (me.form.type == 'person') {
@@ -508,12 +521,8 @@ export default {
                   me.sending = false
                   //me.$store.dispatch('config/getPeople', false)
                   //me.hideModal()
-                  if (this.toEntryFiling) {
-                    this.$store.dispatch('config/getDependence', 1)
-                    this.$store.dispatch('config/getPeople', true)
-                  }
                 }
-              }, 2000)
+              }, 2000) */
               //alert(JSON.stringify(params))
             }
           }, 2000)
@@ -547,13 +556,19 @@ export default {
     },
     changeType() {
       this.$v.$reset() //limpia los resultados de la validación
+      this.typePeople.find(Element => {
+        if (Element.id == this.form.type) {
+          this.typeRegister = Element.type
+          //console.log(this.typeRegister)
+        }
+      })
     },
     hideModal() {
       this.$refs['modal-dependence'].hide()
       setTimeout(() => {
+        this.formData = {}
         this.$v.$reset()
-        this.viewOnlly = false
-        this.form = {
+        /* this.form = {
           id: null,
           identification: null,
           names: null,
@@ -564,7 +579,7 @@ export default {
           dependence_id: null,
           type_identification_id: null,
           gender_id: null
-        }
+        } */
         this.$store.dispatch('api/clearErrors') //clean errors of back
       }, 500)
     }

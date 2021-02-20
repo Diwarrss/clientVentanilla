@@ -317,6 +317,7 @@
                 <b-form-select-option :value="null">Seleccionar...</b-form-select-option>
                 <b-form-select-option
                   v-for="(item, index) in typeDocument"
+                  v-if="(item.state)"
                   :disabled="viewOnlly ? true : false"
                   :key="index"
                   :value="item.id"
@@ -358,17 +359,17 @@
                 id="infoPeople"
                 v-model="infoPeople"
                 :disabled="viewOnlly || edit ? true : false"
-                :options="people"
-                :class="{'is-invalid': $v.form.people_id.$error}"
+                :options="dependence"
+                :class="{'is-invalid': $v.form.dependence_id.$error}"
                 placeholder="Seleccionar..."
                 label="names"
                 class="vue_select_input"
               >
                 <div slot="no-options">No hay Resultados!</div>
               </v-select>
-              <template v-if="$v.form.people_id.$error">
+              <template v-if="$v.form.dependence_id.$error">
                 <div
-                  v-if="!$v.form.people_id.required"
+                  v-if="!$v.form.dependence_id.required"
                   class="invalid-feedback"
                 >Seleccione el Remitente</div>
               </template>
@@ -670,7 +671,7 @@ export default {
           sortable: true
         },
         {
-          key: 'people.names',
+          key: 'dependence.names',
           label: 'Remitente',
           sortable: true
         },
@@ -724,7 +725,7 @@ export default {
         dependences: null,
         context_type_id: null,
         type_document_id: null,
-        people_id: null,
+        dependence_id: null,
         priority_id: null
       },
       cancelFiling: {
@@ -752,7 +753,7 @@ export default {
         'ID': 'id',
         'Radicado': 'settled',
         'Fecha': 'created_at',
-        'Remitente': 'people.names',
+        'Remitente': 'dependence.names',
         'Destinatario(s)': {
           field: 'dependences',
           callback: (value) => {
@@ -766,48 +767,7 @@ export default {
             }
             return names;
           }
-        },
-        /* 'Telephone 2' : {
-            field: 'phone.landline',
-            callback: (value) => {
-                return `Landline Phone - ${value}`;
-            }
-        }, */
-      },
-      json_data: [
-        {
-          'id': 'Tony Peña',
-          'settled': 'New York',
-          'country': 'United States',
-          'created_at': '1978-03-15',
-          'people': {
-              'names': '1-541-754-3010',
-              'landline': '(541) 754-3010'
-          }
-        },
-        {
-          'id': 'Thessaloniki',
-          'settled': 'Athens',
-          'country': 'Greece',
-          'created_at': '1987-11-23',
-          'people': {
-              'names': '+1 855 275 5071',
-              'landline': '(2741) 2621-244'
-          }
         }
-      ],
-      Datas: {
-      // We will make a Workbook contains 2 Worksheets
-        'animals': [
-          {"name": "cat", "category": "animal"}
-          ,{"name": "dog", "category": "animal"}
-          ,{"name": "pig", "category": "animal"}
-        ],
-        'pokemons': [
-          {"name": "pikachu", "category": "pokemon"}
-          ,{"name": "Arbok", "category": "pokemon"}
-          ,{"name": "Eevee", "category": "pokemon"}
-        ]
       }
     }
   },
@@ -843,7 +803,7 @@ export default {
           type_document_id: {
             required
           },
-          people_id: {
+          dependence_id: {
             required
           },
           priority_id: {
@@ -899,7 +859,7 @@ export default {
           type_document_id: {
             required
           },
-          people_id: {
+          dependence_id: {
             required
           },
           priority_id: {
@@ -937,9 +897,6 @@ export default {
     },
     contextType() {
       return this.$store.state.config.contextType
-    },
-    people() {
-      return this.$store.state.config.people
     },
     priority() {
       return this.$store.state.config.priority
@@ -1140,7 +1097,6 @@ export default {
       this.$store.dispatch('config/getDependence', 1)
       this.$store.dispatch('config/getTypeDocument')
       this.$store.dispatch('config/getPriority')
-      this.$store.dispatch('config/getPeople', true)
       this.$store.dispatch('config/getContextType')
       this.array_key_words = []
       this.infoPeople = null
@@ -1159,7 +1115,7 @@ export default {
       this.form.dependences = null
       this.form.context_type_id = null
       this.form.type_document_id = null
-      this.form.people_id = null
+      this.form.dependence_id = null
       this.form.priority_id = null
       this.tittleModal = 'Nuevo Registro'
       this.event = 1
@@ -1183,7 +1139,6 @@ export default {
       this.$store.dispatch('config/getDependence', 1)
       this.$store.dispatch('config/getTypeDocument')
       this.$store.dispatch('config/getPriority')
-      this.$store.dispatch('config/getPeople', true)
       this.$store.dispatch('config/getContextType')
       item.up_files.forEach(element => {
         this.fileList.push({
@@ -1209,8 +1164,8 @@ export default {
       this.form.dependences = item.dependences
       this.form.context_type_id = item.context_type_id
       this.form.type_document_id = item.type_document_id
-      this.form.people_id = item.people
-      this.infoPeople = item.people
+      this.form.dependence_id = item.dependence
+      this.infoPeople = item.dependence
       this.form.priority_id = item.priority_id
       this.event = 0
       this.$refs['modal-entryFiling'].show()
@@ -1235,7 +1190,7 @@ export default {
         dependences: null,
         context_type_id: null,
         type_document_id: null,
-        people_id: null,
+        dependence_id: null,
         priority_id: null
       }
     },
@@ -1266,7 +1221,7 @@ export default {
           dependences: null,
           context_type_id: null,
           type_document_id: null,
-          people_id: null,
+          dependence_id: null,
           priority_id: null
         }
       }, 500)
@@ -1333,7 +1288,7 @@ export default {
       evt.preventDefault()
       let me = this
       me.form.title = me.form.title ? me.form.title.toUpperCase() : ''
-      me.form.people_id = me.infoPeople ? me.infoPeople.id : ''
+      me.form.dependence_id = me.infoPeople ? me.infoPeople.id : ''
       this.$v.$touch()
       if (this.$v.$invalid) {
         return
@@ -1365,7 +1320,7 @@ export default {
               me.form.settled = me.resultResponse.settled
               me.form.date = me.resultResponse.created_at
               me.form.id = me.resultResponse.id
-              //me.form.people_id = me.resultResponse.id
+              //me.form.dependence_id = me.resultResponse.id
               me.tittleModal = `Radicado # ${me.resultResponse.settled}`
             }
             me.$v.$reset()
