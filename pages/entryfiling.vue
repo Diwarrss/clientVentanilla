@@ -1469,6 +1469,7 @@ export default {
       }
     },
     showModalDependence() {
+      this.$store.dispatch("config/getTypePeople")
       EventBus.$emit('showModalNewDependence')
     }
   }

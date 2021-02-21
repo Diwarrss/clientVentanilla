@@ -107,9 +107,9 @@
             label-for="sender_id">
             <v-select
               id="sender_id"
-              :reduce="people => people.id"
+              :reduce="dependence => dependence.id"
               v-model="sender_id"
-              :options="people"
+              :options="dependence"
               placeholder="Seleccionar..."
               label="names"
               class="vue_select_input">
@@ -159,9 +159,9 @@
             label-for="addressee_id">
             <v-select
               id="addressee_id"
-              :reduce="people => people.id"
+              :reduce="dependence => dependence.id"
               v-model="addressee_id"
-              :options="people"
+              :options="dependence"
               placeholder="Seleccionar..."
               label="names"
               class="vue_select_input">
@@ -555,7 +555,7 @@
                 id="infoPeople"
                 v-model="infoPeople"
                 :disabled="viewOnlly || edit ? true : false"
-                :options="people"
+                :options="dependence"
                 placeholder="Seleccionar..."
                 label="names"
                 class="vue_select_input" >
@@ -665,9 +665,9 @@
               label-for="people">
               <v-select
                 id="people"
-                v-model="form.people"
+                v-model="form.dependence"
                 :disabled="viewOnlly || edit ? true : false"
-                :options="people"
+                :options="dependence"
                 placeholder="Seleccionar..."
                 label="names"
                 class="vue_select_input"
@@ -737,6 +737,7 @@
               </span>
             </b-button>
             <b-button
+              v-permission="'print_stamp'"
               v-if="saved"
               :disabled="sendingFile"
               variant="dark"
@@ -842,7 +843,7 @@
         v-if="typeFiling === '1'"
         :form="form"
         :info-people="infoDependence"
-        :info-addressee="form.people" />
+        :info-addressee="form.dependences" />
     </div>
   </el-card>
 </template>
@@ -913,7 +914,7 @@ export default {
           sortable: true
         },
         {
-          key: 'people.names',
+          key: 'dependence.names',
           label: 'Remitente',
           sortable: true
         },
@@ -971,7 +972,7 @@ export default {
           sortable: true
         },
         {
-          key: 'people',
+          key: 'dependences',
           label: 'Destinatario(s)',
           sortable: true,
           formatter: value => {
@@ -1019,11 +1020,10 @@ export default {
         key_words: null,
         attachments: null,
         dependences: null,
+        dependence: null,
         dependence_id: null,
         context_type_id: null,
         type_document_id: null,
-        people: null,
-        people_id: null,
         priority_id: null
       },
       cancelFiling: {
@@ -1174,9 +1174,6 @@ export default {
     contextType() {
       return this.$store.state.config.contextType
     },
-    people() {
-      return this.$store.state.config.people
-    },
     priority() {
       return this.$store.state.config.priority
     },
@@ -1222,7 +1219,6 @@ export default {
     } else {
       this.$store.dispatch('filing/clearResultFiling')
       this.$store.dispatch('config/getDependence', 1)
-      this.$store.dispatch('config/getPeople', true)
       this.$store.dispatch('config/getTypeDocument')
     }
   },
@@ -1413,7 +1409,6 @@ export default {
       this.$store.dispatch('config/getDependence', 1)
       this.$store.dispatch('config/getTypeDocument')
       this.$store.dispatch('config/getPriority')
-      this.$store.dispatch('config/getPeople', true)
       this.$store.dispatch('config/getContextType')
       item.up_files.forEach(element => {
         this.fileList.push({
@@ -1436,14 +1431,13 @@ export default {
       this.form.state = item.state
       this.form.key_words = item.key_words
       this.form.attachments = item.attachments
+      this.form.dependence = item.dependences
       this.form.dependences = item.dependences
-      this.form.people = item.people
       this.form.context_type_id = item.context_type_id
       this.form.type_document_id = item.type_document_id
-      this.form.people_id = item.people
       this.form.dependence_id = item.dependence
       this.infoDependence = item.dependence
-      this.infoPeople = item.people
+      this.infoPeople = item.dependence
       this.form.priority_id = item.priority_id
       this.event = 0
       this.$refs['modal-entryFiling'].show()
@@ -1473,10 +1467,8 @@ export default {
           key_words: null,
           attachments: null,
           dependences: null,
-          people: null,
           context_type_id: null,
           type_document_id: null,
-          people_id: null,
           dependence_id: null,
           priority_id: null
         }
@@ -1569,7 +1561,6 @@ export default {
       evt.preventDefault()
       let me = this
       me.form.title = me.form.title ? me.form.title.toUpperCase() : ''
-      me.form.people_id = me.infoPeople ? me.infoPeople.id : ''
       me.form.dependence_id = me.infoDependence ? me.infoDependence.id : ''
       this.$v.$touch()
       if (this.$v.$invalid) {
@@ -1726,17 +1717,6 @@ export default {
         )
       }
     },
-    /* getDataTypeFiling() {
-      if (this.typeFiling === '0') {
-        //entrada
-        this.senders = this.people
-        this.addressees = this.dependence
-      } else if (this.typeFiling === '1') {
-        //salida
-        this.addressees = this.people
-        this.senders = this.dependence
-      }
-    }, */
     cleanSearch(view) {
       this.$store.dispatch('filing/clearResultFiling')
       this.dateRange = []

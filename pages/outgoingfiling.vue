@@ -459,19 +459,19 @@
               label-for="people">
               <v-select
                 id="people"
-                v-model="form.people"
+                v-model="form.dependence"
                 :disabled="viewOnlly || edit ? true : false"
-                :options="people"
-                :class="{'is-invalid': $v.form.people.$error}"
+                :options="dependence"
+                :class="{'is-invalid': $v.form.dependence.$error}"
                 placeholder="Seleccionar..."
                 label="names"
                 class="vue_select_input"
                 multiple>
                 <div slot="no-options">No hay Resultados!</div>
               </v-select>
-              <template v-if="$v.form.people.$error">
+              <template v-if="$v.form.dependence.$error">
                 <div
-                  v-if="!$v.form.people.required"
+                  v-if="!$v.form.dependence.required"
                   class="invalid-feedback">
                   Seleccione Destinatario
                 </div>
@@ -580,7 +580,7 @@
               v-if="saved"
               :disabled="sendingFile"
               variant="dark"
-              @click="showModalStampPrint"><i class="fas fa-stamp"/> Impirmir sello</b-button>
+              @click="showModalStampPrint"><i class="fas fa-stamp"/> Imprimir sello</b-button>
             <b-button
               :disabled="sendingFile"
               variant="danger"
@@ -676,7 +676,7 @@
       <ModalStampPrint
         :form="form"
         :info-people="infoDependence"
-        :info-addressee="form.people" />
+        :info-addressee="form.dependence" />
       <ModalNewDependence :toEntryFiling="true" />
     </div>
   </el-card>
@@ -754,7 +754,7 @@ export default {
           sortable: true
         },
         {
-          key: 'people',
+          key: 'dependences',
           label: 'Destinatario(s)',
           sortable: true,
           formatter: value => {
@@ -800,7 +800,7 @@ export default {
         subject: null,
         key_words: null,
         attachments: null,
-        people: null,
+        dependence: null,
         context_type_id: null,
         type_document_id: null,
         dependence_id: null,
@@ -864,7 +864,7 @@ export default {
           type_document_id: {
             required
           },
-          people: {
+          dependence: {
             required
           },
           priority_id: {
@@ -920,7 +920,7 @@ export default {
           type_document_id: {
             required
           },
-          people: {
+          dependence: {
             required
           },
           priority_id: {
@@ -956,8 +956,8 @@ export default {
     contextType() {
       return this.$store.state.config.contextType
     },
-    people() {
-      return this.$store.state.config.people
+    dependence() {
+      return this.$store.state.config.dependence
     },
     priority() {
       return this.$store.state.config.priority
@@ -1331,7 +1331,6 @@ export default {
       this.$store.dispatch('config/getDependence', 1)
       this.$store.dispatch('config/getTypeDocument')
       this.$store.dispatch('config/getPriority')
-      //this.$store.dispatch('config/getPeople', true)
       this.$store.dispatch('config/getContextType')
       this.array_key_words = []
       this.infoDependence = null
@@ -1347,7 +1346,7 @@ export default {
       this.form.subject = null
       this.form.key_words = null
       this.form.attachments = null
-      this.form.people = null
+      this.form.dependence = null
       this.form.context_type_id = null
       this.form.type_document_id = null
       this.form.dependence_id = null
@@ -1374,7 +1373,6 @@ export default {
       this.$store.dispatch('config/getDependence', 1)
       this.$store.dispatch('config/getTypeDocument')
       this.$store.dispatch('config/getPriority')
-      //this.$store.dispatch('config/getPeople', true)
       this.$store.dispatch('config/getContextType')
       item.up_files.forEach(element => {
         if (element.type === 0) {
@@ -1405,7 +1403,7 @@ export default {
       this.form.state = item.state
       this.form.key_words = item.key_words
       this.form.attachments = item.attachments
-      this.form.people = item.people
+      this.form.dependence = item.dependences
       this.form.context_type_id = item.context_type_id
       this.form.type_document_id = item.type_document_id
       this.form.dependence_id = item.dependence
@@ -1430,7 +1428,7 @@ export default {
         subject: null,
         key_words: null,
         attachments: null,
-        people: null,
+        dependence: null,
         context_type_id: null,
         type_document_id: null,
         dependence_id: null,
@@ -1462,7 +1460,7 @@ export default {
           subject: null,
           key_words: null,
           attachments: null,
-          people: null,
+          dependence: null,
           context_type_id: null,
           type_document_id: null,
           dependence_id: null,
@@ -1609,6 +1607,7 @@ export default {
       }
     },
     showModalDependence() {
+      this.$store.dispatch("config/getTypePeople")
       EventBus.$emit('showModalNewDependence')
     }
   }

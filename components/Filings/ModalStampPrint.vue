@@ -209,7 +209,7 @@ export default {
     line-height: 6px;
     font-size: 7px;
     //height: 100px;
-    width: 200px;
+    width: 210px;
     &:hover {
       background-color: #c0c4cc;
     }
