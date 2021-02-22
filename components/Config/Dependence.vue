@@ -171,11 +171,11 @@ export default {
           }
         },
         {
-          key: 'type',
+          key: 'type_person',
           label: 'Tipo',
           sortable: true,
           formatter: value => {
-            return value == 'person' ? 'Persona' : 'Dependencia'
+            return value.name
           }
         },
         {
