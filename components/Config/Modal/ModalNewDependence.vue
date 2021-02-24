@@ -19,7 +19,6 @@
       {{ tittleModal }}
     </template>
     <b-form
-      v-if="show"
       @submit="sendData">
       <b-form-group
         id="groupstate"
@@ -189,6 +188,29 @@
           </div>
         </template>
       </b-form-group>
+      <b-form-group
+        id="groupname"
+        label="E-mail:"
+        label-for="email">
+        <b-form-input
+          id="email"
+          :disabled="viewOnlly ? true : false"
+          v-model="form.email"
+          :class="{'is-invalid': $v.form.email.$error}"
+          placeholder="Ingrese E-mail"/>
+        <template v-if="$v.form.email.$error">
+          <div
+            v-if="!$v.form.email.required"
+            class="invalid-feedback">
+            Digite el E-mail
+          </div>
+          <div
+            v-if="!$v.form.email.maxLength"
+            class="invalid-feedback">
+            El E-mail Exede los 130 Caracteres
+          </div>
+        </template>
+      </b-form-group>
       <!-- <b-form-group
         v-if="form.type == 'dependence'"
         id="groupstate"
@@ -316,6 +338,7 @@ export default {
         names: null,
         telephone: null,
         address: null,
+        email: null,
         state: true,
         type: null,
         people_id: null,
@@ -362,12 +385,13 @@ export default {
     allData(){
       this.formData = this.allData
       if (this.formData.id) {
-        console.log("validacion")
+        //console.log("validacion")
         this.form.id = this.formData.id
         this.form.identification = this.formData.identification
         this.form.names = this.formData.names
         this.form.telephone = this.formData.telephone
         this.form.address = this.formData.address
+        this.form.email = this.formData.email
         this.form.state = this.formData.state
         this.form.type = this.formData.type
         //this.form.dependence_id = this.formData.dependence_id
@@ -380,6 +404,7 @@ export default {
           names: null,
           telephone: null,
           address: null,
+          email: null,
           state: true,
           type: null,
           type_identification_id: null,
@@ -410,6 +435,9 @@ export default {
           address: {
             maxLength: maxLength(99)
           },
+          email: {
+            maxLength: maxLength(129)
+          },
           state: {
             required
           }
@@ -430,6 +458,9 @@ export default {
             required,
             maxLength: maxLength(200)
           },
+          email: {
+            maxLength: maxLength(129)
+          },
           state: {
             required
           }
@@ -448,6 +479,9 @@ export default {
           names: {
             required,
             maxLength: maxLength(200)
+          },
+          email: {
+            maxLength: maxLength(129)
           },
           state: {
             required

@@ -644,14 +644,14 @@ export default {
       currentPage: 1,
       means_document: [
         { value: null, text: 'Seleccionar...' },
-        { value: 'digital', text: 'Digital' },
-        { value: 'fisic', text: 'Físico' },
-        { value: 'fisic/digital', text: 'Físico/Digital' }
+        { value: 'digital', text: 'DIGITAL' },
+        { value: 'fisic', text: 'FÍSICO' },
+        { value: 'fisic/digital', text: 'FÍSICO/DIGITAL' }
       ],
       acces_level: [
         { value: null, text: 'Seleccionar...' },
-        { value: 'public', text: 'Público' },
-        { value: 'restricted', text: 'Restringido' }
+        { value: 'public', text: 'PÚBLICO' },
+        { value: 'restricted', text: 'RESTRINGIDO' }
       ],
       show: true,
       fields: [
@@ -715,18 +715,18 @@ export default {
         date: null,
         title: null,
         settled: null,
-        access_level: null,
-        means_document: null,
+        access_level: 'public',
+        means_document: 'fisic',
         folios: null,
         annexes: 0,
         subject: null,
         key_words: null,
         attachments: null,
         dependences: null,
-        context_type_id: null,
-        type_document_id: null,
+        context_type_id: 2,
+        type_document_id: 11,
         dependence_id: null,
-        priority_id: null
+        priority_id: 1
       },
       cancelFiling: {
         modal: 'modal-entryFiling-cancel',
@@ -1105,18 +1105,18 @@ export default {
       this.form.title = null
       this.form.date = null
       this.form.settled = null
-      this.form.access_level = null
-      this.form.means_document = null
+      this.form.access_level = 'public'
+      this.form.means_document = 'fisic'
       this.form.folios = null
       this.form.annexes = 0
       this.form.subject = null
       this.form.key_words = null
       this.form.attachments = null
       this.form.dependences = null
-      this.form.context_type_id = null
-      this.form.type_document_id = null
+      this.form.context_type_id = 2
+      this.form.type_document_id = 11
       this.form.dependence_id = null
-      this.form.priority_id = null
+      this.form.priority_id = 1
       this.tittleModal = 'Nuevo Registro'
       this.event = 1
       this.saved = false
@@ -1211,18 +1211,18 @@ export default {
           title: null,
           date: null,
           settled: null,
-          access_level: null,
-          means_document: null,
+          access_level: 'public',
+          means_document: 'fisic',
           folios: null,
           annexes: 0,
           subject: null,
           key_words: null,
           attachments: null,
           dependences: null,
-          context_type_id: null,
-          type_document_id: null,
+          context_type_id: 2,
+          type_document_id: 11,
           dependence_id: null,
-          priority_id: null
+          priority_id: 1
         }
       }, 500)
     },
