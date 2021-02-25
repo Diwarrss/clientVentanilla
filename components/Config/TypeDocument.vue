@@ -124,7 +124,6 @@
       <b-modal
         ref="modal-typeDocument"
         :id="form.modal"
-
         no-close-on-esc
         no-close-on-backdrop
         hide-footer>
@@ -168,6 +167,30 @@
             <template v-if="errors.name">
               <div class="invalid-feedback">
                 {{ errors.name[0] }}
+              </div>
+            </template>
+          </b-form-group>
+          <b-form-group
+            id="groupname"
+            label="Días:"
+            label-for="days">
+            <b-form-input
+              id="days"
+              type="number"
+              :disabled="viewOnlly ? true : false"
+              v-model="form.days"
+              :class="{'is-invalid': $v.form.days.$error}"
+              placeholder="Ingrese Nombres"/>
+            <template v-if="$v.form.days.$error">
+              <div
+                v-if="!$v.form.days.required"
+                class="invalid-feedback">
+                Digite los Días
+              </div>
+              <div
+                v-if="!$v.form.days.maxLength"
+                class="invalid-feedback">
+                Los Días Exede los 10 Caracteres
               </div>
             </template>
           </b-form-group>
@@ -272,6 +295,11 @@ export default {
           sortable: true
         },
         {
+          key: 'days',
+          label: 'Días',
+          sortable: true
+        },
+        {
           key: 'state',
           label: 'Estado',
           sortable: true,
@@ -290,6 +318,7 @@ export default {
         modal: 'modal-typeDocument',
         id: null,
         name: null,
+        days: null,
         state: null
       },
       rows: this.cantidad,
@@ -304,6 +333,10 @@ export default {
         name: {
           required,
           maxLength: maxLength(200)
+        },
+        days: {
+          required,
+          maxLength: maxLength(10)
         },
         state: {
           required
@@ -379,6 +412,7 @@ export default {
       this.$store.dispatch('api/clearErrors') //clean errors of back
       this.form.id = null
       this.form.name = null
+      this.form.days = null
       this.form.state = null
       this.tittleModal = 'Nuevo Registro'
       this.event = 1
@@ -397,6 +431,7 @@ export default {
       this.$store.dispatch('api/clearErrors') //clean errors of back
       this.form.id = item.id
       this.form.name = item.name
+      this.form.days = item.days
       this.form.state = item.state
       this.event = 0
       this.sending = false
@@ -411,6 +446,7 @@ export default {
         this.form = {
           id: null,
           name: null,
+          days: null,
           state: null
         }
         this.$store.dispatch('api/clearErrors') //clean errors of back

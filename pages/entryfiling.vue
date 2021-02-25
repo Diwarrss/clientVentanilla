@@ -724,7 +724,7 @@ export default {
         attachments: null,
         dependences: null,
         context_type_id: 2,
-        type_document_id: 11,
+        type_document_id: null,
         dependence_id: null,
         priority_id: 1
       },
@@ -1114,7 +1114,7 @@ export default {
       this.form.attachments = null
       this.form.dependences = null
       this.form.context_type_id = 2
-      this.form.type_document_id = 11
+      this.form.type_document_id = null
       this.form.dependence_id = null
       this.form.priority_id = 1
       this.tittleModal = 'Nuevo Registro'
@@ -1220,7 +1220,7 @@ export default {
           attachments: null,
           dependences: null,
           context_type_id: 2,
-          type_document_id: 11,
+          type_document_id: null,
           dependence_id: null,
           priority_id: 1
         }
