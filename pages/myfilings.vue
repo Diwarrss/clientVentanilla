@@ -132,6 +132,22 @@
                     variant="danger"
                     @click="modalCancel(row.item, row.index, $event.target)"><i class="fas fa-ban mr-md-1"/><span class="d-none d-md-inline-block">Anular</span></b-button> -->
                 </template>
+                <template v-slot:cell(state)="data">
+                  <h5 v-if="data.item.state == 1">
+                    <b-badge variant="primary">Radicado</b-badge>
+                  </h5>
+                  <h5 v-else-if="data.item.state == 2">
+                    <b-badge
+                      variant="danger">Anulado</b-badge>
+                  </h5>
+                  <h5 v-else-if="data.item.state == 3">
+                    <b-badge
+                      variant="warning">Vencido</b-badge>
+                  </h5>
+                </template>
+                <template v-slot:cell(days)="row">
+                  <p> {{ countDays(row.item) }}</p>
+                </template>
               </b-table>
               <b-col v-else>
                 <b-alert
@@ -171,6 +187,22 @@
                   <b-button
                     variant="danger"
                     @click="modalCancel(row.item, row.index, $event.target)"><i class="fas fa-ban mr-md-1"/><span class="d-none d-md-inline-block">Anular</span></b-button> -->
+                </template>
+                <template v-slot:cell(state)="data">
+                  <h5 v-if="data.item.state == 1">
+                    <b-badge variant="primary">Radicado</b-badge>
+                  </h5>
+                  <h5 v-else-if="data.item.state == 2">
+                    <b-badge
+                      variant="danger">Anulado</b-badge>
+                  </h5>
+                  <h5 v-else-if="data.item.state == 3">
+                    <b-badge
+                      variant="warning">Vencido</b-badge>
+                  </h5>
+                </template>
+                <template v-slot:cell(days)="row">
+                  {{ countDays(row.item) }}
                 </template>
               </b-table>
               <b-col v-else>
@@ -771,6 +803,11 @@ export default {
           sortable: true
         },
         {
+          key: 'days',
+          label: 'Días',
+          sortable: true
+        },
+        {
           key: 'settled',
           label: 'Radicado',
           sortable: true
@@ -778,6 +815,11 @@ export default {
         {
           key: 'created_at',
           label: 'Fecha',
+          sortable: true
+        },
+        {
+          key: 'state',
+          label: 'Estado',
           sortable: true
         },
         {
@@ -824,6 +866,11 @@ export default {
           sortable: true
         },
         {
+          key: 'days',
+          label: 'Días',
+          sortable: true
+        },
+        {
           key: 'settled',
           label: 'Radicado',
           sortable: true
@@ -831,6 +878,11 @@ export default {
         {
           key: 'created_at',
           label: 'Fecha',
+          sortable: true
+        },
+        {
+          key: 'state',
+          label: 'Estado',
           sortable: true
         },
         {
@@ -1103,6 +1155,16 @@ export default {
     }
   },
   methods: {
+    countDays(item) {
+      //console.log(item)
+      let hoy = new Date();
+      let diasRes = 0;
+      let fecha = new Date();
+      let created_at = new Date(item.created_at);
+      fecha.setDate(created_at.getDate() + item.type_document.days);
+      diasRes = (fecha.getTime() - hoy.getTime()) / (1000*60*60*24);
+      return diasRes
+    },
     showModalStampPrint() {
       this.$refs['modal-entryFiling'].hide()
       //Mostrar Modal Imprimir Sello

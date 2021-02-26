@@ -129,7 +129,6 @@
       <b-modal
         ref="modal-cancellation-reason"
         :id="form.modal"
-
         no-close-on-esc
         no-close-on-backdrop
         hide-footer>
@@ -292,7 +291,7 @@ export default {
         modal: 'modal-cancellation-reason',
         id: null,
         name: null,
-        state: null
+        state: true
       },
       rows: this.cantidad,
       tittleModal: '',
@@ -384,7 +383,7 @@ export default {
       this.$store.dispatch('api/clearErrors') //clean errors of back
       this.form.id = null
       this.form.name = null
-      this.form.state = null
+      this.form.state = true
       this.tittleModal = 'Nuevo Registro'
       this.event = 1
       this.sending = false
@@ -418,7 +417,7 @@ export default {
         this.form = {
           id: null,
           name: null,
-          state: null
+          state: true
         }
       }, 500)
     },
