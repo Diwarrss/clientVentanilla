@@ -62,7 +62,8 @@ export const actions = {
           sender: params.sender,
           addressee: params.addressee,
           setledSearch: params.setledSearch,
-          typeSearch: params.typeSearch
+          typeSearch: params.typeSearch,
+          state: params.state
         }
       })
       commit('setResultFiling', data.data)

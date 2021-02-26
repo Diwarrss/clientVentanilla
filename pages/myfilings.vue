@@ -46,6 +46,31 @@
               @change="searchFiling"/>
           </b-col>
         </b-row>
+        <b-row class="pl-3 pt-3">
+          <div>
+            <b-form-checkbox class="mr-4 pt-2" v-model="checketAll" name="check-button" size="lg" variant="secondary">
+              Todos
+            </b-form-checkbox>
+          </div>
+          <div>
+            <b-form-group>
+              <b-form-checkbox-group
+                v-model="selected"
+                :options="optionsButton"
+                buttons
+                button-variant="primary"
+                size="lg"
+                name="buttons-2"
+                @input="selectFilter()"
+              ></b-form-checkbox-group>
+            </b-form-group>
+          </div>
+          <div>
+            <b-button class="ml-4 mt-1 rounded" @click="sendFilter()">
+              <i class="fas fa-filter"/> Filtrar
+            </b-button>
+          </div>
+        </b-row>
       </div>
       <div
         class="mt-2 pt-3 body_entry">
@@ -142,7 +167,7 @@
                   </h5>
                   <h5 v-else-if="data.item.state == 3">
                     <b-badge
-                      variant="warning">Vencido</b-badge>
+                      variant="danger">Vencido</b-badge>
                   </h5>
                 </template>
                 <template v-slot:cell(days)="row">
@@ -775,6 +800,8 @@ export default {
   data() {
     return {
       modalValidate: null,
+      selected: [],
+      checketAll: true,
       isModalStampPrintVisible: false,
       sendingFile: false,
       uploadPercentage: 0,
@@ -796,6 +823,10 @@ export default {
         { value: 'restricted', text: 'Restringido' }
       ],
       show: true,
+      optionsButton: [
+        { text: 'Radicados', value: '1' },
+        { text: 'Vencidos', value: '3' }
+      ],
       fieldsEf: [
         {
           key: 'id',
@@ -1155,6 +1186,37 @@ export default {
     }
   },
   methods: {
+    sendFilter() {
+      let me = this
+      console.log(me.selected[0])
+      if (this.checketAll) {
+        let params = {
+          type: me.typeFiling,
+          fromDate: me.dateRange[0],
+          toDate: me.dateRange[1],
+          typeSearch: 1
+        }
+        me.$store.dispatch('filing/getResultFiling', params)
+        me.showTable = true
+      } else {
+        let params = {
+          type: me.typeFiling,
+          fromDate: me.dateRange[0],
+          toDate: me.dateRange[1],
+          typeSearch: 1,
+          state: me.selected[0]
+        }
+        me.$store.dispatch('filing/getResultFiling', params)
+        me.showTable = true
+      }
+    },
+    selectFilter() {
+      if (this.selected.length == 2 || this.selected.length == 0) {
+        this.checketAll = true
+      } else {
+        this.checketAll = false
+      }
+    },
     countDays(item) {
       //console.log(item)
       let hoy = new Date();
