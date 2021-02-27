@@ -171,7 +171,9 @@
                   </h5>
                 </template>
                 <template v-slot:cell(days)="row">
-                  <p> {{ countDays(row.item) }}</p>
+                  <p v-if="countDays(row.item) <= 2" class="days_red"> {{ countDays(row.item) }}</p>
+                  <p v-if="countDays(row.item) > 2 && countDays(row.item) <= 5" class="days_orange"> {{ countDays(row.item) }}</p>
+                  <p v-if="countDays(row.item) > 5" class="days_green"> {{ countDays(row.item) }}</p>
                 </template>
               </b-table>
               <b-col v-else>
@@ -1225,6 +1227,9 @@ export default {
       let created_at = new Date(item.created_at);
       fecha.setDate(created_at.getDate() + item.type_document.days);
       diasRes = (fecha.getTime() - hoy.getTime()) / (1000*60*60*24);
+      if (diasRes < 0) {
+        return 0
+      }
       return diasRes
     },
     showModalStampPrint() {
@@ -1689,6 +1694,15 @@ export default {
 .entry_filing {
   .body_entry {
     border-top: 1px solid gray;
+    .days_red {
+      color: red;
+    }
+    .days_green {
+      color: green;
+    }
+    .days_orange {
+      color: orange;
+    }
   }
   .overflow-auto {
     padding: 0 20px;
