@@ -17,7 +17,7 @@
       </main>
       <!-- <AppAside fixed/> -->
     </div>
-    <AppFooter/>
+    <!-- <AppFooter/> -->
   </div>
 </template>
 

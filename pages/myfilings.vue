@@ -46,7 +46,7 @@
               @change="searchFiling"/>
           </b-col>
         </b-row>
-        <b-row class="pl-3 pt-3">
+        <b-row class="pl-3 pt-3 button_filter">
           <div>
             <b-form-checkbox class="mr-4 pt-2" v-model="checketAll" name="check-button" size="lg" variant="secondary">
               Todos
@@ -58,7 +58,6 @@
                 v-model="selected"
                 :options="optionsButton"
                 buttons
-                button-variant="primary"
                 size="lg"
                 name="buttons-2"
                 @input="selectFilter()"
@@ -66,7 +65,7 @@
             </b-form-group>
           </div>
           <div>
-            <b-button class="ml-4 mt-1 rounded" @click="sendFilter()">
+            <b-button class="ml-4 mt-1 rounded" variant="primary" @click="sendFilter()">
               <i class="fas fa-filter"/> Filtrar
             </b-button>
           </div>
@@ -1223,14 +1222,15 @@ export default {
       //console.log(item)
       let hoy = new Date();
       let diasRes = 0;
-      let fecha = new Date();
+      let dias = 0;
       let created_at = new Date(item.created_at);
-      fecha.setDate(created_at.getDate() + item.type_document.days);
-      diasRes = (fecha.getTime() - hoy.getTime()) / (1000*60*60*24);
+      dias = (hoy.getTime() - created_at.getTime()) / (1000*60*60*24);
+      diasRes = item.type_document.days - dias;
+      //console.log('dias ' + diasRes);
       if (diasRes < 0) {
         return 0
       }
-      return diasRes
+      return parseInt(diasRes)
     },
     showModalStampPrint() {
       this.$refs['modal-entryFiling'].hide()
@@ -1692,16 +1692,26 @@ export default {
 </script>
 <style lang="scss">
 .entry_filing {
+  .button_filter {
+    .active {
+      background-color: #178cb5 !important;
+      border-color: #178cb5 !important;
+      color: white !important;
+    }
+  }
   .body_entry {
     border-top: 1px solid gray;
     .days_red {
       color: red;
+      font-weight: 700;
     }
     .days_green {
       color: green;
+      font-weight: 700;
     }
     .days_orange {
       color: orange;
+      font-weight: 700;
     }
   }
   .overflow-auto {
