@@ -391,7 +391,7 @@
                 </div>
               </template>
             </b-form-group>
-            <b-button v-permission="'new_person_from_settled'" variant="secondary" class="col-3 add_button_custom" @click="showModalDependence()"><i class="fas fa-plus-circle" /> Crear Nuevo</b-button>
+            <b-button v-permission="'new_person_from_settled'" :disabled="viewOnlly ? true : false" variant="secondary" class="col-3 add_button_custom" @click="showModalDependence()"><i class="fas fa-plus-circle" /> Crear Nuevo</b-button>
             <b-button v-permission:unless="'new_person_from_settled'" variant="secondary" class="col-3 add_button_custom" disabled><i class="fas fa-plus-circle" /> Crear Nuevo</b-button>
             <b-form-group
               id="groupstate"
@@ -988,9 +988,6 @@ export default {
       this.form.key_words = this.array_key_words.join(',')
     }
   },
-  beforeCreate() {
-
-  },
   created() {
     //Middleware for see view for permission
     let storePermissions = this.$store.state.user.permissions
@@ -1305,10 +1302,10 @@ export default {
           console.error(err)
         })
     },
-    getFocus() {
+    /* getFocus() {
       document.getElementById('key_words').focus()
       //console.log('tecla presionada')
-    },
+    }, */
     modalCancel(item, index, button) {
       this.$store.dispatch('config/getCancellationReason')
       this.modalValidate = 1

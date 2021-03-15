@@ -263,6 +263,27 @@
                     variant="danger"
                     @click="modalCancel(row.item, row.index, $event.target)"><i class="fas fa-ban mr-md-1"/><span class="d-none d-md-inline-block">Anular</span></b-button>
                 </template>
+                <template v-slot:cell(state)="data">
+                  <h5 v-if="data.item.state == 1">
+                    <b-badge variant="primary">Radicado</b-badge>
+                  </h5>
+                  <h5 v-else-if="data.item.state == 2">
+                    <b-badge
+                      variant="danger">Anulado</b-badge>
+                  </h5>
+                  <h5 v-else-if="data.item.state == 3">
+                    <b-badge
+                      variant="danger">Vencido</b-badge>
+                  </h5>
+                  <h5 v-else-if="data.item.state == 6">
+                    <b-badge
+                      variant="success">Respondido</b-badge>
+                  </h5>
+                  <h5 v-else-if="data.item.state == 7">
+                    <b-badge
+                      variant="success">Respondido Extemporaneo</b-badge>
+                  </h5>
+                </template>
               </b-table>
               <b-col v-else>
                 <b-alert
@@ -743,6 +764,14 @@
               variant="dark"
               @click="showModalStampPrint"><i class="fas fa-stamp"/> Imprimir sello</b-button>
             <b-button
+              v-if="saved && form.state != 6 && form.state != 7 && typeFiling == 0"
+              :disabled="sendingFile"
+              variant="warning"
+              @click="showModalEntryFiling"
+            >
+              <i class="fas fa-reply" /> Responder
+            </b-button>
+            <b-button
               :disabled="sendingFile"
               variant="danger"
               @click="hideModal"><i class="fas fa-times-circle"/> Cancelar</b-button>
@@ -844,11 +873,13 @@
         :form="form"
         :info-people="infoDependence"
         :info-addressee="form.dependences" />
+      <ModalOutgoingFiling :data-entry-filing="form" :params="paramsSearch"/>
     </div>
   </el-card>
 </template>
 <script>
 import ModalStampPrint from '~/components/Filings/ModalStampPrint'
+import ModalOutgoingFiling from '~/components/Filings/ModalOutgoingFiling'
 import {
   required,
   minLength,
@@ -861,7 +892,8 @@ import { EventBus } from '~/plugins/event-bus'
 import XLSX from 'xlsx'
 export default {
   components: {
-    ModalStampPrint
+    ModalStampPrint,
+    ModalOutgoingFiling
   },
   //crear propiedad v-focus para autofocus inputs
   directives: {
@@ -875,6 +907,7 @@ export default {
   },
   data() {
     return {
+      paramsSearch: {},
       modalValidate: null,
       isModalStampPrintVisible: false,
       sendingFile: false,
@@ -907,6 +940,10 @@ export default {
           key: 'settled',
           label: 'Radicado',
           sortable: true
+        },
+        {
+          key: 'state',
+          label: 'Estado'
         },
         {
           key: 'created_at',
@@ -1223,6 +1260,10 @@ export default {
     }
   },
   methods: {
+    showModalEntryFiling() {
+      this.$refs['modal-entryFiling'].hide()
+      EventBus.$emit('showModalOurgoingFiling')
+    },
     exportToExcel() { // On Click Excel download button
       let me = this
       if (me.sender_id === null) {
@@ -1739,6 +1780,7 @@ export default {
         addressee: me.addressee_id,
         setledSearch: me.setledSearch
       }
+      this.paramsSearch = params
       me.$store.dispatch('filing/getResultFiling', params)
       me.showTable = true
     }

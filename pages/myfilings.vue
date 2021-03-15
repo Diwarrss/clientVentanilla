@@ -168,11 +168,24 @@
                     <b-badge
                       variant="danger">Vencido</b-badge>
                   </h5>
+                  <h5 v-else-if="data.item.state == 6">
+                    <b-badge
+                      variant="success">Respondido</b-badge>
+                  </h5>
+                  <h5 v-else-if="data.item.state == 7">
+                    <b-badge
+                      variant="success" class="custom_extemporaneo">Respondido Extemporaneo</b-badge>
+                  </h5>
                 </template>
                 <template v-slot:cell(days)="row">
-                  <p v-if="countDays(row.item) <= 2" class="days_red"> {{ countDays(row.item) }}</p>
-                  <p v-if="countDays(row.item) > 2 && countDays(row.item) <= 5" class="days_orange"> {{ countDays(row.item) }}</p>
-                  <p v-if="countDays(row.item) > 5" class="days_green"> {{ countDays(row.item) }}</p>
+                  <div v-if="row.item.state == 3 || row.item.state == 1">
+                    <p v-if="countDays(row.item) <= 2" class="days_red"> {{ countDays(row.item) }}</p>
+                    <p v-if="countDays(row.item) > 2 && countDays(row.item) <= 5" class="days_orange"> {{ countDays(row.item) }}</p>
+                    <p v-if="countDays(row.item) > 5" class="days_green"> {{ countDays(row.item) }}</p>
+                  </div>
+                  <div v-else>
+                    <p>-</p>
+                  </div>
                 </template>
               </b-table>
               <b-col v-else>
@@ -826,7 +839,9 @@ export default {
       show: true,
       optionsButton: [
         { text: 'Radicados', value: '1' },
-        { text: 'Vencidos', value: '3' }
+        { text: 'Vencidos', value: '3' },
+        { text: 'Respondidos', value: '6' },
+        { text: 'Respondido Extemporaneo', value: '7' }
       ],
       fieldsEf: [
         {
@@ -1205,14 +1220,14 @@ export default {
           fromDate: me.dateRange[0],
           toDate: me.dateRange[1],
           typeSearch: 1,
-          state: me.selected[0]
+          state: me.selected
         }
         me.$store.dispatch('filing/getResultFiling', params)
         me.showTable = true
       }
     },
     selectFilter() {
-      if (this.selected.length == 2 || this.selected.length == 0) {
+      if (this.selected.length == 4 || this.selected.length == 0) {
         this.checketAll = true
       } else {
         this.checketAll = false
@@ -1722,6 +1737,10 @@ export default {
   }
   .alert_not_data {
     font-size: 18px;
+  }
+  .custom_extemporaneo {
+    color: #fff;
+    background-color: #739800;
   }
 }
 .upload_view {

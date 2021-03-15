@@ -19,7 +19,7 @@
             v-if="activePermission('see_based_entrance')"
             to="/entryfiling"
             class="nav-link" >
-            <i class="fas fa-file-import"/> Radicación Entrada
+            <i class="fas fa-file-import"/> Comunicaciones Recibidas
           </router-link>
         </li>
         <li class="nav-item">
@@ -27,7 +27,7 @@
             v-if="activePermission('see_based_out')"
             to="/outgoingfiling"
             class="nav-link" >
-            <i class="fas fa-file-export"/> Radicación Salida
+            <i class="fas fa-file-export"/> Comunicaciones Enviadas
           </router-link>
         </li>
         <li class="nav-item">

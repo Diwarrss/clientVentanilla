@@ -132,6 +132,27 @@
                   <span class="d-none d-md-inline-block">Anular</span>
                 </b-button>
               </template>
+              <template v-slot:cell(state)="data">
+                  <h5 v-if="data.item.state == 1">
+                    <b-badge variant="primary">Radicado</b-badge>
+                  </h5>
+                  <h5 v-else-if="data.item.state == 2">
+                    <b-badge
+                      variant="danger">Anulado</b-badge>
+                  </h5>
+                  <h5 v-else-if="data.item.state == 3">
+                    <b-badge
+                      variant="danger">Vencido</b-badge>
+                  </h5>
+                  <h5 v-else-if="data.item.state == 6">
+                    <b-badge
+                      variant="success">Respondido</b-badge>
+                  </h5>
+                  <h5 v-else-if="data.item.state == 7">
+                    <b-badge
+                      variant="success">Respondido Extemporaneo</b-badge>
+                  </h5>
+                </template>
             </b-table>
             <b-col v-else>
               <b-alert
@@ -374,7 +395,7 @@
                 >Seleccione el Remitente</div>
               </template>
             </b-form-group>
-            <b-button v-permission="'new_person_from_settled'" variant="secondary" class="col-3 add_button_custom" @click="showModalDependence()"><i class="fas fa-plus-circle" /> Crear Nuevo</b-button>
+            <b-button v-permission="'new_person_from_settled'" :disabled="viewOnlly ? true : false" variant="secondary" class="col-3 add_button_custom" @click="showModalDependence()"><i class="fas fa-plus-circle" /> Crear Nuevo</b-button>
             <b-button v-permission:unless="'new_person_from_settled'" variant="secondary" class="col-3 add_button_custom" disabled><i class="fas fa-plus-circle" /> Crear Nuevo</b-button>
             <b-form-group id="groupstate" class="col-12" label="Anexos y Observaciones:" label-for="subject">
               <b-form-textarea
@@ -520,6 +541,14 @@
             >
               <i class="fas fa-stamp" /> Imprimir sello
             </b-button>
+            <b-button
+              v-if="saved && form.state != 6 && form.state != 7"
+              :disabled="sendingFile"
+              variant="warning"
+              @click="showModalEntryFiling"
+            >
+              <i class="fas fa-reply" /> Responder
+            </b-button>
             <b-button :disabled="sendingFile" variant="danger" @click="hideModal">
               <i class="fas fa-times-circle" /> Cancelar
             </b-button>
@@ -598,12 +627,14 @@
       </b-modal>
       <!-- Componente para imprimir sello -->
       <ModalStampPrint :form="form" :info-people="infoPeople" :info-addressee="form.dependences" />
+      <ModalOutgoingFiling :data-entry-filing="form" />
       <ModalNewDependence :toEntryFiling="true" />
     </div>
   </el-card>
 </template>
 <script>
 import ModalStampPrint from '~/components/Filings/ModalStampPrint'
+import ModalOutgoingFiling from '~/components/Filings/ModalOutgoingFiling'
 import ModalNewDependence from '~/components/Config/Modal/ModalNewDependence'
 import {
   required,
@@ -618,6 +649,7 @@ import XLSX from 'xlsx'
 export default {
   components: {
     ModalStampPrint,
+    ModalOutgoingFiling,
     ModalNewDependence
   },
   //crear propiedad v-focus para autofocus inputs
@@ -664,6 +696,10 @@ export default {
           key: 'settled',
           label: 'Radicado',
           sortable: true
+        },
+        {
+          key: 'state',
+          label: 'Estado'
         },
         {
           key: 'created_at',
@@ -996,6 +1032,10 @@ export default {
       //Mostrar Modal Imprimir Sello
       //this.hideModal()
       EventBus.$emit('showModalPrint')
+    },
+    showModalEntryFiling() {
+      this.$refs['modal-entryFiling'].hide()
+      EventBus.$emit('showModalOurgoingFiling')
     },
     beforeRemove(file, fileList) {
       //solicitamos la ocnfirmacion para eliminar el archivo
