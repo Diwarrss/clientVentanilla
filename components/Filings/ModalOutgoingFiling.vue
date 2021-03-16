@@ -1,8 +1,9 @@
 <template>
   <div class="modal_responder_radicado_salida">
     <b-modal
-      ref="modal-outgoingFiling"
-      :id="form.modal"
+      ref="modal-outgoing-filing"
+      id="modal-outgoing-filing"
+      v-model="modalShow"
       no-close-on-esc
       no-close-on-backdrop
       size="lg"
@@ -232,7 +233,7 @@
             <v-select
               id="dependence_id"
               v-model="infoDependence"
-              :disabled="viewOnlly || edit ? true : false"
+              :disabled="viewOnlly ? true : false"
               :options="dependence"
               :class="{'is-invalid': $v.form.dependence_id.$error}"
               placeholder="Seleccionar..."
@@ -474,6 +475,7 @@ export default {
   },
   data() {
     return {
+      modalShow: false,
       sendingFile: false,
       sendingFileGuide: false,
       uploadPercentage: 0,
@@ -492,7 +494,6 @@ export default {
       show: true,
       infoDependence: null,
       form: {
-        modal: 'modal-outgoingFiling',
         id: null,
         cons_year: null,
         date: null,
@@ -577,9 +578,6 @@ export default {
     apiUrl() {
       return process.env.API_BASE_URL
     },
-    dependence() {
-      return this.$store.state.config.dependence
-    },
     typeDocument() {
       return this.$store.state.config.typeDocument
     },
@@ -614,12 +612,39 @@ export default {
     }
   },
   created() {
-    EventBus.$on('showModalOurgoingFiling', () => {
-      this.newOutGoingFiling(this.newOutGoingFilingView)
-      this.form.entry_filing_id = this.dataEntryFiling.id
-      setTimeout(() => {
-        this.$refs['modal-outgoingFiling'].show()
-      }, 500)
+    let me = this
+    EventBus.$on('showModalOutgoingFiling', () => {
+      //console.log('eventbus')
+      //me.$refs['modal-outgoing-filing'].show()
+      me.modalShow = true
+      me.clearModal()
+      if (me.newOutGoingFilingView) {
+        me.viewOnlly = true
+      } else {
+        me.viewOnlly = false
+        me.edit = false
+      }
+      me.sending = false
+      me.modalValidate = 0
+      if (me.dataEntryFiling) {
+        me.tittleModal = 'Respuesta Radicado de Entrada # ' + me.dataEntryFiling.settled
+        me.form.dependence_id = me.user.dependencePerson_id
+        me.form.dependence = []
+        me.form.dependence.push(me.dataEntryFiling.dependence_id)
+        me.form.title = 'Respuesta Radicado de Entrada # ' + me.dataEntryFiling.settled
+        me.edit = true
+      } else {
+        me.tittleModal = 'Nuevo Registro'
+        me.form.dependence_id = null
+        me.form.dependence = null
+        me.edit = false
+        me.infoDependence = {}
+      }
+      me.event = 1
+      me.saved = false
+      me.fileList = []
+      me.fileListGuide = []
+      me.form.entry_filing_id = me.dataEntryFiling.id
     })
   },
   methods: {
@@ -856,57 +881,6 @@ export default {
           console.error(err)
         })
     },
-    newOutGoingFiling(view) {
-      if (view) {
-        this.viewOnlly = true
-      } else {
-        this.viewOnlly = false
-        this.edit = false
-      }
-      this.sending = false
-      this.modalValidate = 0
-      this.$store.dispatch('config/getDependence', 1)
-      this.$store.dispatch('config/getTypeDocument')
-      this.$store.dispatch('config/getPriority')
-      this.$store.dispatch('config/getContextType')
-      this.array_key_words = []
-      this.infoDependence = null
-      this.form.id = null
-      this.form.cons_year = null
-      this.form.title = null
-      this.form.date = null
-      this.form.settled = null
-      this.form.access_level = 'public'
-      this.form.means_document = 'fisic'
-      this.form.folios = null
-      this.form.annexes = 0
-      this.form.subject = null
-      this.form.key_words = null
-      this.form.attachments = null
-      this.form.context_type_id = 2
-      this.form.type_document_id = null
-      this.form.priority_id = 1
-      if (this.dataEntryFiling) {
-        this.tittleModal = 'Respuesta Radicado de Entrada # ' + this.dataEntryFiling.settled
-        this.form.dependence_id = this.user.dependencePerson_id
-        this.form.dependence = []
-        this.form.dependence.push(this.dependence.find(rhp => rhp.id === this.dataEntryFiling.dependence_id.id))
-        this.infoDependence = this.dependence.find(rhp => rhp.id === this.user.dependencePerson_id)
-        this.form.title = 'Respuesta Radicado de Entrada # ' + this.dataEntryFiling.settled
-        this.edit = true
-      } else {
-        this.tittleModal = 'Nuevo Registro'
-        this.form.dependence_id = null
-        this.form.dependence = null
-        this.edit = false
-        this.infoDependence = {}
-      }
-      this.event = 1
-      this.saved = false
-      this.fileList = []
-      this.fileListGuide = []
-      this.$refs['modal-outgoingFiling'].show()
-    },
     modalEdit(item, index, button, view) {
       if (view) {
         this.tittleModal = 'Ver ' + item.settled
@@ -969,23 +943,22 @@ export default {
         title: null,
         date: null,
         settled: null,
-        access_level: null,
-        means_document: null,
+        access_level: 'public',
+        means_document: 'fisic',
         folios: null,
         annexes: 0,
         subject: null,
         key_words: null,
         attachments: null,
         dependence: null,
-        context_type_id: null,
+        context_type_id: 2,
         type_document_id: null,
         dependence_id: null,
-        priority_id: null
+        priority_id: 1
       }
-      this.$v.$reset()
     },
     hideModal() {
-      this.$refs['modal-outgoingFiling'].hide()
+      this.$refs['modal-outgoing-filing'].hide()
       setTimeout(() => {
         this.modalValidate = null
         this.viewOnlly = false

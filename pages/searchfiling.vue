@@ -1262,7 +1262,7 @@ export default {
   methods: {
     showModalEntryFiling() {
       this.$refs['modal-entryFiling'].hide()
-      EventBus.$emit('showModalOurgoingFiling')
+      EventBus.$emit('showModalOutgoingFiling')
     },
     exportToExcel() { // On Click Excel download button
       let me = this

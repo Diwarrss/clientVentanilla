@@ -32,6 +32,14 @@
         </li>
         <li class="nav-item">
           <router-link
+            v-if="activePermission('see_based_internal')"
+            to="/"
+            class="nav-link" >
+            <i class="fas fa-inbox" /> Comunicaciones Internas
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link
             v-if="activePermission('search_based')"
             to="/searchfiling"
             class="nav-link" >

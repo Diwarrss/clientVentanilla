@@ -378,8 +378,8 @@ export default {
       }, 500)
     })
     this.$store.dispatch('api/clearErrors') //clean errors of back
-    this.$store.dispatch('config/getGender')
-    this.$store.dispatch('config/getTypeIdentification')
+    //this.$store.dispatch('config/getGender')
+    //this.$store.dispatch('config/getTypeIdentification')
   },
   watch: {
     allData(){

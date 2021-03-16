@@ -475,6 +475,13 @@
                 >Seleccione Destinatario</div>
               </template>
             </b-form-group>
+            <!-- <b-col v-if="form.outgoing_filing" md="12" class="mb-2">
+              <b-badge>
+                <span v-show="viewOnlly" class="font-weight-bold cursor-pointer-spam">
+                  <i class="fas fa-window-restore" /> Ver Respuesta
+                </span>
+              </b-badge>
+            </b-col> -->
             <b-col md="12">
               <span v-show="viewOnlly && fileList.length" class="font-weight-bold">
                 <i class="fas fa-cloud-download-alt" /> Click para descargar
@@ -548,6 +555,13 @@
               @click="showModalEntryFiling"
             >
               <i class="fas fa-reply" /> Responder
+            </b-button>
+            <b-button
+              v-if="form.outgoing_filing"
+              variant="warning"
+              @click="$bvModal.show('bv-modal-answer')"
+            >
+              <i class="fas fa-eye" /> Ver Respuesta
             </b-button>
             <b-button :disabled="sendingFile" variant="danger" @click="hideModal">
               <i class="fas fa-times-circle" /> Cancelar
@@ -624,6 +638,28 @@
             </b-button>
           </div>
         </b-form>
+      </b-modal>
+      <!-- info modal ver respuesta -->
+      <b-modal
+        id="bv-modal-answer"
+        hide-footer
+        no-close-on-esc
+        no-close-on-backdrop
+        size="md"
+      >
+        <template #modal-title>
+          Respuesta Radicado # {{ form.settled }}
+        </template>
+        <div class="d-block">
+          <strong>Radicado: </strong> {{ answer.settled }} <br>
+          <strong>Fecha: </strong> {{ answer.created_at }} <br>
+          <strong>Titulo: </strong> {{ answer.title }} <br>
+          <strong>Folios: </strong> {{ answer.folios }} <br>
+          <strong>Observaviones: </strong> {{ answer.subject }} <br>
+        </div>
+        <div class="text-center">
+          <b-button class="mt-3" @click="$bvModal.hide('bv-modal-answer')">Cerrar</b-button>
+        </div>
       </b-modal>
       <!-- Componente para imprimir sello -->
       <ModalStampPrint :form="form" :info-people="infoPeople" :info-addressee="form.dependences" />
@@ -762,7 +798,8 @@ export default {
         context_type_id: 2,
         type_document_id: null,
         dependence_id: null,
-        priority_id: 1
+        priority_id: 1,
+        outgoing_filing_id: false
       },
       cancelFiling: {
         modal: 'modal-entryFiling-cancel',
@@ -770,6 +807,7 @@ export default {
         cancellationReason_id: null,
         entryFiling_id: null
       },
+      answer: {},
       saved: false,
       array_key_words: [],
       sending: null,
@@ -1035,7 +1073,7 @@ export default {
     },
     showModalEntryFiling() {
       this.$refs['modal-entryFiling'].hide()
-      EventBus.$emit('showModalOurgoingFiling')
+      EventBus.$emit('showModalOutgoingFiling')
     },
     beforeRemove(file, fileList) {
       //solicitamos la ocnfirmacion para eliminar el archivo
@@ -1173,13 +1211,13 @@ export default {
         this.saved = false
         this.viewOnlly = false
         this.tittleModal = 'Editar ' + item.settled
+        this.$store.dispatch('config/getDependence', 1)
+        this.$store.dispatch('config/getTypeDocument')
+        this.$store.dispatch('config/getPriority')
+        this.$store.dispatch('config/getContextType')
       }
       this.modalValidate = 0
       this.edit = true
-      this.$store.dispatch('config/getDependence', 1)
-      this.$store.dispatch('config/getTypeDocument')
-      this.$store.dispatch('config/getPriority')
-      this.$store.dispatch('config/getContextType')
       item.up_files.forEach(element => {
         this.fileList.push({
           name: element.name,
@@ -1207,7 +1245,11 @@ export default {
       this.form.dependence_id = item.dependence
       this.infoPeople = item.dependence
       this.form.priority_id = item.priority_id
+      this.answer = item.outgoing_filing
       this.event = 0
+      if (item.outgoing_filing) {
+        this.form.outgoing_filing = true
+      }
       this.$refs['modal-entryFiling'].show()
     },
     clearModal() {
@@ -1551,5 +1593,9 @@ export default {
   margin: 5px;
   height: 200px;
   border: 1px dashed #000;
+}
+.cursor-pointer-spam {
+  cursor: pointer;
+  font-size: 18px;
 }
 </style>

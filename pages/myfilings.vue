@@ -1204,7 +1204,7 @@ export default {
   methods: {
     sendFilter() {
       let me = this
-      console.log(me.selected[0])
+      //console.log(me.selected[0])
       if (this.checketAll) {
         let params = {
           type: me.typeFiling,

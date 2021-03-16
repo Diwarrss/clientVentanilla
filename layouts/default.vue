@@ -84,6 +84,10 @@ export default {
       .catch(err => {
         console.error(err)
       })
+      this.$store.dispatch('config/getDependence', 1)
+      this.$store.dispatch('config/getTypeDocument')
+      this.$store.dispatch('config/getPriority')
+      this.$store.dispatch('config/getContextType')
   }
 }
 </script>
