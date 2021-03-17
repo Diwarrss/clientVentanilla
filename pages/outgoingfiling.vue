@@ -582,6 +582,12 @@
               variant="dark"
               @click="showModalStampPrint"><i class="fas fa-stamp"/> Imprimir sello</b-button>
             <b-button
+              v-if="form.entry_filing_id"
+              :disabled="sendingFile"
+              variant="warning"
+              @click="$bvModal.show('bv-modal-source')"
+            ><i class="fas fa-stamp"/> Ver Origen</b-button>
+            <b-button
               :disabled="sendingFile"
               variant="danger"
               @click="hideModal"><i class="fas fa-times-circle"/> Cancelar</b-button>
@@ -672,6 +678,28 @@
           </div>
         </b-form>
       </b-modal>
+      <!-- info modal ver origen -->
+      <b-modal
+        id="bv-modal-source"
+        hide-footer
+        no-close-on-esc
+        no-close-on-backdrop
+        size="md"
+      >
+        <template #modal-title>
+          Radicado de Origen # {{ form.settled }}
+        </template>
+        <div v-if="source" class="d-block">
+          <strong>Radicado: </strong> {{ source.settled }} <br>
+          <strong>Fecha: </strong> {{ source.created_at }} <br>
+          <strong>Titulo: </strong> {{ source.title }} <br>
+          <strong>Folios: </strong> {{ source.folios }} <br>
+          <strong>Observaviones: </strong> {{ source.subject }} <br>
+        </div>
+        <div class="text-center">
+          <b-button class="mt-3" @click="$bvModal.hide('bv-modal-source')">Cerrar</b-button>
+        </div>
+      </b-modal>
       <!-- Modal Imprimir Sello -->
       <ModalStampPrint
         :form="form"
@@ -709,6 +737,7 @@ export default {
   },
   data() {
     return {
+      source: {},
       isModalStampPrintVisible: false,
       sendingFile: false,
       sendingFileGuide: false,
@@ -804,7 +833,8 @@ export default {
         context_type_id: 2,
         type_document_id: null,
         dependence_id: null,
-        priority_id: 1
+        priority_id: 1,
+        entry_filing_id: false
       },
       cancelFiling: {
         modal: 'modal-outgoingFiling-cancel',
@@ -1406,6 +1436,12 @@ export default {
       this.form.dependence_id = item.dependence
       this.infoDependence = item.dependence
       this.form.priority_id = item.priority_id
+      this.source = item.entry_filing
+      if (item.entry_filing) {
+        this.form.entry_filing_id = true
+      } else {
+        this.form.entry_filing_id = false
+      }
       this.event = 0
       this.$refs['modal-outgoingFiling'].show()
     },

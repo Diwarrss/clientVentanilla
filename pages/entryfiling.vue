@@ -557,7 +557,7 @@
               <i class="fas fa-reply" /> Responder
             </b-button>
             <b-button
-              v-if="form.outgoing_filing"
+              v-if="form.outgoing_filing_id"
               variant="warning"
               @click="$bvModal.show('bv-modal-answer')"
             >
@@ -1248,7 +1248,7 @@ export default {
       this.answer = item.outgoing_filing
       this.event = 0
       if (item.outgoing_filing) {
-        this.form.outgoing_filing = true
+        this.form.outgoing_filing_id = true
       }
       this.$refs['modal-entryFiling'].show()
     },
