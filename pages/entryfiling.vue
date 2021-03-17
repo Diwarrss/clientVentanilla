@@ -650,7 +650,7 @@
         <template #modal-title>
           Respuesta Radicado # {{ form.settled }}
         </template>
-        <div class="d-block">
+        <div v-if="answer" class="d-block">
           <strong>Radicado: </strong> {{ answer.settled }} <br>
           <strong>Fecha: </strong> {{ answer.created_at }} <br>
           <strong>Titulo: </strong> {{ answer.title }} <br>
