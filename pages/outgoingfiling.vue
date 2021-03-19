@@ -115,11 +115,11 @@
               <template v-slot:cell(acciones)="row">
                 <b-button
                   variant="primary"
-                  @click="modalEdit(row.item, row.index, $event.target, true)"><i class="fas fa-eye mr-md-1"/><span class="d-none d-md-inline-block">Ver</span></b-button>
+                  @click="modalEdit(row.item, true)"><i class="fas fa-eye mr-md-1"/><span class="d-none d-md-inline-block">Ver</span></b-button>
                 <b-button
                   v-permission="'edit_based_out'"
                   variant="warning"
-                  @click="modalEdit(row.item, row.index, $event.target, false)"><i class="fas fa-edit mr-md-1"/><span class="d-none d-md-inline-block">Editar</span></b-button>
+                  @click="modalEdit(row.item, false)"><i class="fas fa-edit mr-md-1"/><span class="d-none d-md-inline-block">Editar</span></b-button>
                 <b-button
                   v-permission="'change_based_out_status'"
                   variant="danger"
@@ -581,12 +581,20 @@
               :disabled="sendingFile"
               variant="dark"
               @click="showModalStampPrint"><i class="fas fa-stamp"/> Imprimir sello</b-button>
-            <b-button
+            <!-- <b-button
               v-if="form.entry_filing_id"
               :disabled="sendingFile"
               variant="warning"
               @click="$bvModal.show('bv-modal-source')"
-            ><i class="fas fa-stamp"/> Ver Origen</b-button>
+            ><i class="fas fa-stamp"/> Ver Origen</b-button> -->
+            <b-link
+              v-if="source"
+              :to="`/entryfiling?id=${source.id}`"
+              target="_blank"
+              class="btn btn-warning"
+            >
+              <i class="fas fa-eye"/> Ver Origen
+            </b-link>
             <b-button
               :disabled="sendingFile"
               variant="danger"
@@ -1006,6 +1014,9 @@ export default {
     },
     company() {
       return this.$store.state.company.company
+    },
+    answerId() {
+      return this.$route.query.id
     }
   },
   watch: {
@@ -1027,6 +1038,18 @@ export default {
       this.$router.push('/')
     }else {
       this.$store.dispatch('filing/getOutGoingFiling')
+    }
+  },
+  mounted() {
+    if (this.answerId) {
+      this.$axios.get(`outgoing-filing/${this.answerId}`)
+      .then(res => {
+        this.modalEdit(res.data, true);
+        //console.log(res)
+      })
+      .catch(err => {
+        console.error(err);
+      })
     }
   },
   methods: {
@@ -1385,7 +1408,7 @@ export default {
       this.fileListGuide = []
       this.$refs['modal-outgoingFiling'].show()
     },
-    modalEdit(item, index, button, view) {
+    modalEdit(item, view) {
       if (view) {
         this.tittleModal = 'Ver ' + item.settled
         this.viewOnlly = true

@@ -480,6 +480,7 @@ export default {
       sendingFileGuide: false,
       uploadPercentage: 0,
       uploadPercentageGuide: 0,
+      max: 100,
       means_document: [
         { value: null, text: 'Seleccionar...' },
         { value: 'fisic', text: 'FÍSICO' },
@@ -753,11 +754,7 @@ export default {
           })
           //console.log(res.data)
           this.sendingFile = false
-          if (this.dateRange.length) {
-            this.$store.dispatch('filing/getOutGoingFiling', this.dateRange)
-          } else {
-            this.$store.dispatch('filing/getOutGoingFiling')
-          }
+          this.$store.dispatch('filing/getOutGoingFiling')
           this.$swal({
             toast: true,
             position: 'top-end',
@@ -861,11 +858,7 @@ export default {
           })
           //console.log(res.data)
           this.sendingFileGuide = false
-          if (this.dateRange.length) {
-            this.$store.dispatch('filing/getOutGoingFiling', this.dateRange)
-          } else {
-            this.$store.dispatch('filing/getOutGoingFiling')
-          }
+          this.$store.dispatch('filing/getOutGoingFiling')
           this.$swal({
             toast: true,
             position: 'top-end',
@@ -1016,7 +1009,7 @@ export default {
             if (this.params) {
               me.$store.dispatch('filing/getResultFiling', this.params)
             }
-            me.hideModal()
+            //me.hideModal()
             me.edit = true
             me.saved = true
             me.viewOnlly = false
@@ -1037,8 +1030,8 @@ export default {
             url: `outgoing-filing/${me.form.id}`,
             data: me.form,
             action: 'filing/getOutGoingFiling',
-            dispatchParams: me.dateRange.length ? true : false,
-            actionDispatch: me.dateRange
+            //dispatchParams: me.dateRange.length ? true : false,
+            //actionDispatch: me.dateRange
           }
           me.$store.dispatch('api/update', params)
           setTimeout(() => {

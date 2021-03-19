@@ -114,7 +114,7 @@
               <template v-slot:cell(acciones)="row">
                 <b-button
                   variant="primary"
-                  @click="modalEdit(row.item, row.index, $event.target, true)"
+                  @click="modalEdit(row.item, true)"
                 >
                   <i class="fas fa-eye mr-md-1" />
                   <span class="d-none d-md-inline-block">Ver</span>
@@ -122,7 +122,7 @@
                 <b-button
                   v-permission="'edit_based_entrance'"
                   variant="warning"
-                  @click="modalEdit(row.item, row.index, $event.target, false)"
+                  @click="modalEdit(row.item, false)"
                 >
                   <i class="fas fa-edit mr-md-1" />
                   <span class="d-none d-md-inline-block">Editar</span>
@@ -556,13 +556,21 @@
             >
               <i class="fas fa-reply" /> Responder
             </b-button>
-            <b-button
+            <!-- <b-button
               v-if="form.outgoing_filing_id"
               variant="warning"
               @click="$bvModal.show('bv-modal-answer')"
             >
               <i class="fas fa-eye" /> Ver Respuesta
-            </b-button>
+            </b-button> -->
+            <b-link
+              v-if="answer"
+              :to="`/outgoingfiling?id=${answer.id}`"
+              target="_blank"
+              class="btn btn-warning"
+            >
+              <i class="fas fa-eye" /> Ver Respuesta
+            </b-link>
             <b-button :disabled="sendingFile" variant="danger" @click="hideModal">
               <i class="fas fa-times-circle" /> Cancelar
             </b-button>
@@ -989,6 +997,9 @@ export default {
     },
     company() {
       return this.$store.state.company.company
+    },
+    sourceId() {
+      return this.$route.query.id
     } /* ,
     totalAnnexes(){
       return this.fileList.length
@@ -1015,6 +1026,18 @@ export default {
       this.$store.dispatch('filing/getEntryFiling')
     }
     this.$store.dispatch("company/getCompany")
+  },
+  mounted() {
+    if (this.sourceId) {
+      this.$axios.get(`entry-filing/${this.sourceId}`)
+      .then(res => {
+        this.modalEdit(res.data, true);
+        //console.log(res)
+      })
+      .catch(err => {
+        console.error(err);
+      })
+    }
   },
   methods: {
     exportToExcel() { // On Click Excel download button
@@ -1201,7 +1224,8 @@ export default {
       this.fileList = []
       this.$refs['modal-entryFiling'].show()
     },
-    modalEdit(item, index, button, view) {
+    modalEdit(item, view) {
+      console.log(item)
       this.fileList = []
       if (view) {
         this.tittleModal = 'Ver ' + item.settled
