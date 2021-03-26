@@ -708,6 +708,22 @@
           <b-button class="mt-3" @click="$bvModal.hide('bv-modal-source')">Cerrar</b-button>
         </div>
       </b-modal>
+      <b-modal id="modal-file" ref="my-modal-file" centered hide-footer hide-header>
+        <div class="d-block text-center">
+          <h3>¿Que desea hacer con el archivo?</h3>
+        </div>
+        <b-row class="mt-3">
+          <b-col md="4">
+            <b-button variant="primary" block @click="downloadFile">Descargar</b-button>
+          </b-col>
+          <b-col md="4">
+            <b-button variant="warning" block @click="viewFile">Ver</b-button>
+          </b-col>
+          <b-col md="4">
+            <b-button block @click="$bvModal.hide('modal-file')">Cerrar</b-button>
+          </b-col>
+        </b-row>
+      </b-modal>
       <!-- Modal Imprimir Sello -->
       <ModalStampPrint
         :form="form"
@@ -745,6 +761,8 @@ export default {
   },
   data() {
     return {
+      fileName: null,
+      fileRute: null,
       source: {},
       isModalStampPrintVisible: false,
       sendingFile: false,
@@ -985,6 +1003,9 @@ export default {
     apiUrl() {
       return process.env.API_BASE_URL
     },
+    exportUrl() {
+      return process.env.FILES_BASE_URL
+    },
     dependence() {
       return this.$store.state.config.dependence
     },
@@ -1151,35 +1172,34 @@ export default {
       }
     },
     handlePreview(file) {
-      //console.log(file)
+      this.fileName = file.name
+      this.fileRute = file.url
+      this.$refs['my-modal-file'].show()
+    },
+    downloadFile(file) {
+      //console.log("descargar")
+      this.$refs['my-modal-file'].hide()
       this.$axios
-        .get(`get-file/outgoingFiling/${file.name}/${this.form.settled}`, {
+        .get(`get-file/outgoingFiling/${this.fileName}/${this.form.settled}`, {
           responseType: 'arraybuffer'
         })
         .then(res => {
           let blob = new Blob([res.data], { type: 'application/*' })
           let link = document.createElement('a')
           link.href = window.URL.createObjectURL(blob)
-          link.download = file.name
+          link.download = this.fileName
           link.click()
-          //agrega el file en el array con el nombre y ur que quedo en bd
-          //this.$store.dispatch('filing/getOutGoingFiling')
-          /* this.$swal({
-          toast: true,
-          position: 'top-end',
-          icon: 'error',
-          title: res.data.message,
-          showConfirmButton: false,
-          timer: 3000
-        }) */
-          //console.log(res)
         })
         .catch(err => {
           this.sendingFile = false
           this.sendingFileGuide = false
           console.error(err)
         })
-      //console.log(res);
+    },
+    viewFile() {
+      //console.log("ver")
+      this.$refs['my-modal-file'].hide()
+      window.open(this.exportUrl+"/storage/"+this.fileRute, '_blank');
     },
     updateList(file) {
       this.fileUpload = file.raw
@@ -1209,7 +1229,7 @@ export default {
           //agrega el file en el array con el nombre y ur que quedo en bd
           this.fileList.push({
             name: res.data.data.name,
-            url: process.env.filesBaseUrl + res.data.data.url,
+            url: res.data.data.url,
             id: res.data.data.id
           })
           //console.log(res.data)
