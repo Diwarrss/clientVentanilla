@@ -144,6 +144,7 @@
                   <span class="d-none d-md-inline-block">Editar</span>
                 </b-button>
                 <b-button
+                  v-if="source"
                   v-permission="'change_based_entrance_status'"
                   variant="danger"
                   @click="modalCancel(row.item, row.index, $event.target)"
