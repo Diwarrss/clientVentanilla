@@ -3,6 +3,7 @@ export const state = () => ({
   entryFiling: [],
   outGoingFiling: [],
   resultFiling: [],
+  internalFiling: [],
   allRow: 0
 })
 
@@ -41,6 +42,48 @@ export const actions = {
       commit('setOutGoingFiling', data.data)
     }
   },
+  getInternalFilingReceived: async function({ commit }, params) {
+    if (params) {
+      let fromDate = params[0]
+      let toDate = params[1]
+      const data = await this.$axios.get('internal-filing', {
+        params: {
+          fromDate: fromDate,
+          toDate: toDate,
+          type: 1
+        }
+      })
+      commit('setInternalFiling', data.data)
+    } else {
+      const data = await this.$axios.get('internal-filing', {
+        params: {
+          type: 1
+        }
+      })
+      commit('setInternalFiling', data.data)
+    }
+  },
+  getInternalFilingSend: async function({ commit }, params) {
+    if (params) {
+      let fromDate = params[0]
+      let toDate = params[1]
+      const data = await this.$axios.get('internal-filing', {
+        params: {
+          fromDate: fromDate,
+          toDate: toDate,
+          type: 2
+        }
+      })
+      commit('setInternalFiling', data.data)
+    } else {
+      const data = await this.$axios.get('internal-filing', {
+        params: {
+          type: 2
+        }
+      })
+      commit('setInternalFiling', data.data)
+    }
+  },
   getResultFiling: async function({ commit }, params) {
     //console.log(params)
     if (params) {
@@ -77,6 +120,10 @@ export const actions = {
 export const mutations = {
   setEntryFiling(state, data) {
     state.entryFiling = data
+    state.allRow = data.length
+  },
+  setInternalFiling(state, data) {
+    state.internalFiling = data
     state.allRow = data.length
   },
   setOutGoingFiling(state, data) {

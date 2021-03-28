@@ -5,7 +5,7 @@
       slot="header"
       class="clearfix">
       <i class="fas fa-file-export"/>
-      <span class="cardhead"> Radicación de Salida</span>
+      <span class="cardhead"> Comunicaciones Enviadas</span>
     </div>
     <div>
       <div>

@@ -33,7 +33,7 @@
         <li class="nav-item">
           <router-link
             v-if="activePermission('see_based_internal')"
-            to="/"
+            to="/internalfiling"
             class="nav-link" >
             <i class="fas fa-inbox" /> Comunicaciones Internas
           </router-link>
