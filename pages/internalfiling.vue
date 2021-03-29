@@ -14,9 +14,6 @@
         >
           <i class="fas fa-plus-circle" /> Nuevo
         </b-button>
-        <b-button variant="success" @click="exportToExcel">
-          <i class="fas fa-file-csv" /> Exportar
-        </b-button>
         <b-button
           v-permission="'create_based_entrance'"
           variant="info"
@@ -30,6 +27,9 @@
           @click="getDataInternal(2)"
         >
           <i class="fas fa-share" /> Enviados
+        </b-button>
+        <b-button variant="success" @click="exportToExcel">
+          <i class="fas fa-file-csv" /> Exportar
         </b-button>
         <!-- <b-button target="_blank" variant="warning" @click.prevent="showPDFTemplate">
           <i class="fas fa-clipboard-list" /> Generar planilla

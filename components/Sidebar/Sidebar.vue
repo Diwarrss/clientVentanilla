@@ -12,14 +12,14 @@
           </router-link>
         </li>
         <li class="nav-title text-center">
-          MENU
+          COMUNICACIONES
         </li>
         <li class="nav-item">
           <router-link
             v-if="activePermission('see_based_entrance')"
             to="/entryfiling"
             class="nav-link" >
-            <i class="fas fa-file-import"/> Comunicaciones Recibidas
+            <i class="fas fa-file-import"/> Recibidas
           </router-link>
         </li>
         <li class="nav-item">
@@ -27,7 +27,7 @@
             v-if="activePermission('see_based_out')"
             to="/outgoingfiling"
             class="nav-link" >
-            <i class="fas fa-file-export"/> Comunicaciones Enviadas
+            <i class="fas fa-file-export"/> Enviadas
           </router-link>
         </li>
         <li class="nav-item">
@@ -35,7 +35,7 @@
             v-if="activePermission('see_based_internal')"
             to="/internalfiling"
             class="nav-link" >
-            <i class="fas fa-inbox" /> Comunicaciones Internas
+            <i class="fas fa-inbox" /> Internas
           </router-link>
         </li>
         <li class="nav-item">
